@@ -1,17 +1,13 @@
 <?php
-namespace Themosis\Page\Sections;
 
-use Themosis\Core\DataContainer;
-use Themosis\View\IRenderable;
-
-class SectionBuilder
+class Section
 {
     /**
      * Section data.
      *
      * @var \Themosis\Core\DataContainer
      */
-    protected $data;
+    protected static $data;
 
     /**
      * Section view.
@@ -27,11 +23,6 @@ class SectionBuilder
      */
     protected $shared = [];
 
-    public function __construct(DataContainer $data)
-    {
-        $this->data = $data;
-    }
-
     /**
      * Define a Section instance. Used in Page sections.
      *
@@ -42,7 +33,7 @@ class SectionBuilder
      * @throws \Exception
      * @return \Themosis\Page\Sections\SectionBuilder
      */
-    public function make($slug, $name, array $data = [], IRenderable $view = null)
+    public static function make($slug, $name, array $data = [], IRenderable $view = null)
     {
         $params = compact('slug', 'name');
 
@@ -54,9 +45,9 @@ class SectionBuilder
             }
         }
 
-        $this->data['slug'] = $slug;
-        $this->data['name'] = $name;
-        $this->data['args'] = $data;
+        self::$data['slug'] = $slug;
+        self::$data['name'] = $name;
+        self::$data['args'] = $data;
 
         if (!is_null($view))
         {
@@ -94,7 +85,7 @@ class SectionBuilder
      */
     public function getData()
     {
-        return $this->data;
+        return self::$data;
     }
 
 } 

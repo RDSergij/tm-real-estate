@@ -1,6 +1,4 @@
 <?php
-namespace Themosis\Page;
-
 class Option
 {
     /**
