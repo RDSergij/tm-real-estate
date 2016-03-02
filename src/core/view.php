@@ -83,7 +83,6 @@ class View {
 		} else {
 			$__path = self::get_view_path( $view );
 		}
-
 		return self::render_view( $__path, (array) $__data );
 	}
 

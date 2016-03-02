@@ -1,11 +1,9 @@
 <?php
 
-// $text_field = Field::text(
-// 	'author',
-// 	['title' => 'Book author'],
-// 	['class' => 'custom-text-class']
-// );
+$text_field = Field::text(
+	'author',
+	array( 'title' => 'Book author' ),
+	array( 'class' => 'custom-text-class' )
+);
 
-// echo '<pre>';
-// var_dump($text_field);
-// echo '</pre>';
+echo $text_field->metabox();

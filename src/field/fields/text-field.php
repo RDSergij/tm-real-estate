@@ -32,7 +32,10 @@ class Text_Field extends Field_Builder implements I_Field
 	 */
 	public function metabox()
 	{
-		return View::make( 'text-field', ['field' => $this] );
+		return View::make(
+			dirname( __FILE__ ).'/views/text-field.php',
+			array( 'field' => $this )
+		);
 	}
 
 	/**
