@@ -68,8 +68,8 @@ class Autoload {
 		if ( is_array( $folders ) && count( $folders ) ) {
 			foreach ( $folders as $folder ) {
 				$pattern = sprintf(
-					'%s/src/%s/*.php',
-					get_template_directory(),
+					'%s%s/*.php',
+					plugin_dir_path( __FILE__ ),
 					$folder
 				);
 				$paths = array_merge( $paths, (array) glob( $pattern ) );

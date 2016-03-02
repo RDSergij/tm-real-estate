@@ -54,8 +54,8 @@ class Configuration {
 	 */
 	public static function get_class_path( $class_name ) {
 		return sprintf(
-			'%s/app/config/%s.php',
-			get_template_directory(),
+			'%sapp/config/%s.php',
+			TM_REAL_ESTATE_PATH,
 			strtolower( $class_name )
 		);
 	}

@@ -30,8 +30,8 @@ class Customs {
 	 */
 	public static function get_all_paths() {
 		$pattern = sprintf(
-			'%s/app/modules/custom/*.php',
-			get_template_directory()
+			'%sapp/modules/custom/*.php',
+			TM_REAL_ESTATE_PATH
 		);
 		return (array) glob( $pattern );
 	}

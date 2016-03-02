@@ -124,4 +124,4 @@ $config_sidebars = array(
 		'after_title'   => '</h4>',
 	),
 );
-return Utils::array_push_values( $config_sidebars, Model_Sidebar_Settings::get_sidebars_options() );
+return $config_sidebars;

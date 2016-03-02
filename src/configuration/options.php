@@ -44,8 +44,8 @@ class Options {
 	 *
 	 * @param array $data engine data.
 	 */
-	public function __construct( array $data ) {
-		self::$data = $data;
+	public function __construct( $data = array() ) {
+		self::$data = (array) $data;
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 		add_action( 'customize_register', array( $this, 'register' ) );
 	}

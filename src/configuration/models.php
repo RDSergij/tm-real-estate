@@ -31,8 +31,8 @@ class Models {
 	 */
 	public static function get_all_paths() {
 		$pattern = sprintf(
-			'%s/app/models/*.php',
-			get_template_directory()
+			'%sapp/models/*.php',
+			TM_REAL_ESTATE_PATH
 		);
 		return (array) glob( $pattern );
 	}

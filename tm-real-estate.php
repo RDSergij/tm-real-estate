@@ -12,6 +12,7 @@
 /**
  * Autoload all classes
  */
+define( 'TM_REAL_ESTATE_PATH', plugin_dir_path( __FILE__ ) );
 require_once 'src/autoload.php';
 new Autoload(
 	array(
@@ -20,3 +21,4 @@ new Autoload(
 		'core',
 	)
 );
+Configuration::load();

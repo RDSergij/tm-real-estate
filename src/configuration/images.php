@@ -21,7 +21,7 @@ class Images {
 	 *
 	 * @param array $data engine data.
 	 */
-	public function __construct( array $data ) {
+	public function __construct( $data ) {
 		$this->data = $data;
 		$this->make();
 	}
