@@ -1,0 +1,49 @@
+.switcher-fox  {
+  display: inline-block;
+}
+
+.switcher-fox input[type=radio] { 
+  display: none;
+}
+
+.switcher-fox label {
+  width: 60px;
+  height: 30px;
+  cursor: pointer;
+  position: relative;
+  display: none;
+  border-radius: 30px;
+  transition: background-color 0.4s;
+  -moz-transition: background-color 0.4s;
+  -webkit-transition: background-color 0.4s;
+}
+
+.switcher-fox label.off {
+  background: rgb(189, 189, 189);
+}
+
+.switcher-fox label.on {
+  background: rgb(39, 173, 95);
+}
+
+.switcher-fox input[type=radio]:checked + label:after {
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  content: '';
+  position: absolute;
+  background: #FFF;
+  border-radius: 10px;
+}
+
+.switcher-fox input[type=radio]:checked + label.on:after {
+  left: 0;
+}
+
+.switcher-fox input[type=radio]:checked + label.off:after {
+  right: 0;
+}
+
+.switcher-fox input[type=radio]:checked + label { 
+  display: inline-block;
+}

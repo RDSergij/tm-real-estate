@@ -1,0 +1,193 @@
+body,
+button,
+input,
+select,
+textarea,
+#lang_sel {
+	color: $color__text-main;
+	font-family: $font__main;
+	font-size: 16px;
+	line-height: $font__line-height-body;
+	font-weight: 300;
+}
+
+
+@import "headings";
+@import "copy";
+
+.text {
+	&-italic {
+		font-style: italic;
+	}
+	&-bold {
+		font-weight: bolder;
+	}
+}
+
+.align {
+	&-center {
+		text-align: center;
+	}
+	&-left {
+		text-align: left;
+	}
+	&-right {
+		text-align: right;
+	}
+}
+
+.site {
+	@media (max-width: 1200px) {
+		h1,
+		.h1-style {
+			font-size: 1.9rem;
+		}
+		h2,
+		.h2-style {
+			font-size: 1.7rem;
+		}
+		h3,
+		.h3-style {
+			font-size: 1.5rem;
+		}
+		h4,
+		.h4-style,
+		.entry-quote.entry-quote blockquote,
+		.format-quote .post-content blockquote p {
+			font-size: 1.3rem;
+		}
+		h5,
+		.h5-style, 
+		ul.main-navigation li, 
+		button, 
+		input[type="button"], 
+		input[type="reset"], 
+		input[type="submit"], 
+		a.btn, 
+		blockquote, 
+		q, 
+		.calendar_wrap caption,
+		.entry-thumbnail.entry-link .thumbnail,
+		figure.entry-link.without-image {
+			font-size: 1.125rem;
+		}
+		h6,
+		.h6-style,
+		ul.post-categories a,
+		.navigation.pagination .nav-links a,
+		.navigation.pagination .nav-links span,
+		ul.main-navigation li ul li,
+		.post-content ol li:before,
+		.comment-content ol li:before,
+		.calendar_wrap th,
+		.calendar_wrap tbody td,
+		.widget_archive ul li, 
+		.widget_categories ul li a,
+		.entry-quote.entry-quote blockquote a,
+		.format-quote .post-content blockquote p a,
+		.navigation.pagination .nav-links,
+		.search-form .search-field {
+			font-size: 1rem;
+		}
+	}
+	.camera_wrap {
+		.camera-post {
+			@media (max-width: 767px) {
+				h1,
+				.h1-style,
+				h2,
+				.h2-style,
+				h3,
+				.h3-style,
+				h4,
+				.h4-style,
+				h5,
+				.h5-style,
+				h6,
+				.h6-style {
+					line-height: 1.5em;
+				}
+				h1,
+				.h1-style {
+					font-size: 1.3rem;
+				}
+				h2,
+				.h2-style {
+					font-size: 1.2rem;
+				}
+				h3,
+				.h3-style {
+					font-size: 1.1rem;
+				}
+				h4,
+				.h4-style {
+					font-size: 1rem;
+				}
+				h5,
+				.h5-style {
+					font-size: 0.9rem;
+				}
+				h6,
+				.h6-style {
+					font-size: 0.8rem;
+				}
+			}
+		}
+	}
+}
+.two-sidebars .site-content,
+.main .camera_container,
+.left-sidebar .camera_container,
+.right-sidebar .camera_container {
+	h1,
+	.h1-style {
+		font-size: 1.9rem;
+	}
+	h2,
+	.h2-style {
+		font-size: 1.7rem;
+	}
+	h3,
+	.h3-style {
+		font-size: 1.5rem;
+	}
+	h4,
+	.h4-style,
+	.entry-quote.entry-quote blockquote,
+	.format-quote .post-content blockquote p {
+		font-size: 1.3rem;
+	}
+	h5,
+	.h5-style, 
+	ul.main-navigation li, 
+	button, 
+	input[type="button"], 
+	input[type="reset"], 
+	input[type="submit"], 
+	a.btn, 
+	blockquote, 
+	q, 
+	.calendar_wrap caption,
+	.entry-thumbnail.entry-link .thumbnail,
+	figure.entry-link.without-image {
+		font-size: 1.125rem;
+	}
+	h6,
+	.h6-style,
+	ul.post-categories a,
+	.navigation.pagination .nav-links a,
+	.navigation.pagination .nav-links span,
+	ul.main-navigation li ul li,
+	.post-content ol li:before,
+	.comment-content ol li:before,
+	.calendar_wrap th,
+	.calendar_wrap tbody td,
+	.widget_archive ul li, 
+	.widget_categories ul li a,
+	.entry-quote.entry-quote blockquote a,
+	.format-quote .post-content blockquote p a,
+	.navigation.pagination .nav-links,
+	.search-form .search-field {
+		font-size: 1rem;
+	}
+}

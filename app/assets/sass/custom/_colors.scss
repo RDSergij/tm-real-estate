@@ -1,0 +1,334 @@
+/* Base color styles */
+	/* Regular styles */
+		.color-regular-accent,
+		.color-regular-accent a,
+		a.color-regular-accent {
+			color: $color__orange;
+		}
+		a.color-regular-accent,
+		button.color-regular-accent,
+		.color-regular-accent a {
+			&:hover {
+				color: $color__dark-blue;
+			}
+		}
+
+		.color-regular-text,
+		.color-regular-text a,
+		a.color-regular-text {
+			color: $color__dark-blue;
+		}
+		a.color-regular-text,
+		button.color-regular-text,
+		.color-regular-text a {
+			&:hover {
+				color: $color__orange;
+			}
+		}
+
+		.color-regular-link-hover,
+		.color-regular-link-hover a,
+		a.color-regular-link-hover {
+			color: $color__dark-blue;
+		}
+		a.color-regular-link-hover,
+		button.color-regular-link-hover,
+		.color-regular-link-hover a {
+			&:hover {
+				color: $color__orange;
+			}
+		}
+
+		.color-regular-heading,
+		.color-regular-link-hover a,
+		a.color-regular-heading {
+			color: $color__dark-blue;
+		}
+		a.color-regular-heading,
+		button.color-regular-heading,
+		.color-regular-link-hover a {
+			&:hover {
+				color: $color__orange;
+			}
+		}
+
+		/* Regular backgrounds */
+			.color-regular-accent-background {
+				background-color: $color__orange;
+			}
+			.color-regular-text-background {
+				background-color: $color__dark-blue;
+			}
+			.color-regular-link-hover-background {
+				background-color: $color__dark-blue;
+			}
+			.color-regular-heading-background {
+				background-color: $color__dark-blue;
+			}
+
+	/* Invert styles */
+		.color-invert-accent,
+		.color-invert-accent a,
+		a.color-invert-accent {
+			color: $color__white;
+		}
+		a.color-invert-accent,
+		button.color-invert-accent,
+		.color-invert-accent a {
+			&:hover {
+				color: $color__orange;
+			}
+		}
+
+		.color-invert-text,
+		.color-invert-text a,
+		a.color-invert-text {
+			color: $color__white;
+		}
+		a.color-invert-accent,
+		button.color-invert-accent,
+		.color-invert-text a {
+			&:hover {
+				color: $color__orange;
+			}
+		}
+
+		.color-invert-link-hover,
+		.color-invert-link-hover a,
+		a.color-invert-link-hover {
+			color: $color__orange;
+		}
+		a.color-invert-accent,
+		button.color-invert-accent,
+		.color-invert-link-hover a {
+			&:hover {
+				color: $color__white;
+			}
+		}
+
+		.color-invert-heading,
+		.color-invert-heading a,
+		a.color-invert-heading {
+			color: $color__white;
+		}
+		a.color-invert-accent,
+		button.color-invert-accent,
+		.color-invert-heading a {
+			&:hover {
+				color: $color__orange;
+			}
+		}
+
+		/* Invert backgrounds */
+			.color-invert-accent-background {
+				background-color: $color__white;
+			}
+			.color-invert-text-background {
+				background-color: $color__white;
+			}
+			.color-invert-link-hover-background {
+				background-color: $color__orange;
+			}
+			.color-invert-heading-background {
+				background-color: $color__white;
+			}
+
+	/* Default custom block styles */
+	.block-style-1,
+	ul.post-categories a {
+		@extend .color-regular-accent-background;
+		@extend .color-invert-accent;
+	}
+	a.block-style-1,
+	ul.post-categories a {
+		&:hover,
+		&:focus,
+		&:active {			
+			@extend .color-regular-link-hover-background;
+			color: $color__white;
+		}
+	}
+	ul.post-categories a {
+		@extend .h6-style;
+	}
+	.navigation.pagination .nav-links {
+		a, 
+		span {
+			@extend .h6-style;
+			font-weight: normal;
+			background: $color__white;
+			color: $color__dark-blue;
+			font-style: italic;
+		}
+		span.current,
+		a:hover {
+			color: $color__white;
+		}
+		span.current {
+			background: $color__dark-blue;
+		}
+		a:hover {
+			background: $color__orange;
+		}
+	}
+
+	.featured-post-icon {
+		@extend .color-regular-text-background;
+		@extend .color-invert-accent;
+	}
+
+/* Header */
+.top-panel_container {
+	@extend .color-invert-accent-background;
+}
+
+.site-header {
+	background: $color__dark-blue;
+}
+
+/* Navigation */
+ul.main-navigation li {
+	@extend .h5-style;
+	
+	&.sfHover,
+	&.current-menu-item {
+		> a {
+			
+		}
+	}
+	ul {
+		li {
+			@extend .h6-style;
+		}		
+	}
+}
+
+/* Content */
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+a.btn {
+	color: $color__white;
+	@extend .h5-style;
+	@extend .color-regular-accent-background;
+
+	&:hover,
+	&:active,
+	&:focus {
+		@extend .color-regular-link-hover-background;
+		color: $color__white;
+	}
+}
+blockquote, 
+q {
+	@extend .h5-style;
+
+	&:before,
+	cite {
+		color: $color__orange;
+	}
+}
+.post-content,
+.comment-content {
+	ul,
+	ol {
+		li {
+			&:before {
+				color: $color__orange;
+			}
+		}
+	}
+	ol {
+		li {
+			&:before {
+				@extend .h6-style;
+			}
+		}
+	}
+}
+mark, 
+ins {
+	@extend .color-regular-accent-background;
+	@extend .color-invert-accent;
+}
+.lang-switcher #lang_sel a,
+.lang-switcher #lang_sel a.lang_sel_sel {
+	color: $color__dark-blue;
+
+	&:active,
+	&:focus,
+	&:hover {
+		color: $color__orange;
+	}
+}
+.lang-switcher #lang_sel a.lang_sel_sel:hover:after {
+	color: $color__orange;
+}
+
+	/* Entry styles */
+	.entry-title {
+		a {
+			color: $color__dark-blue;
+
+			&:hover {
+				color: $color__orange;
+			}
+		}
+	}
+
+	/* Comments */
+	.reply a {
+		color: $color__text-gray;
+
+		&:hover {
+			color: $color__orange;
+		}
+	}
+	.comment-reply-title {
+		@extend .h4-style;
+	}
+
+	/* Widgets */
+	.calendar_wrap caption {
+		background-color: $color__orange;
+		color: $color__white;
+		@extend .h5-style;
+	}
+	.calendar_wrap th {
+		background: #f3f3f3;
+		@extend .h6-style;
+	}
+	.calendar_wrap tbody td {
+		@extend .h6-style;
+
+		&:not(.pad) {
+			background: #f3f3f3;
+		}
+	}
+	.widget.widget_recent_comments li.recentcomments a,
+	.widget.widget_archive ul li a, 
+	.widget.widget_categories ul li a {
+		&:hover {
+			color: $color__orange;
+		}
+	}
+
+
+/* Footer */
+.footer-widget-bg-color,
+.footer-bg-color {
+	background: $color__dark-blue;
+	color: $color__white;
+}
+.site-footer {
+	.menu-footer_nav {
+		a {
+			color: $color__orange;
+
+			&:hover {
+				color: $color__white;
+			}
+		}
+	}
+}

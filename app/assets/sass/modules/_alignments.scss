@@ -1,0 +1,53 @@
+.alignleft {
+	float: left;
+	margin-right: 30px;
+	margin-bottom: 30px;
+	margin-top: 8px;
+
+	@media (max-width: 767px) {
+		display: block;
+		margin: 0 0 20px;
+		float: none;
+	}
+	.two-sidebars & {
+		float: none;
+		margin: 0 0 20px;
+		display: block;
+	}
+}
+
+.alignright {
+	float: right;
+	margin-left: 30px;
+	margin-bottom: 30px;
+	margin-top: 8px;
+
+	@media (max-width: 767px) {
+		display: block;
+		margin: 0 0 20px;
+		float: none;
+	}
+	.two-sidebars & {
+		float: none;
+		margin: 0 0 20px;
+		display: block;
+	}
+}
+
+.aligncenter {
+	clear: both;
+	margin-top: 23px;
+	margin-bottom: 22px;
+	@include center-block;
+}
+
+.alignnone {
+	&.size-large {
+		margin: 8px 0 4px;
+	}
+}
+
+img.size-full {
+	margin-top: 23px;
+	margin-bottom: 22px;
+}

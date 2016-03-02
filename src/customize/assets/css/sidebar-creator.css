@@ -1,0 +1,12 @@
+.sidebar-creator .custom-sidebars-inputs input{
+	width: 88%;
+	float: left;
+}
+
+.sidebar-creator .custom-sidebars-inputs .custom-sidebar-row{
+	margin-top: 10px;
+}
+
+.sidebar-creator button.add-sidebar{
+	margin-top: 10px;
+}

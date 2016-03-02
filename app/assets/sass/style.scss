@@ -1,0 +1,115 @@
+/*
+Theme Name: Blogetti
+Theme URI: http://www.templatemonster.com/wordpress-themes/53920.html
+Author: TemplateMonster
+Author URI: http://www.templatemonster.com/
+Description: Photolab theme echoes a flat design approach and a modern clean look perfect for creating an engaging blog. Its layout inspired by the latest trends underlines visual excellence of the theme without distracting from the content. Ideal for blogs that require alluring design. Consisting of a standard set of pages, the theme is centered around its blog section. It's accessible from the Blog page and the front page presenting posts of various types: articles, quotations, photos, videos. Each type of blog content is placed in a separate block marked with a certain color bar and an icon on it. Defined by stylish design frame and responsive nature, this theme offers its viewers a pleasant user experience when working with the site on whatever handheld device.
+Version: 1.1.1
+License: GNU General Public License v3
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Text Domain: blogetti
+Domain Path: /languages/
+Tags: white, one-column, two-columns, fluid-layout, custom-background, custom-menu, featured-images, full-width-template, post-formats, sticky-post, translation-ready, photoblogging
+
+This theme is licensed under the GPL v3.
+All images included within theme (all in images/ folder and screenshot.png) are provided by Alexey Karaman under GNU Public License (GPL).
+
+Photolab is based on Underscores http://underscores.me/, (C) 2012-2015 Automattic, Inc.
+
+*/
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Normalize
+# Typography
+# Elements
+# Forms
+# Navigation
+	## Links
+	## Menus
+# Accessibility
+# Alignments
+# Clearings
+# Widgets
+# Content
+    ## Posts and pages
+	## Asides
+	## Comments
+# Infinite scroll
+# Media
+	## Captions
+	## Galleries
+--------------------------------------------------------------*/
+@import "variables-site/variables-site";
+@import "mixins/mixins-master";
+@import "custom/variables-custom";
+
+/*--------------------------------------------------------------
+# Normalize
+--------------------------------------------------------------*/
+@import "normalize";
+
+/*--------------------------------------------------------------
+# Bootstrap 4 grids
+--------------------------------------------------------------*/
+@import "grid/grid";
+
+/*--------------------------------------------------------------
+# Accessibility
+--------------------------------------------------------------*/
+@import "modules/accessibility";
+
+/*--------------------------------------------------------------
+# Typography
+--------------------------------------------------------------*/
+@import "typography/typography";
+
+/*--------------------------------------------------------------
+# Elements
+--------------------------------------------------------------*/
+@import "elements/elements";
+
+/*--------------------------------------------------------------
+# Forms
+--------------------------------------------------------------*/
+@import "forms/forms";
+
+/*--------------------------------------------------------------
+# Navigation
+--------------------------------------------------------------*/
+@import "navigation/navigation";
+
+/*--------------------------------------------------------------
+# Alignments
+--------------------------------------------------------------*/
+@import "modules/alignments";
+
+/*--------------------------------------------------------------
+# Clearings
+--------------------------------------------------------------*/
+@import "modules/clearings";
+
+/*--------------------------------------------------------------
+# Widgets
+--------------------------------------------------------------*/
+@import "site/secondary/widgets";
+
+/*--------------------------------------------------------------
+# Content
+--------------------------------------------------------------*/
+@import "site/site";
+
+/*--------------------------------------------------------------
+# Infinite scroll
+--------------------------------------------------------------*/
+@import "modules/infinite-scroll";
+
+/*--------------------------------------------------------------
+# Media
+--------------------------------------------------------------*/
+@import "media/media";
+
+/*--------------------------------------------------------------
+# Custom styles
+--------------------------------------------------------------*/
+// @import "custom/colors";

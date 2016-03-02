@@ -1,0 +1,9 @@
+.tooltip-fox { position: relative; display: inline-block; border-bottom: 1px dotted black; }
+.tooltip-fox .tooltiptext { visibility: hidden; width: 240px; background-color: black; color: #fff; text-align: center; padding: 5px 0; border-radius: 6px; position: absolute; z-index: 1; }
+.tooltip-fox .tooltiptext a { color: #FE693D; }
+.tooltip-fox .tooltiptext a:hover { color: #FE693D; }
+.tooltip-fox .tooltiptext.bottom { top: 100%; /* At the bottom of the tooltip */ left: 5%; }
+.tooltip-fox .tooltiptext.top { bottom: 100%; /* At the top of the tooltip */ left: 5%; }
+.tooltip-fox .tooltiptext.left { top: 50%; right: 100%; /* To the left of the tooltip */ }
+.tooltip-fox .tooltiptext.right { top: 50%; left: 100%; /* To the right of the tooltip */ }
+.tooltip-fox:hover .tooltiptext { visibility: visible; }

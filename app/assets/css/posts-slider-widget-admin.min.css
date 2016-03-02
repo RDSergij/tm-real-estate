@@ -1,0 +1,8 @@
+/*
+* @section Widget form
+*/
+.tm-post-slider-form-widget { clear: both; width: 100%; margin-bottom: 10px; }
+.tm-post-slider-form-widget .line-switcher { clear: both; min-height: 30px; }
+.tm-post-slider-form-widget .line-switcher > label { float: left; margin: 0 9px 0 0; }
+
+/*# sourceMappingURL=admin.min.css.map */

@@ -1,0 +1,77 @@
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+.btn {
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	color: $color__text-button;
+	padding: 11px 30px 15px;
+	text-shadow: none;
+	font-style: italic;
+
+	@media (max-width: 767px) {
+		padding: 10px 20px;
+	}
+	&:hover {
+		box-shadow: none;
+	}
+	&:active,
+	&:focus {
+		box-shadow: none;
+	}
+}
+
+.btn {
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	overflow: hidden;
+	
+	i {
+		display: inline-block;
+		vertical-align: top;
+		font-size: 1.375rem;
+		line-height: inherit;
+		margin: 0px -5px 0px 3px;
+		color: inherit;
+	}
+	&.btn-link {
+		margin: 0;
+		padding: 0;
+		line-height: 1.375rem;
+
+		i {
+			display: inline-block;
+			vertical-align: top;
+			font-size: 1.375rem;
+			line-height: inherit;
+			margin: 0px -5px 0px 3px;
+
+			@media (max-width: 1200px) {
+				margin-right: 0;
+			}
+			@media (max-width: 480px) {
+				margin: 0 0 0 3px;
+			}
+			.masonry-layout &,
+			.grid-layout & {
+				margin: 0 0 0 -2px;
+			}
+		}
+		em {
+			.masonry-layout &,
+			.grid-layout & {
+				display: none;
+			}
+		}
+	}
+	&.btn-large {
+		padding: 1.025em 2.11em 1.275em;
+
+		@media (max-width: 767px) {
+			padding: .5em 1em;
+		}
+	}
+}

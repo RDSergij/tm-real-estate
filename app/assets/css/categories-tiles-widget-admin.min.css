@@ -1,0 +1,18 @@
+/*
+* @section Widget form
+*/
+.tm-categories-tiles-form-widget { clear: both; width: 100%; margin-bottom: 10px; }
+.tm-categories-tiles-form-widget .show-count { margin: 10px 0 10px 0; display: block; height: 30px; }
+.tm-categories-tiles-form-widget .show-count > label { float: left; margin: 3px 20px 0 0; }
+.tm-categories-tiles-form-widget .category-area { border: #dfdfdf dashed 1px; padding: 5px; margin-bottom: 5px; background-color: white; position: relative; }
+.tm-categories-tiles-form-widget .category-area .delete-category { cursor: pointer; position: absolute; top: 5px; right: 5px; color: red; }
+.tm-categories-tiles-form-widget .category-area .delete-image-url { cursor: pointer; position: absolute; top: 5px; right: 5px; color: red; }
+.tm-categories-tiles-form-widget .category-area .upload-image { position: relative; cursor: pointer; margin: 0 auto; width: 128px; }
+.tm-categories-tiles-form-widget .category-area .upload-image img { width: 100%; }
+.tm-categories-tiles-form-widget .category-area .upload-image .delete-image-url { cursor: pointer; position: absolute; top: 5px; right: 5px; color: red; }
+.tm-categories-tiles-form-widget .category-new { display: none; }
+.tm-categories-tiles-form-widget .add-category { cursor: pointer; float: right; color: green; }
+
+.wp-customizer #TB_overlay, .wp-customizer #TB_window { z-index: 999999; }
+
+/*# sourceMappingURL=admin.min.css.map */
