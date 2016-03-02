@@ -1,1 +1,0 @@
-<button {{ $attributes }}>{{ $title }}</button>

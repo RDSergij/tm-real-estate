@@ -10,7 +10,9 @@
  */
 class View {
 
-	const STORAGE_FOLDER = 'storage';
+	/**
+	 * Vies folder
+	 */
 	const VIEWS_FOLDER   = 'views';
 
 	/**
@@ -37,21 +39,6 @@ class View {
 	}
 
 	/**
-	 * Get storage path
-	 *
-	 * @return string storage folder path
-	 */
-	public static function get_storage_folder_path() {
-		$upload_dir = wp_upload_dir();
-		return sprintf(
-			'%2$s%1$sapp%1$s%3$s%1$s',
-			DIRECTORY_SEPARATOR,
-			Utils::array_get( $upload_dir, 'basedir', '' ),
-			self::STORAGE_FOLDER
-		);
-	}
-
-	/**
 	 * Get views path
 	 *
 	 * @return string views folder path
@@ -60,7 +47,7 @@ class View {
 		return sprintf(
 			'%2$s%1$sapp%1$s%3$s%1$s',
 			DIRECTORY_SEPARATOR,
-			get_template_directory(),
+			plugin_dir_path( __FILE__ ),
 			self::VIEWS_FOLDER
 		);
 	}
@@ -96,23 +83,8 @@ class View {
 		} else {
 			$__path = self::get_view_path( $view );
 		}
-		$scout_compiler = new Scout_Compiler( self::get_storage_folder_path() );
-		if ( $scout_compiler->is_expired( $__path ) ) {
-			$scout_compiler->compile( $__path );
-		}
-		$storage_view_path = $scout_compiler->get_compiled_path( $__path );
 
-		return self::render_view( $storage_view_path, (array) $__data, $scout_compiler->get_compiled_content() );
-	}
-
-	/**
-	 * Check view exists
-	 *
-	 * @return boolean true if exists | false if not
-	 */
-	public static function exists( $view = '' ) {
-		$view_path = self::get_view_path( $view );
-		return file_exists( $view_path );
+		return self::render_view( $__path, (array) $__data );
 	}
 
 	/**

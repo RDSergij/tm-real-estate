@@ -8,3 +8,15 @@
  * License: GPLv2 or later
  * Text Domain: akismet
  */
+
+/**
+ * Autoload all classes
+ */
+require_once 'src/autoload.php';
+new Autoload(
+	array(
+		'ui',
+		'configuration',
+		'core',
+	)
+);
