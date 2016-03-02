@@ -1,4 +1,4 @@
-<?php Form::radio( $field['name'], $field['options'], $field['value'], $field['atts'] ) ?>
+<?php echo Form::radio( $field['name'], $field['options'], $field['value'], $field['atts'] ) ?>
 
 <?php if ( isset( $field[ 'features' ][ 'info' ] ) ): ?>
     <div class="themosis-field-info">

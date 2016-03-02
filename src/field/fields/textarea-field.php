@@ -8,9 +8,9 @@ class Textarea_Field extends Field_Builder implements I_Field
 	 * @param array $properties The text field properties.
 	 * @param ViewFactory $view
 	 */
-	public function __construct( array $properties, ViewFactory $view )
+	public function __construct( array $properties )
 	{
-		parent::__construct( $properties, $view );
+		parent::__construct( $properties );
 		$this->fieldType();
 	}
 
@@ -58,6 +58,4 @@ class Textarea_Field extends Field_Builder implements I_Field
 	{
 		return $this->metabox();
 	}
-
-
 }
