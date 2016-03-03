@@ -48,3 +48,31 @@ $number = Field::number( 'password_field' );
 
 echo $number->metabox();
 echo '<br>';
+
+$media = Field::media(
+	'report',
+	array(
+	    'title'     => 'Attach report',
+	    'type'      => 'application'
+	)
+);
+
+echo $media->metabox();
+echo '<br>';
+
+$infinite = Field::infinite(
+	'books',
+	array(
+		Field::text('title'),
+		Field::textarea('excerpt'),
+		Field::media('cover-image')
+	)
+);
+
+echo $infinite->metabox();
+echo '<br>';
+
+$editor = Field::editor( 'some_editor' );
+
+echo $editor->metabox();
+echo '<br>';
