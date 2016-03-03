@@ -47,7 +47,7 @@ class View {
 		return sprintf(
 			'%2$s%1$sapp%1$s%3$s%1$s',
 			DIRECTORY_SEPARATOR,
-			plugin_dir_path( __FILE__ ),
+			dirname( dirname( plugin_dir_path( __FILE__ ) ) ),
 			self::VIEWS_FOLDER
 		);
 	}
