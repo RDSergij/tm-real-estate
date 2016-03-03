@@ -2,12 +2,13 @@
 
 class Page
 {
+
 	/**
 	 * The page properties.
 	 *
 	 * @var DataContainer
 	 */
-	protected static $datas;
+	protected $datas;
 
 	/**
 	 * The page validator object.
@@ -45,8 +46,9 @@ class Page
 	 * @throws PageException
 	 * @return \Themosis\Page\PageBuilder
 	 */
-	public static function make($slug, $title, $parent = null, IRenderable $view = null)
+	public static function make($slug, $title, $parent = null, $view = null)
 	{
+		$page = new Page();
 		$params = compact('slug', 'title');
 
 		foreach ($params as $name => $param)
@@ -60,23 +62,23 @@ class Page
 		// Check the view file.
 		if (!is_null($view))
 		{
-			$this->view = $view;
+			$page->view = $view;
 		}
 
 		// Set the page properties.
-		self::$datas['slug'] = $slug;
-		self::$datas['title'] = $title;
-		self::$datas['parent'] = $parent;
-		self::$datas['args'] = [
+		$page->data['slug'] = $slug;
+		$page->data['title'] = $title;
+		$page->data['parent'] = $parent;
+		$page->data['args'] = [
 			'capability'    => 'manage_options',
 			'icon'          => '',
 			'position'      => null,
 			'tabs'          => true,
 			'menu'          => $title
 		];
-		self::$datas['rules'] = [];
+		$page->data['rules'] = [];
 
-		return $this;
+		return $page;
 	}
 
 	/**
@@ -89,11 +91,11 @@ class Page
 	 */
 	public function set(array $params = [])
 	{
-		self::$datas['args'] = array_merge( self::$datas['args'], $params );
+		$this->data['args'] = array_merge( $this->data['args'], $params );
 
 		add_action('admin_menu', array( $this, 'build' ) );
 
-		return $this;
+		return new static;
 	}
 
 	/**
@@ -104,13 +106,13 @@ class Page
 	 */
 	public function build()
 	{
-		if (!is_null(self::$datas['parent']))
+		if (!is_null($this->data['parent']))
 		{
-			add_submenu_page(self::$datas['parent'], self::$datas['title'], self::$datas['args']['menu'], self::$datas['args']['capability'], self::$datas['slug'], [$this, 'displayPage']);
+			add_submenu_page($this->data['parent'], $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], [$this, 'displayPage']);
 		}
 		else
 		{
-			add_menu_page(self::$datas['title'], self::$datas['args']['menu'], self::$datas['args']['capability'], self::$datas['slug'], [$this, 'displayPage'], self::$datas['args']['icon'], self::$datas['args']['position']);
+			add_menu_page($this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], [$this, 'displayPage'], $this->data['args']['icon'], $this->data['args']['position']);
 		}
 	}
 
@@ -135,7 +137,7 @@ class Page
 	 */
 	public function get($property = null)
 	{
-		 return (isset(self::$datas[$property])) ? self::$datas[$property] : '';
+		 return (isset($this->data[$property])) ? $this->data[$property] : '';
 	}
 
 	/**
@@ -205,7 +207,7 @@ class Page
 		// The WordPress Settings API make
 		// always use of sections and fields.
 		// So let's set it up!
-		if (self::$datas['args']['tabs'])
+		if ($this->data['args']['tabs'])
 		{
 			// A - With tabs
 			$this->installWithTabs();
@@ -277,9 +279,9 @@ class Page
 	protected function installWithoutTabs()
 	{
 		// 1 - Prepare the DB table.
-		if (false === get_option(self::$datas['slug']))
+		if (false === get_option($this->data['slug']))
 		{
-			add_option(self::$datas['slug']);
+			add_option($this->data['slug']);
 		}
 
 		// 2 - Display sections
@@ -287,7 +289,7 @@ class Page
 		{
 			$section = $section->getData();
 
-			add_settings_section($section['slug'], $section['name'], [$this, 'displaySections'], self::$datas['slug']);
+			add_settings_section($section['slug'], $section['name'], [$this, 'displaySections'], $this->data['slug']);
 		}
 
 		// 3 - Display settings
@@ -297,9 +299,9 @@ class Page
 			{
 				// Add the section to the field - In this case,
 				// it is associated to the page slug.
-				$setting['section'] = self::$datas['slug'];
+				$setting['section'] = $this->data['slug'];
 
-				add_settings_field($setting['name'], $setting['features']['title'], [$this, 'displaySettings'], self::$datas['slug'], $section, $setting);
+				add_settings_field($setting['name'], $setting['features']['title'], [$this, 'displaySettings'], $this->data['slug'], $section, $setting);
 			}
 		}
 
@@ -308,7 +310,7 @@ class Page
 		// the wp_options table.
 		// When you want to retrieve a setting use the option_group
 		// name and the setting id.
-		register_setting(self::$datas['slug'], self::$datas['slug'], [$this, 'validateSettings']);
+		register_setting($this->data['slug'], $this->data['slug'], [$this, 'validateSettings']);
 	}
 
 	/**
@@ -350,7 +352,7 @@ class Page
 	public function validateSettings($values)
 	{
 		// No validation rules
-		if (!isset(self::$datas['rules']) || !is_array(self::$datas['rules'])) return $values;
+		if (!isset($this->data['rules']) || !is_array($this->data['rules'])) return $values;
 
 		// Null given
 		if (is_null($values)) return [];
@@ -359,7 +361,7 @@ class Page
 
 		foreach ($values as $setting => $value)
 		{
-			$rules = array_keys(self::$datas['rules']);
+			$rules = array_keys($this->data['rules']);
 
 			// 1 - Check if a rule exists
 			if (in_array($setting, $rules))
@@ -374,9 +376,9 @@ class Page
 							foreach ($row as $infiniteSetting => $infiniteValue)
 							{
 								// 1.1.1 - Check if a rule is defined for the infinite sub fields.
-								if (isset(self::$datas['rules'][$setting][$infiniteSetting]))
+								if (isset($this->data['rules'][$setting][$infiniteSetting]))
 								{
-									$rule = self::$datas['rules'][$setting][$infiniteSetting];
+									$rule = $this->data['rules'][$setting][$infiniteSetting];
 
 									$sanitized[$setting][$index][$infiniteSetting] = $this->validator->single($infiniteValue, $rule);
 								}
@@ -391,7 +393,7 @@ class Page
 				else
 				{
 					// 1.2 - Apply rule to other settings.
-					$sanitized[$setting] = $this->validator->single($value, self::$datas['rules'][$setting]);
+					$sanitized[$setting] = $this->validator->single($value, $this->data['rules'][$setting]);
 				}
 
 			}
@@ -413,7 +415,7 @@ class Page
 	 */
 	public function validate(array $rules = [])
 	{
-		self::$datas['rules'] = $rules;
+		$this->data['rules'] = $rules;
 
 		return $this;
 	}
@@ -475,7 +477,7 @@ class Page
 	 */
 	public function renderTabs()
 	{
-		if ($this->hasSections() && self::$datas['args']['tabs'])
+		if ($this->hasSections() && $this->data['args']['tabs'])
 		{
 			echo('<h2 class="nav-tab-wrapper">');
 
@@ -484,7 +486,7 @@ class Page
 					$section = $section->getData();
 					$class = ($this->getActiveTab() === $section['slug']) ? 'nav-tab-active' : '';
 
-					printf('<a href="%spage=%s&tab=%s" class="nav-tab %s">%s</a>', $this->setTabUri(self::$datas['parent']), self::$datas['slug'], $section['slug'], $class, $section['name']);
+					printf('<a href="%spage=%s&tab=%s" class="nav-tab %s">%s</a>', $this->setTabUri($this->data['parent']), $this->data['slug'], $section['slug'], $class, $section['name']);
 				}
 
 			echo('</h2>');
@@ -501,7 +503,7 @@ class Page
 		// Check if there are sections before proceeding.
 		if (!$this->hasSections()) return;
 
-		if (self::$datas['args']['tabs'])
+		if ($this->data['args']['tabs'])
 		{
 			foreach ($this->sections as $section)
 			{
@@ -519,8 +521,8 @@ class Page
 		{
 			// Do not use the tab navigation.
 			// Display all sections in one page.
-			settings_fields(self::$datas['slug']);
-			do_settings_sections(self::$datas['slug']);
+			settings_fields($this->data['slug']);
+			do_settings_sections($this->data['slug']);
 		}
 	}
 
@@ -540,4 +542,3 @@ class Page
 	}
 
 }
-

@@ -3,10 +3,10 @@
  * Plugin Name: TM Real Estate
  * Description: 
  * Version: 1.0
- * Author: Guriev Eugen and Serghij Osadchij
+ * Author: Guriev Eugen and Serhii Osadchyi
  * Author URI: http://www.templatemonster.com/
  * License: GPLv2 or later
- * Text Domain: akismet
+ * Text Domain: tm-real-estate
  */
 
 /**
@@ -30,6 +30,7 @@ new Autoload(
 		'core',
 		'field',
 		'field/fields',
+		'page'
 	)
 );
 Configuration::load();

@@ -14,11 +14,10 @@
 // 	echo View::make( 'pages/about-photolab' );
 // }
 return array(
-	// 'Upgrade_To_Pro' => array(
-	// 	__( 'About Photolab', 'blogetti' ),
-	// 	__( 'About Photolab', 'blogetti' ),
-	// 	'edit_theme_options',
-	// 	'welcome.php',
-	// 	'conf_get_about_photolab',
-	// ),
+	'my-page' => array(
+			'title'		=> 'Theme options',
+			'parent'	=> '',
+			'priority'	=> 0,
+			'parameters' => array(),
+		),
 );
