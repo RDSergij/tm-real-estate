@@ -1,5 +1,4 @@
 <?php
-namespace Themosis\Metabox;
 
 class Meta
 {

@@ -1,14 +1,7 @@
 <?php
-/**
- * Metabox class file
- *
- * @package tm-real-eastate
- */
 
-/**
- * Metabox builder class
- */
-class Metabox {
+class Metabox implements I_Metabox {
+
 	/**
 	 * Metabox instance datas.
 	 *
@@ -63,15 +56,17 @@ class Metabox {
 
 	/**
 	 * Build a metabox instance.
+	 *
+	 * @param DataContainer $datas The metabox properties.
+	 * @param \Themosis\View\IRenderable $view The metabox default view.
+	 * @param \Themosis\Validation\ValidationBuilder $validator
+	 * @param \Themosis\User\User $user
 	 */
-	public function __construct()
-	{
-		$this->datas = null;
-		$this->view = null;
+	public function __construct() {
+		$this->datas     = array();
+		$this->view      = null;
 		$this->validator = null;
-		$this->user = null;
-		$this->installEvent = array( &$this, 'display' );
-
+		$this->user      = null;
 		add_action( 'save_post', array( &$this, 'save' ) );
 	}
 
@@ -81,20 +76,16 @@ class Metabox {
 	 * @param string $title The metabox title.
 	 * @param string $postType The metabox parent slug name.
 	 * @param array $options Metabox extra options.
+	 * @param \Themosis\View\IRenderable $view The metabox view.
 	 * @return object
 	 */
-	public function make( $title, $postType, array $options = [] ) {
-		$new_metabox                    = new MetaBox();
-		$new_metabox->datas['title']    = $title;
-		$new_metabox->datas['postType'] = $postType;
-		$new_metabox->datas['options']  = $new_metabox->parseOptions($options);
+	public function make($title, $postType, array $options = [])
+	{
+		$this->datas['title'] = $title;
+		$this->datas['postType'] = $postType;
+		$this->datas['options'] = $this->parseOptions($options);
 
-		if (!is_null($view))
-		{
-			$new_metabox->view = $view;
-		}
-
-		return $new_metabox;
+		return $this;
 	}
 
 	/**
@@ -110,7 +101,7 @@ class Metabox {
 
 		$this->datas['fields'] = $fields;
 
-		add_action( 'add_meta_boxes', $this->installEvent );
+		add_action( 'add_meta_boxes', array( &$this, 'display' ) );
 
 		return $this;
 	}
@@ -226,7 +217,8 @@ class Metabox {
 	 * @param int $postId The post ID value.
 	 * @return void
 	 */
-	public function save( $postId ) {
+	public function save($postId)
+	{
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
 
 		$nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
@@ -330,12 +322,15 @@ class Metabox {
 	 */
 	protected function parseOptions(array $options)
 	{
-		return wp_parse_args($options, [
-			'context'   => 'normal',
-			'priority'  => 'default',
-			'id'        => md5($this->datas['title']),
-			'template'  => ''
-		]);
+		return wp_parse_args(
+			$options, 
+			[
+				'context'   => 'normal',
+				'priority'  => 'default',
+				'id'        => md5($this->datas['title']),
+				'template'  => ''
+			]
+		);
 	}
 
 	/**
@@ -411,4 +406,5 @@ class Metabox {
 
 		return $this;
 	}
+
 }

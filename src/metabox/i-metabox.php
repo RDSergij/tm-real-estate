@@ -1,9 +1,6 @@
 <?php
-namespace Themosis\Metabox;
 
-use Themosis\View\IRenderable;
-
-interface IMetabox {
+interface I_Metabox {
 
     /**
      * Build a metabox instance.
