@@ -10,9 +10,7 @@
  *
  * @return void
  */
-// function conf_get_about_photolab() {
-// 	echo View::make( 'pages/about-photolab' );
-// }
+
 return array(
 	'my-page' => array(
 			'title'		=> 'Theme options',

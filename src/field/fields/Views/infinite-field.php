@@ -34,7 +34,10 @@
                             $f['name'] = $field['name'].'['.$i.']['.$f['name'].']';
 
                             // Render the field.
-                            echo(Themosis\Facades\View::make('_themosisMetaboxRow', ['field' => $f])->render());
+                            echo View::make(
+                                TM_REAL_ESTATE_PATH.'/metabox/views/row.php',
+                                array( 'field' => $this )
+                            );
 
                             // Reset Id, name and value.
                             $f_atts['id'] = $defaultId; // Reset field id attribute to its original value.
@@ -59,7 +62,7 @@
 
         </tbody>
     </table>
-    <?php if ( isset( $field[ 'features' ][ 'info' ] ) ) ?>
+    <?php if ( isset( $field[ 'features' ][ 'info' ] ) ): ?>
         <div class="themosis-field-info">
             <p><?php echo $field['features']['info'] ?></p>
         </div>

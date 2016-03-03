@@ -15,9 +15,9 @@ class Infinite_Field extends Field_Builder implements I_Field
      * @param array $properties
      * @param ViewFactory $view
      */
-    public function __construct(array $properties, ViewFactory $view)
+    public function __construct( array $properties)
     {
-        parent::__construct($properties, $view);
+        parent::__construct($properties );
         $this->setRows();
         $this->setLimit();
         $this->fieldType();
@@ -63,8 +63,10 @@ class Infinite_Field extends Field_Builder implements I_Field
     {
         // Check rows number.
         $this->setRows();
-
-        return View::make('metabox._themosisInfiniteField', ['field' => $this])->render();
+        return View::make(
+            dirname( __FILE__ ).'/views/infinite-field.php',
+            array( 'field' => $this )
+        );
     }
 
     /**
