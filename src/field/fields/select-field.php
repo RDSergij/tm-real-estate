@@ -34,7 +34,7 @@ class Select_Field extends Field_Builder implements I_Field
 	public function metabox()
 	{
 		return View::make(
-			dirname( __FILE__ ).'/views/select-field.php',
+			dirname( __FILE__ ).'/views/select.php',
 			array( 'field' => $this )
 		);
 	}

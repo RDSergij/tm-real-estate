@@ -64,7 +64,7 @@ class Infinite_Field extends Field_Builder implements I_Field
         // Check rows number.
         $this->setRows();
         return View::make(
-            dirname( __FILE__ ).'/views/infinite-field.php',
+            dirname( __FILE__ ).'/views/infinite.php',
             array( 'field' => $this )
         );
     }

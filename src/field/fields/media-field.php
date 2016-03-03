@@ -34,7 +34,7 @@ class Media_Field extends Field_Builder implements I_Field
 	public function metabox()
 	{
 		return View::make(
-			dirname( __FILE__ ).'/views/media-field.php',
+			dirname( __FILE__ ).'/views/media.php',
 			array( 'field' => $this )
 		);
 	}
