@@ -1,6 +1,6 @@
 <?php
 
-class Metabox implements I_Metabox {
+class Metabox {
 
 	/**
 	 * Metabox instance datas.
@@ -79,13 +79,14 @@ class Metabox implements I_Metabox {
 	 * @param \Themosis\View\IRenderable $view The metabox view.
 	 * @return object
 	 */
-	public function make($title, $postType, array $options = [])
+	public static function make($title, $postType, array $options = [])
 	{
-		$this->datas['title'] = $title;
-		$this->datas['postType'] = $postType;
-		$this->datas['options'] = $this->parseOptions($options);
+		$metabox                    = new Metabox();
+		$metabox->datas['title']    = $title;
+		$metabox->datas['postType'] = $postType;
+		$metabox->datas['options']  = $metabox->parseOptions($options);
 
-		return $this;
+		return $metabox;
 	}
 
 	/**
@@ -94,28 +95,15 @@ class Metabox implements I_Metabox {
 	 * @param array $fields A list of fields to display.
 	 * @return \Themosis\Metabox\MetaboxBuilder
 	 */
-	public function set(array $fields = [])
+	public function set( array $fields = array() )
 	{
 		// Check if sections are defined.
-		$this->sections = $this->getSections($fields);
+		$this->sections = $this->getSections( $fields );
 
 		$this->datas['fields'] = $fields;
 
 		add_action( 'add_meta_boxes', array( &$this, 'display' ) );
 
-		return $this;
-	}
-
-	/**
-	 * Restrict access to a specific user capability.
-	 *
-	 * @param string $capability
-	 * @return \Themosis\Metabox\MetaboxBuilder
-	 */
-	public function can($capability)
-	{
-		$this->capability = $capability;
-		$this->check = true;
 		return $this;
 	}
 
@@ -138,14 +126,12 @@ class Metabox implements I_Metabox {
 	 */
 	public function display($postType)
 	{
-		if ($this->check && !$this->user->can($this->capability)) return;
-
 		// Look if a template is defined.
 		// Display the metabox on pages/posts that have a template registered.
 		if ($this->hasTemplate() && $postType == $this->datas['postType'])
 		{
 			// Fetch current ID (for cpts only).
-			$postID = themosis_get_post_id();
+			$postID = get_post_id();
 			$template = get_post_meta($postID, '_themosisPageTemplate', true);
 
 			// Check if a template is attached to the post/page.
@@ -171,7 +157,15 @@ class Metabox implements I_Metabox {
 	protected function addMetabox()
 	{
 		// Fields are passed to the metabox $args parameter.
-		add_meta_box($this->datas['options']['id'], $this->datas['title'], [$this, 'build'], $this->datas['postType'], $this->datas['options']['context'], $this->datas['options']['priority'], $this->datas['fields']);
+		add_meta_box(
+			$this->datas['options']['id'],
+			$this->datas['title'],
+			array( &$this, 'build' ),
+			$this->datas['postType'],
+			$this->datas['options']['context'],
+			$this->datas['options']['priority'],
+			$this->datas['fields']
+		);
 	}
 
 	/**
@@ -185,7 +179,7 @@ class Metabox implements I_Metabox {
 	public function build($post, array $datas)
 	{
 		// Add nonce fields
-		wp_nonce_field(Session::nonceAction, Session::nonceName);
+		wp_nonce_field( basename( __FILE__ ), 'metabox_nonce' );
 
 		// Set the default 'value' attribute regarding sections.
 		if (!empty($this->sections))
@@ -221,17 +215,10 @@ class Metabox implements I_Metabox {
 	{
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
 
-		$nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
-		if (!wp_verify_nonce($nonceName, Session::nonceAction)) return;
+		if (!wp_verify_nonce( basename( __FILE__ ), 'metabox_nonce')) return;
 
 		// Grab current custom post type name.
 		$postType = get_post_type($postId);
-
-		// Check user capability.
-		if ($this->check && $this->datas['postType'] === $postType)
-		{
-			if (!$this->user->can($this->capability)) return;
-		}
 
 		// Check current post type...avoid to register fields for all registered post type.
 		if ($postType !== $this->datas['postType']) return;

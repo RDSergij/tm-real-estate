@@ -30,6 +30,7 @@ new Autoload(
 		'core',
 		'field',
 		'field/fields',
+		'metabox',
 	)
 );
 Configuration::load();

@@ -11,7 +11,7 @@ interface I_Metabox {
      * @param IRenderable $view A custom view used by the metabox to render
      * @return \Themosis\Metabox\IMetabox
      */
-    public function make($title, $postType, array $options = array(), IRenderable $view = null);
+    public static function make($title, $postType, array $options = array());
 
     /**
      * Register the metabox to WordPress
