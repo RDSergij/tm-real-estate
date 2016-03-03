@@ -48,7 +48,7 @@ class Editor_Field extends Field_Builder implements I_Field
 	{
 		$this->setSettings();
 		return View::make(
-			dirname( __FILE__ ).'/views/editro-field.php',
+			dirname( __FILE__ ).'/views/editro.php',
 			array( 'field' => $this )
 		);
 	}

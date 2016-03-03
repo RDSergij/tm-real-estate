@@ -38,7 +38,7 @@ class Checkbox_Field extends Field_Builder implements I_Field
 		$this->defaultCheckableValue();
 
 		return View::make(
-			dirname( __FILE__ ).'/views/checkbox-field.php',
+			dirname( __FILE__ ).'/views/checkbox.php',
 			array( 'field' => $this )
 		);
 	}

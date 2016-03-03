@@ -37,7 +37,7 @@ class Radio_Field extends Field_Builder implements I_Field {
 		$this->defaultCheckableValue();
 
 		return View::make(
-			dirname( __FILE__ ).'/views/radio-field.php',
+			dirname( __FILE__ ).'/views/radio.php',
 			array( 'field' => $this )
 		);
 	}
