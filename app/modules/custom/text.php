@@ -76,3 +76,25 @@ $editor = Field::editor( 'some_editor' );
 
 echo $editor->metabox();
 echo '<br>';
+
+$date = Field::date( 'some_date' );
+
+echo $date->metabox();
+echo '<br>';
+
+$color = Field::color( 'some_color' );
+
+echo $color->metabox();
+echo '<br>';
+
+$collection = Field::collection(
+	'pics',
+	array( 'limit' => 5 )
+);
+
+echo $collection->metabox();
+echo '<br>';
+
+$checobox = Field::checkbox('toggle', ['activate' => 'Activate this option']);
+
+echo $checkbox->metabox();
