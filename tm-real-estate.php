@@ -106,11 +106,27 @@ class TM_Real_Estate {
 								),
 							),
 						),
+						'cherry-post-types' => array(
+							'priority'	=> 999,
+							'autoload'	=> true,
+						),
 					),
 				)
 			);
+			$this->add_post_type();
 			$this->add_metaboxes();
 		}
+	}
+
+	/**
+	 * Add property post type
+	 */
+	public function add_post_type() {
+		$this->core->modules['cherry-post-types']->create(
+			'property',
+			'Property',
+			'Properties'
+		);
 	}
 
 	/**
