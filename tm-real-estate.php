@@ -95,6 +95,18 @@ class TM_Real_Estate {
 						'cherry-post-meta'	=> array(
 							'priority'	=> 999,
 							'autoload'	=> true,
+							'args'      => array(
+								'title' => __( 'Settings', 'cherry' ),
+								'page'  => array( 'property' ),
+								'fields' => array(
+									'price' => array(
+										'type'    => 'text',
+										'id'      => '',
+										'name'    => 'property_price',
+										'value'   => 0,
+									)
+								)
+							),
 						),
 						'cherry-ui-elements' => array(
 							'priority'	=> 999,
@@ -114,7 +126,6 @@ class TM_Real_Estate {
 				)
 			);
 			$this->add_post_type();
-			$this->add_metaboxes();
 		}
 	}
 
@@ -126,31 +137,7 @@ class TM_Real_Estate {
 			'property',
 			'Property',
 			'Properties'
-		);
-	}
-
-	/**
-	 * Add some metaboxes
-	 */
-	public function add_metaboxes() {
-		$meta = new Cherry_Post_Meta(
-			$this->core,
-			array(
-				'title' => 'some title',
-				'fields' => array(
-					'name_checkbox' => array(
-						'type'    => 'select',
-						'id'      => 'amaid',
-						'name'    => 'theme_sidebar[oh-yeah]',
-						'value'   => 1,
-						'options' => array( 
-							'' => __( 'Sidebar not selected', 'cherry-sidebar-manager' ),
-							1 => 'some shit'
-						),
-					)
-				)
-			)
-		);
+		)->font_awesome_icon( 'f1ad' );
 	}
 
 	/**
