@@ -7,7 +7,7 @@ class Section
      *
      * @var \Themosis\Core\DataContainer
      */
-    protected static $data;
+    protected $data;
 
     /**
      * Section view.
@@ -35,6 +35,8 @@ class Section
      */
     public static function make($slug, $name, array $data = [], IRenderable $view = null)
     {
+		$section = new Section();
+
         $params = compact('slug', 'name');
 
         foreach ($params as $var => $param)
@@ -45,16 +47,16 @@ class Section
             }
         }
 
-        self::$data['slug'] = $slug;
-        self::$data['name'] = $name;
-        self::$data['args'] = $data;
+       $section->data['slug'] = $slug;
+       $section->data['name'] = $name;
+       $section->data['args'] = $data;
 
         if (!is_null($view))
         {
-            $this->view = $view;
+            $section->view = $view;
         }
 
-        return $this;
+        return $section;
     }
 
     /**
@@ -85,7 +87,7 @@ class Section
      */
     public function getData()
     {
-        return self::$data;
+        return$this->data;
     }
 
 } 

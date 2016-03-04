@@ -46,7 +46,7 @@ class Page
 	 * @throws PageException
 	 * @return \Themosis\Page\PageBuilder
 	 */
-	public static function make($slug, $title, $parent = null, $view = null)
+	public static function make( $slug, $title, $parent = null, $view = null )
 	{
 		$page = new Page();
 		$params = compact('slug', 'title');
@@ -95,7 +95,7 @@ class Page
 
 		add_action('admin_menu', array( $this, 'build' ) );
 
-		return new static;
+		return $this;
 	}
 
 	/**
@@ -123,10 +123,9 @@ class Page
 	 */
 	public function displayPage()
 	{
-		// Share the page instance to the view.
-		$this->with('__page', $this);
-
-		echo($this->view->render());
+		if ( ! empty( $this->view ) ) {
+			echo $this->view;
+		}
 	}
 
 	/**
@@ -141,21 +140,6 @@ class Page
 	}
 
 	/**
-	 * Allow a user to pass custom datas to
-	 * the page view instance.
-	 *
-	 * @param string|array $key
-	 * @param mixed $value
-	 * @return \Themosis\Page\PageBuilder
-	 */
-	public function with($key, $value = null)
-	{
-		$this->view->with($key, $value);
-
-		return $this;
-	}
-
-	/**
 	 * Add custom sections for your settings.
 	 *
 	 * @param array $sections
@@ -166,7 +150,7 @@ class Page
 		$this->sections = $sections;
 
 		// Pass all registered sections to the page view.
-		$this->with('__sections', $this->sections);
+		//$this->with('__sections', $this->sections);
 	}
 
 	/**
@@ -243,7 +227,7 @@ class Page
 		{
 			$section = $section->getData();
 
-			add_settings_section($section['slug'], $section['name'], [$this, 'displaySections'], $section['slug']);
+			add_settings_section($section['slug'], $section['name'], array( $this, 'displaySections' ), $this->data['slug'] );
 		}
 
 		// 3 - Display settings
@@ -254,7 +238,7 @@ class Page
 				// Add the section to the field.
 				$setting['section'] = $section;
 
-				add_settings_field($setting['name'], $setting['features']['title'], [$this, 'displaySettings'], $section, $section, $setting);
+				add_settings_field( $setting['name'], $setting['features']['title'],  array( $this, 'displaySettings' ), $this->data['slug'], $section, $setting); //$section
 			}
 		}
 
@@ -289,7 +273,7 @@ class Page
 		{
 			$section = $section->getData();
 
-			add_settings_section($section['slug'], $section['name'], [$this, 'displaySections'], $this->data['slug']);
+			add_settings_section( $section['slug'], $section['name'], [$this, 'displaySections'], $this->data['slug'] ); // $section['slug']
 		}
 
 		// 3 - Display settings
@@ -300,7 +284,7 @@ class Page
 				// Add the section to the field - In this case,
 				// it is associated to the page slug.
 				$setting['section'] = $this->data['slug'];
-
+				//var_dump( $setting );
 				add_settings_field($setting['name'], $setting['features']['title'], [$this, 'displaySettings'], $this->data['slug'], $section, $setting);
 			}
 		}
@@ -321,6 +305,7 @@ class Page
 	 */
 	public function displaySections(array $args)
 	{
+		
 	}
 
 	/**
