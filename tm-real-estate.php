@@ -135,6 +135,27 @@ class TM_Real_Estate {
 											'sale' => __( 'Sale', 'tm-real-estate' ),
 										)
 									),
+									'bathrooms' => array(
+										'type'    => 'number',
+										'id'      => 'bathrooms',
+										'name'    => 'bathrooms',
+										'value'   => 0,
+										'left_label' => __( 'Bathrooms', 'tm-real-estate' )
+									),
+									'bedrooms' => array(
+										'type'    => 'number',
+										'id'      => 'bedrooms',
+										'name'    => 'bedrooms',
+										'value'   => 0,
+										'left_label' => __( 'Bedrooms', 'tm-real-estate' )
+									),
+									'area' => array(
+										'type'    => 'number',
+										'id'      => 'area',
+										'name'    => 'area',
+										'value'   => 0,
+										'left_label' => __( 'Area', 'tm-real-estate' )
+									),
 								),
 							),
 						),
@@ -156,6 +177,7 @@ class TM_Real_Estate {
 				)
 			);
 			$this->add_post_type();
+			$this->add_user_role();
 		}
 	}
 
@@ -178,6 +200,31 @@ class TM_Real_Estate {
 				)
 			)
 		)->font_awesome_icon( 'f1ad' );
+	}
+
+	/**
+	 * Add RE Agent role
+	 *
+	 * @return  WP_Role / NULL
+	 */
+	public function add_user_role() {
+		return add_role(
+			're_agent',
+			__( 'RE Agent', 'tm-real-estate' ),
+			array(
+				'read'              => true, // true allows this capability
+				'edit_posts'        => true, // Allows user to edit their own posts
+				'edit_pages'        => true, // Allows user to edit pages
+				'edit_others_posts' => true, // Allows user to edit others posts not just their own
+				'create_posts'      => true, // Allows user to create new posts
+				'manage_categories' => true, // Allows user to manage post categories
+				'publish_posts'     => true, // Allows the user to publish, otherwise posts stays in draft mode
+				'edit_themes'       => false, // false denies this capability. User can’t edit your theme
+				'install_plugins'   => false, // User cant add new plugins
+				'update_plugin'     => false, // User can’t update any plugins
+				'update_core'       => false // user cant perform core updates
+			)
+		);
 	}
 
 	/**
