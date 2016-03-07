@@ -95,6 +95,10 @@ class TM_Real_Estate {
 							'priority'	=> 999,
 							'autoload'	=> true,
 						),
+						'cherry-helpers' => array(
+							'priority'	=> 999,
+							'autoload'	=> true,
+						),
 						'cherry-post-meta'	=> array(
 							'priority'	=> 999,
 							'autoload'	=> true,
@@ -104,9 +108,32 @@ class TM_Real_Estate {
 								'fields' => array(
 									'price' => array(
 										'type'    => 'text',
-										'id'      => '',
+										'id'      => 'price',
 										'name'    => 'property_price',
 										'value'   => 0,
+										'left_label' => __( 'Price', 'tm-real-estate' )
+									),
+									'status' => array(
+										'type'       => 'select',
+										'id'         => 'status',
+										'name'       => 'status',
+										'value'      => 'rent',
+										'left_label' => __( 'Property status', 'tm-real-estate' ),
+										'options'    => array(
+											'rent' => __( 'Rent', 'tm-real-estate' ),
+											'sale' => __( 'Sale', 'tm-real-estate' ),
+										)
+									),
+									'type' => array(
+										'type'       => 'select',
+										'id'         => 'type',
+										'name'       => 'type',
+										'value'      => 'rent',
+										'left_label' => __( 'Property type', 'tm-real-estate' ),
+										'options'    => array(
+											'rent' => __( 'Rent', 'tm-real-estate' ),
+											'sale' => __( 'Sale', 'tm-real-estate' ),
+										)
 									),
 								),
 							),
@@ -139,7 +166,17 @@ class TM_Real_Estate {
 		$this->core->modules['cherry-post-types']->create(
 			'property',
 			'Property',
-			'Properties'
+			'Properties',
+			array(
+				'supports' => array(
+					'title',
+					'editor',
+					'author',
+					'thumbnail',
+					'excerpt',
+					'comments'
+				)
+			)
 		)->font_awesome_icon( 'f1ad' );
 	}
 
