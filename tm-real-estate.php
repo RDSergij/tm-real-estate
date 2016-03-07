@@ -16,12 +16,15 @@
  * @license  GPL-2.0+
  */
 
+/**
+ * TemplateMonster real estate class plugin
+ */
 class TM_Real_Estate {
 
 	/**
 	 * A reference to an instance of this class.
 	 * Singleton pattern implementation.
-	 * 
+	 *
 	 * @since 1.0.0
 	 * @var   object
 	 */
@@ -104,8 +107,8 @@ class TM_Real_Estate {
 										'id'      => '',
 										'name'    => 'property_price',
 										'value'   => 0,
-									)
-								)
+									),
+								),
 							),
 						),
 						'cherry-ui-elements' => array(
