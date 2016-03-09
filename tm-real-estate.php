@@ -95,9 +95,17 @@ class TM_Real_Estate {
 							'priority'	=> 999,
 							'autoload'	=> true,
 						),
-						'cherry-helpers' => array(
+						'cherry-ui-elements' => array(
 							'priority'	=> 999,
 							'autoload'	=> true,
+							'args'		=> array(
+								'ui_elements' => array(
+									'text',
+									'select',
+									'collection',
+									'media',
+								),
+							),
 						),
 						'cherry-post-meta'	=> array(
 							'priority'	=> 999,
@@ -156,16 +164,28 @@ class TM_Real_Estate {
 										'value'   => 0,
 										'left_label' => __( 'Area', 'tm-real-estate' )
 									),
-								),
-							),
-						),
-						'cherry-ui-elements' => array(
-							'priority'	=> 999,
-							'autoload'	=> true,
-							'args'		=> array(
-								'ui_elements' => array(
-									'text',
-									'select',
+									'gallerys' => array(
+										'type'	  => 'collection',
+										'id'      => 'gallery',
+										'name'    => 'gallery',
+										'left_label' => __( 'Gallery', 'tm-real-estate' ),
+										'controls' => array(
+											'UI_Text' => array(
+												'type'    => 'text',
+												'id'      => 'title',
+												'class'   => 'large_text',
+												'name'    => 'title',
+												'value'   => '',
+												'left_label' => __( 'Title', 'tm-real-estate' )
+											),
+											'UI_Media' => array(
+												'id'      => 'image',
+												'name'    => 'image',
+												'value'   => '',
+												'left_label' => __( 'Image', 'tm-real-estate' )
+											),
+										),
+									)
 								),
 							),
 						),
