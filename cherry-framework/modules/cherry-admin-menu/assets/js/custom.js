@@ -6,15 +6,15 @@ jQuery( document ).ready( function($) {
 		
 		pb.init = function() {
 			pb.tabs( '.cherry-settings-tabs' );
-			pb.saveEvent();
+			pb.saveEvent( '.cherry-settings-tabs form' );
 		};
 
 		pb.tabs = function( selectors ) {
 			jQuery( selectors ).tabs();
 		};
 
-		pb.saveEvent = function() {
-			jQuery( '.cherry-settings-tabs form' ).submit( function( e ) {
+		pb.saveEvent = function( selectors ) {
+			jQuery( selectors ).submit( function( e ) {
 				jQuery( this ).ajaxSubmit({
 					success: function() {
 						console.log('success');
