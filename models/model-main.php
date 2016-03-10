@@ -70,6 +70,7 @@ class Model_Main {
 	}
 
 	public static function get_all_post_images() {
+
 		
 	}
 }
