@@ -184,10 +184,11 @@ class TM_Real_Estate {
 												'left_label' => __( 'Title', 'tm-real-estate' )
 											),
 											'UI_Media' => array(
-												'id'      => 'image',
-												'name'    => 'image',
-												'value'   => '',
-												'left_label' => __( 'Image', 'tm-real-estate' )
+												'id'           => 'image',
+												'name'         => 'image',
+												'value'        => '',
+												'multi_upload' => false,
+												'left_label'   => __( 'Image', 'tm-real-estate' ),
 											),
 										),
 									),
@@ -208,6 +209,15 @@ class TM_Real_Estate {
 										'value'       => '',
 										'left_label'  => __( 'Categories', 'tm-real-estate' ),
 										'options'     => Model_Main::get_categories(),
+									),
+									'agent' => array(
+										'type'        => 'select',
+										'id'          => 'agent',
+										'name'        => 'agent',
+										'multiple'	  => false,
+										'value'       => '',
+										'left_label'  => __( 'Agent', 'tm-real-estate' ),
+										'options'     => Model_Main::get_agents(),
 									),
 								),
 							),

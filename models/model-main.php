@@ -48,4 +48,24 @@ class Model_Main {
 		}
 		return $result;
 	}
+
+	/**
+	 * Get all agents
+	 *
+	 * @return array all agents.
+	 */
+	public static function get_agents() {
+		$result = array();
+		$agents = get_users(
+			array( 'role__in' => array( 'administrator', 're_agent' ) )
+		);
+
+		if ( is_array( $agents ) ) {
+			foreach ( $agents as $agent ) {
+				$result[ $agent->data->ID ] = $agent->data->display_name;
+			}
+		}
+
+		return $result;
+	}
 }
