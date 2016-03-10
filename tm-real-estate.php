@@ -42,6 +42,11 @@ class TM_Real_Estate {
 	 * TM_REAL_ESTATE class constructor
 	 */
 	private function __construct() {
+		// Load main model
+		if ( ! class_exists( 'Model_Main' ) ) {
+			require_once( 'models/model-main.php' );
+		}
+
 		// Set the constants needed by the plugin.
 		add_action( 'plugins_loaded', array( $this, 'constants' ), 0 );
 
@@ -115,11 +120,11 @@ class TM_Real_Estate {
 								'page'  => array( 'property' ),
 								'fields' => array(
 									'price' => array(
-										'type'    => 'text',
-										'id'      => 'price',
-										'name'    => 'property_price',
-										'value'   => 0,
-										'left_label' => __( 'Price', 'tm-real-estate' )
+										'type'       => 'text',
+										'id'         => 'price',
+										'name'       => 'property_price',
+										'value'      => 0,
+										'left_label' => __( 'Price', 'tm-real-estate' ),
 									),
 									'status' => array(
 										'type'       => 'select',
@@ -185,7 +190,25 @@ class TM_Real_Estate {
 												'left_label' => __( 'Image', 'tm-real-estate' )
 											),
 										),
-									)
+									),
+									'tag' => array(
+										'type'        => 'select',
+										'id'          => 'tag',
+										'name'        => 'tag',
+										'multiple'	  => true,
+										'value'       => '',
+										'left_label'  => __( 'Tag', 'tm-real-estate' ),
+										'options'     => Model_Main::get_tags(),
+									),
+									'categories' => array(
+										'type'        => 'select',
+										'id'          => 'categories',
+										'name'        => 'categories',
+										'multiple'	  => false,
+										'value'       => '',
+										'left_label'  => __( 'Categories', 'tm-real-estate' ),
+										'options'     => Model_Main::get_categories(),
+									),
 								),
 							),
 						),
