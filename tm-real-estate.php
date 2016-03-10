@@ -25,12 +25,15 @@
 >>>>>>> master
  */
 
+/**
+ * TemplateMonster real estate class plugin
+ */
 class TM_Real_Estate {
 
 	/**
 	 * A reference to an instance of this class.
 	 * Singleton pattern implementation.
-	 * 
+	 *
 	 * @since 1.0.0
 	 * @var   object
 	 */
@@ -48,11 +51,40 @@ class TM_Real_Estate {
 	 * TM_REAL_ESTATE class constructor
 	 */
 	private function __construct() {
+
 		// Set the constants needed by the plugin.
-		add_action( 'plugins_loaded', array( $this, 'constants' ), 0 );
+		$this->constants();
+
+		// Load all models
+		$this->load_models();
+
+		// Require cherry core
+		if ( ! class_exists( 'Cherry_Core' ) ) {
+			require_once( TM_REAL_ESTATE_DIR . '/cherry-framework/cherry-core.php' );
+		}
 
 		// Launch our plugin.
 		add_action( 'after_setup_theme', array( $this, 'launch' ), 10 );
+
+		// Add tm-re-properties shortcode
+		add_shortcode( 'tm-re-properties', array( 'Model_Properties', 'shortcode_properties' ) );
+	}
+
+	/**
+	 * Load plugin models
+	 */
+	public function load_models() {
+		$models = array(
+			'Model_Main',
+			'Model_Properties'
+		);
+
+		foreach ( $models as $model ) {
+			if ( ! class_exists( $model ) ) {
+				$path = 'models'.DIRECTORY_SEPARATOR.str_replace( '_', '-', $model ).'.php';
+				require_once( $path );
+			}
+		}
 	}
 
 	/**
@@ -88,20 +120,12 @@ class TM_Real_Estate {
 				return $this->core;
 			}
 
-			if ( ! class_exists( 'Cherry_Core' ) ) {
-				require_once( TM_REAL_ESTATE_DIR . '/cherry-framework/cherry-core.php' );
-			}
-
 			$this->core = new Cherry_Core(
 				array(
 					'base_dir'	=> TM_REAL_ESTATE_DIR . 'cherry-framework',
 					'base_url'	=> TM_REAL_ESTATE_URI . 'cherry-framework',
 					'modules'	=> array(
 						'cherry-js-core'	=> array(
-							'priority'	=> 999,
-							'autoload'	=> true,
-						),
-						'cherry-post-meta'	=> array(
 							'priority'	=> 999,
 							'autoload'	=> true,
 						),
@@ -117,15 +141,132 @@ class TM_Real_Estate {
 									'text',
 									'select',
 									'switcher',
+									'collection',
+									'media',
 								),
 							),
+						),
+						'cherry-post-meta'	=> array(
+							'priority'	=> 999,
+							'autoload'	=> true,
+							'args'      => array(
+								'title' => __( 'Settings', 'cherry' ),
+								'page'  => array( 'property' ),
+								'fields' => array(
+									'price' => array(
+										'type'       => 'text',
+										'id'         => 'price',
+										'name'       => 'property_price',
+										'value'      => 0,
+										'left_label' => __( 'Price', 'tm-real-estate' ),
+									),
+									'status' => array(
+										'type'       => 'select',
+										'id'         => 'status',
+										'name'       => 'status',
+										'value'      => 'rent',
+										'left_label' => __( 'Property status', 'tm-real-estate' ),
+										'options'    => array(
+											'rent' => __( 'Rent', 'tm-real-estate' ),
+											'sale' => __( 'Sale', 'tm-real-estate' ),
+										)
+									),
+									'type' => array(
+										'type'       => 'select',
+										'id'         => 'type',
+										'name'       => 'type',
+										'value'      => 'rent',
+										'left_label' => __( 'Property type', 'tm-real-estate' ),
+										'options'    => array(
+											'rent' => __( 'Rent', 'tm-real-estate' ),
+											'sale' => __( 'Sale', 'tm-real-estate' ),
+										)
+									),
+									'bathrooms' => array(
+										'type'    => 'number',
+										'id'      => 'bathrooms',
+										'name'    => 'bathrooms',
+										'value'   => 0,
+										'left_label' => __( 'Bathrooms', 'tm-real-estate' )
+									),
+									'bedrooms' => array(
+										'type'    => 'number',
+										'id'      => 'bedrooms',
+										'name'    => 'bedrooms',
+										'value'   => 0,
+										'left_label' => __( 'Bedrooms', 'tm-real-estate' )
+									),
+									'area' => array(
+										'type'    => 'number',
+										'id'      => 'area',
+										'name'    => 'area',
+										'value'   => 0,
+										'left_label' => __( 'Area', 'tm-real-estate' )
+									),
+									'gallerys' => array(
+										'type'	  => 'collection',
+										'id'      => 'gallery',
+										'name'    => 'gallery',
+										'left_label' => __( 'Gallery', 'tm-real-estate' ),
+										'controls' => array(
+											'UI_Text' => array(
+												'type'    => 'text',
+												'id'      => 'title',
+												'class'   => 'large_text',
+												'name'    => 'title',
+												'value'   => '',
+												'left_label' => __( 'Title', 'tm-real-estate' )
+											),
+											'UI_Media' => array(
+												'id'           => 'image',
+												'name'         => 'image',
+												'value'        => '',
+												'multi_upload' => false,
+												'left_label'   => __( 'Image', 'tm-real-estate' ),
+											),
+										),
+									),
+									'tag' => array(
+										'type'        => 'select',
+										'id'          => 'tag',
+										'name'        => 'tag',
+										'multiple'	  => true,
+										'value'       => '',
+										'left_label'  => __( 'Tag', 'tm-real-estate' ),
+										'options'     => Model_Main::get_tags(),
+									),
+									'categories' => array(
+										'type'        => 'select',
+										'id'          => 'categories',
+										'name'        => 'categories',
+										'multiple'	  => false,
+										'value'       => '',
+										'left_label'  => __( 'Categories', 'tm-real-estate' ),
+										'options'     => Model_Main::get_categories(),
+									),
+									'agent' => array(
+										'type'        => 'select',
+										'id'          => 'agent',
+										'name'        => 'agent',
+										'multiple'	  => false,
+										'value'       => '',
+										'left_label'  => __( 'Agent', 'tm-real-estate' ),
+										'options'     => Model_Main::get_agents(),
+									),
+								),
+							),
+						),
+						'cherry-post-types' => array(
+							'priority'	=> 999,
+							'autoload'	=> true,
 						),
 					),
 				)
 			);
-			$this->add_metaboxes();
 
 			$this->add_admin_menu_page();
+			$this->add_post_type();
+			$this->add_user_role();
 		}
 	}
 
@@ -244,25 +385,47 @@ class TM_Real_Estate {
 	}
 
 	/**
-	 * Add some metaboxes
+	 * Add property post type
 	 */
-	public function add_metaboxes() {
-		$meta = new Cherry_Post_Meta(
-			$this->core,
+	public function add_post_type() {
+		$this->core->modules['cherry-post-types']->create(
+			'property',
+			'Property',
+			'Properties',
 			array(
-				'title' => 'some title',
-				'fields' => array(
-					'name_checkbox' => array(
-						'type'    => 'select',
-						'id'      => 'amaid',
-						'name'    => 'theme_sidebar[oh-yeah]',
-						'value'   => 1,
-						'options' => array( 
-							'' => __( 'Sidebar not selected', 'cherry-sidebar-manager' ),
-							1 => 'some shit'
-						),
-					)
+				'supports' => array(
+					'title',
+					'editor',
+					'author',
+					'thumbnail',
+					'excerpt',
+					'comments'
 				)
+			)
+		)->font_awesome_icon( 'f1ad' );
+	}
+
+	/**
+	 * Add RE Agent role
+	 *
+	 * @return  WP_Role / NULL
+	 */
+	public function add_user_role() {
+		return add_role(
+			're_agent',
+			__( 'RE Agent', 'tm-real-estate' ),
+			array(
+				'read'              => true, // true allows this capability
+				'edit_posts'        => true, // Allows user to edit their own posts
+				'edit_pages'        => true, // Allows user to edit pages
+				'edit_others_posts' => true, // Allows user to edit others posts not just their own
+				'create_posts'      => true, // Allows user to create new posts
+				'manage_categories' => true, // Allows user to manage post categories
+				'publish_posts'     => true, // Allows the user to publish, otherwise posts stays in draft mode
+				'edit_themes'       => false, // false denies this capability. User can’t edit your theme
+				'install_plugins'   => false, // User cant add new plugins
+				'update_plugin'     => false, // User can’t update any plugins
+				'update_core'       => false // user cant perform core updates
 			)
 		);
 	}
@@ -285,4 +448,3 @@ class TM_Real_Estate {
 }
 
 TM_Real_Estate::get_instance();
-
