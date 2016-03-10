@@ -68,4 +68,8 @@ class Model_Main {
 
 		return $result;
 	}
+
+	public static function get_all_post_images() {
+		
+	}
 }
