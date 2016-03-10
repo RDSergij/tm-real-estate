@@ -42,16 +42,40 @@ class TM_Real_Estate {
 	 * TM_REAL_ESTATE class constructor
 	 */
 	private function __construct() {
-		// Load main model
-		if ( ! class_exists( 'Model_Main' ) ) {
-			require_once( 'models/model-main.php' );
-		}
 
 		// Set the constants needed by the plugin.
-		add_action( 'plugins_loaded', array( $this, 'constants' ), 0 );
+		$this->constants();
+
+		// Load all models
+		$this->load_models();
+
+		// Require cherry core
+		if ( ! class_exists( 'Cherry_Core' ) ) {
+			require_once( TM_REAL_ESTATE_DIR . '/cherry-framework/cherry-core.php' );
+		}
 
 		// Launch our plugin.
 		add_action( 'after_setup_theme', array( $this, 'launch' ), 10 );
+
+		// Add tm-re-properties shortcode
+		add_shortcode( 'tm-re-properties', array( 'Model_Properties', 'shortcode_properties' ) );
+	}
+
+	/**
+	 * Load plugin models
+	 */
+	public function load_models() {
+		$models = array(
+			'Model_Main',
+			'Model_Properties'
+		);
+
+		foreach ( $models as $model ) {
+			if ( ! class_exists( $model ) ) {
+				$path = 'models'.DIRECTORY_SEPARATOR.str_replace( '_', '-', $model ).'.php';
+				require_once( $path );
+			}
+		}
 	}
 
 	/**
@@ -85,10 +109,6 @@ class TM_Real_Estate {
 		if ( is_admin() ) {
 			if ( null !== $this->core ) {
 				return $this->core;
-			}
-
-			if ( ! class_exists( 'Cherry_Core' ) ) {
-				require_once( TM_REAL_ESTATE_DIR . '/cherry-framework/cherry-core.php' );
 			}
 
 			$this->core = new Cherry_Core(
