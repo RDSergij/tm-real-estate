@@ -68,26 +68,4 @@ class Model_Main {
 
 		return $result;
 	}
-
-	/**
-	 * Get all post images
-	 *
-	 * @param  [type] $post_id post id.
-	 * @return array all post images.
-	 */
-	public static function get_all_post_images( $post_id ) {
-		$result = array();
-		if ( has_post_thumbnail( $post_id ) ) {
-
-			$attachment_id = get_post_thumbnail_id( $post_id );
-			$sizes         = get_intermediate_image_sizes();
-
-			if ( is_array( $sizes ) && count( $size ) ) {
-				foreach ( $sizes as $size ) {
-					$result[ $size ] = wp_get_attachment_image_src( $attachment_id, $size );
-				}
-			}
-		}
-		return $result;
-	}
 }

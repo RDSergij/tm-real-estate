@@ -59,6 +59,17 @@ class TM_Real_Estate {
 
 		// Add tm-re-properties shortcode
 		add_shortcode( 'tm-re-properties', array( 'Model_Properties', 'shortcode_properties' ) );
+
+		// Scripts and Styles
+		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
+	}
+
+	/**
+	 * Add Scripts and Styles
+	 */
+	public function scripts_and_styles() {
+		// Styles 
+		wp_enqueue_style( 'tm-real-estate', TM_REAL_ESTATE_URI.'assets/css/tm-real-estate.css' );
 	}
 
 	/**
@@ -189,7 +200,7 @@ class TM_Real_Estate {
 										'value'   => 0,
 										'left_label' => __( 'Area', 'tm-real-estate' )
 									),
-									'gallerys' => array(
+									'gallery' => array(
 										'type'	  => 'collection',
 										'id'      => 'gallery',
 										'name'    => 'gallery',
