@@ -59,13 +59,6 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 *
 		 * @var DataContainer
 		 */
-		protected $datas;
-
-		/**
-		 * The page properties.
-		 *
-		 * @var DataContainer
-		 */
 		public $views;
 
 		/**
@@ -85,23 +78,18 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		/**
 		 * Constructor for the module
 		 */
-		function __construct( $core, $args ) {
+		function __construct( $core, $args = array() ) {
 
 			$this->core = $core;
 			$this->args = wp_parse_args( $args, array(
-				'slug'          => 'cherry-admin-page',
-				'title'         => 'Cherry Admin Page',
-				'parent'		=> null,
 				'capability'	=> 'manage_options',
 				'position'      => 20,
 				'icon'			=> 'dashicons-admin-site',
-				'callback_view' => false,
 				'sections'      => array(),
 				'settings'      => array(),
-				'tabs'          => true,
-				'views'			=> $this->core->get_core_dir() . 'modules/' . $this->module_slug . '/views/',
 			) );
 
+			$this->views = $this->core->get_core_dir() . 'modules/' . $this->module_slug . '/views/';
 			add_action('admin_enqueue_scripts', array( $this, 'assets') );
 		}
 
@@ -114,47 +102,11 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 					'icon'          => $this->args['icon'],
 					'position'      => $this->args['position'],
 					'tabs'          => $this->args['tabs'],
+					'sections'      => $this->args['sections'],
+					'settings'      => $this->args['settings'],
 				));
 			$page->add_sections( $this->args['sections'] );
 			$page->add_settings( $this->args['settings'] );
-		}
-
-		/**
-		 * Add styles and scripts
-		 *
-		 * @return void
-		 */
-		public function assets() {
-			wp_enqueue_script( 'jquery-ui-tabs' );
-			wp_enqueue_script( 'jquery-form' );
-
-			wp_localize_script( 'cherry-settings-page', 'TMRealEstateMessage', array(
-								'success' => __( 'Successfully', 'tm-real-estate' ),
-								'failed' => __( 'Failed', 'tm-real-estate' ),
-							) );
-
-			wp_enqueue_script(
-				'cherry-settings-page',
-				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/js/custom.min.js',
-				array( 'jquery' ),
-				'0.2.0',
-				true
-			);
-
-			wp_enqueue_style(
-				'jquery-ui-tabs',
-				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/css/jquery-ui.min.css',
-				array(),
-				'1.11.4',
-				'all'
-			);
-			wp_enqueue_style(
-				'cherry-settings-page',
-				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/css/custom.min.css',
-				array(),
-				'0.1.0',
-				'all'
-			);
 		}
 
 		/**
@@ -165,8 +117,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @throws PageException
 		 * @return \Themosis\Page\PageBuilder
 		 */
-		public function make( $slug, $title, $parent = null, $views = null )
-		{
+		public function make( $slug, $title, $parent = null ) {
 			$page = new Cherry_Page_Builder( $this->core, $this->args );
 			$params = compact('slug', 'title');
 
@@ -174,11 +125,6 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				if ( ! is_string( $param ) ) {
 					throw new PageException( 'Invalid page parameter " ' . $name . ' " ' );
 				}
-			}
-
-			// Check the view file.
-			if ( ! is_null( $views ) ) {
-				$page->views = $views;
 			}
 
 			// Set the page properties.
@@ -205,9 +151,12 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @param array $params
 		 * @return \Themosis\Page\PageBuilder
 		 */
-		public function set(array $params = [])
+		public function set( array $params = array() )
 		{
-			$this->data['args'] = array_merge( $this->data['args'], $params );
+			$this->args = $params;
+	
+			$this->add_sections( $params['sections'] );
+			$this->add_settings( $params['settings'] );
 
 			add_action('admin_menu', array( $this, 'build' ) );
 
@@ -222,12 +171,9 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 */
 		public function build()
 		{
-			if ( ! is_null( $this->data['parent'] ) )
-			{
+			if ( ! is_null( $this->data['parent'] ) ) {
 				add_submenu_page( $this->data['parent'], $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'));
-			}
-			else
-			{
+			} else {
 				add_menu_page( $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'), $this->data['args']['icon'], $this->data['args']['position']);
 			}
 		}
@@ -371,6 +317,44 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				// Display the field.
 				echo $ui_element->render();
 			}
+		}
+
+		/**
+		 * Add styles and scripts
+		 *
+		 * @return void
+		 */
+		public function assets() {
+			wp_enqueue_script( 'jquery-ui-tabs' );
+			wp_enqueue_script( 'jquery-form' );
+
+			wp_localize_script( 'cherry-settings-page', 'TMRealEstateMessage', array(
+								'success' => __( 'Successfully', 'tm-real-estate' ),
+								'failed' => __( 'Failed', 'tm-real-estate' ),
+							) );
+
+			wp_enqueue_script(
+				'cherry-settings-page',
+				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/js/custom.min.js',
+				array( 'jquery' ),
+				'0.2.0',
+				true
+			);
+
+			wp_enqueue_style(
+				'jquery-ui-tabs',
+				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/css/jquery-ui.min.css',
+				array(),
+				'1.11.4',
+				'all'
+			);
+			wp_enqueue_style(
+				'cherry-settings-page',
+				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/css/custom.min.css',
+				array(),
+				'0.1.0',
+				'all'
+			);
 		}
 
 		/**

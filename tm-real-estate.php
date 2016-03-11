@@ -332,18 +332,15 @@ class TM_Real_Estate {
 					),
 			);
 
-		$page = new Cherry_Page_Builder( $this->core, array(
-					'slug'          => 'cherry-property-settings',
-					'title'         => 'Property Settings',
-					'parent'		=> null,
+		$page = new Cherry_Page_Builder( $this->core );
+
+		$page->make( 'cherry-property-settings', 'Property Settings', null )->set( array(
 					'capability'	=> 'manage_options',
-					'position'      => 20,
+					'position'		=> 20,
 					'icon'			=> 'dashicons-admin-site',
 					'sections'		=> $sections,
 					'settings'		=> $settings,
-				)
-			);
-		$page->add_admin_page();
+				) );
 	}
 
 	/**
