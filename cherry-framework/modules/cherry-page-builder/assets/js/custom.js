@@ -17,11 +17,10 @@ jQuery( document ).ready( function($) {
 			jQuery( selectors ).submit( function( e ) {
 				jQuery( this ).ajaxSubmit({
 					success: function() {
-						console.log('success');
-						pb.noticeCreate( 'success', 'Success!' );
+						pb.noticeCreate( 'success', window.TMRealEstateMessage.success );
 					},
 					error: function() {
-						console.log( 'error' );
+						pb.noticeCreate( 'failed', window.TMRealEstateMessage.failed );
 					},
 					timeout: 5000
 				});

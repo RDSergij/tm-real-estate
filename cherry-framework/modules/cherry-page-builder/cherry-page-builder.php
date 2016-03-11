@@ -1,12 +1,58 @@
 <?php
+/**
+ * @package    Cherry_Framework
+ * @subpackage Class
+ * @author     Cherry Team <cherryframework@gmail.com>
+ * @copyright  Copyright (c) 2012 - 2016, Cherry Team
+ * @link       http://www.cherryframework.com/
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ */
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( ! class_exists( 'Page_Builder' ) ) {
+if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 
-	class Page_Builder {
+	/**
+	 * Post meta management module
+	 */
+	class Cherry_Page_Builder {
+
+		/**
+		 * Module version
+		 *
+		 * @var string
+		 */
+		public $module_version = '1.0.0';
+
+		/**
+		 * Module slug
+		 *
+		 * @var string
+		 */
+		public $module_slug = 'cherry-page-builder';
+
+		/**
+		 * Module arguments
+		 *
+		 * @var array
+		 */
+		public $args = array();
+
+		/**
+		 * Core instance
+		 *
+		 * @var object
+		 */
+		public $core = null;
+
+		/**
+		 * Current nonce name to check
+		 * @var null
+		 */
+		public $nonce = 'cherry-admin-menu-nonce';
 
 		/**
 		 * The page properties.
@@ -23,25 +69,11 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 		public $views;
 
 		/**
-		 * The page validator object.
-		 *
-		 * @var \Themosis\Validation\ValidationBuilder
-		 */
-		protected $validator;
-
-		/**
 		 * The page sections.
 		 *
 		 * @var array
 		 */
 		protected $sections;
-
-		/**
-		 * The settings install action.
-		 *
-		 * @var static
-		 */
-		protected $settingsEvent;
 
 		/**
 		 * The page settings.
@@ -51,6 +83,81 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 		protected $settings;
 
 		/**
+		 * Constructor for the module
+		 */
+		function __construct( $core, $args ) {
+
+			$this->core = $core;
+			$this->args = wp_parse_args( $args, array(
+				'slug'          => 'cherry-admin-page',
+				'title'         => 'Cherry Admin Page',
+				'parent'		=> null,
+				'capability'	=> 'manage_options',
+				'position'      => 20,
+				'icon'			=> 'dashicons-admin-site',
+				'callback_view' => false,
+				'sections'      => array(),
+				'settings'      => array(),
+				'tabs'          => true,
+				'views'			=> $this->core->get_core_dir() . 'modules/' . $this->module_slug . '/views/',
+			) );
+
+			add_action('admin_enqueue_scripts', array( $this, 'assets') );
+		}
+
+		/*
+		 * Add admin menu page
+		 */
+		function add_admin_page() {
+			$page = $this->make( $this->args['slug'], $this->args['title'], $this->args['parent'], $this->args['views'] )->set( array(
+					'capability'    => $this->args['capability'],
+					'icon'          => $this->args['icon'],
+					'position'      => $this->args['position'],
+					'tabs'          => $this->args['tabs'],
+				));
+			$page->add_sections( $this->args['sections'] );
+			$page->add_settings( $this->args['settings'] );
+		}
+
+		/**
+		 * Add styles and scripts
+		 *
+		 * @return void
+		 */
+		public function assets() {
+			wp_enqueue_script( 'jquery-ui-tabs' );
+			wp_enqueue_script( 'jquery-form' );
+
+			wp_localize_script( 'cherry-settings-page', 'TMRealEstateMessage', array(
+								'success' => __( 'Successfully', 'tm-real-estate' ),
+								'failed' => __( 'Failed', 'tm-real-estate' ),
+							) );
+
+			wp_enqueue_script(
+				'cherry-settings-page',
+				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/js/custom.min.js',
+				array( 'jquery' ),
+				'0.2.0',
+				true
+			);
+
+			wp_enqueue_style(
+				'jquery-ui-tabs',
+				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/css/jquery-ui.min.css',
+				array(),
+				'1.11.4',
+				'all'
+			);
+			wp_enqueue_style(
+				'cherry-settings-page',
+				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/css/custom.min.css',
+				array(),
+				'0.1.0',
+				'all'
+			);
+		}
+
+		/**
 		 * @param string $slug The page slug name.
 		 * @param string $title The page display title.
 		 * @param string $parent The parent's page slug if a subpage.
@@ -58,9 +165,9 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 		 * @throws PageException
 		 * @return \Themosis\Page\PageBuilder
 		 */
-		public static function make( $slug, $title, $parent = null, $views = null )
+		public function make( $slug, $title, $parent = null, $views = null )
 		{
-			$page = new Page_Builder();
+			$page = new Cherry_Page_Builder( $this->core, $this->args );
 			$params = compact('slug', 'title');
 
 			foreach ( $params as $name => $param ) {
@@ -115,13 +222,13 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 		 */
 		public function build()
 		{
-			if (!is_null($this->data['parent']))
+			if ( ! is_null( $this->data['parent'] ) )
 			{
-				add_submenu_page($this->data['parent'], $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'));
+				add_submenu_page( $this->data['parent'], $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'));
 			}
 			else
 			{
-				add_menu_page($this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'), $this->data['args']['icon'], $this->data['args']['position']);
+				add_menu_page( $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'), $this->data['args']['icon'], $this->data['args']['position']);
 			}
 		}
 
@@ -134,13 +241,6 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 			$title		= $this->data['title'];
 			$page_slug	= $this->data['slug'];
 			$sections	= $this->sections;
-//			$settings	= $this->settings;
-//
-//			foreach( $sections as $section_slug => &$section ) {
-//				foreach ( $this->settings as &$setting ) {
-//					$setting['html'] = $this->display_settings( $setting );
-//				}
-//			}
 
 			ob_start();
 			include( $this->views . 'page.php' );
@@ -150,23 +250,12 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 		}
 
 		/**
-		 * Return a page property value.
-		 *
-		 * @param string $property
-		 * @return mixed
-		 */
-		public function get($property = null)
-		{
-			 return (isset($this->data[$property])) ? $this->data[$property] : '';
-		}
-
-		/**
 		 * Add custom sections for your settings.
 		 *
 		 * @param array $sections
 		 * @return \Themosis\Page\PageBuilder
 		 */
-		public function addSections(array $sections = [])
+		public function add_sections(array $sections = [])
 		{
 			$this->sections = $sections;
 		}
@@ -176,7 +265,7 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 		 *
 		 * @return bool
 		 */
-		public function hasSections()
+		public function has_sections()
 		{
 			return count($this->sections) ? true : false;
 		}
@@ -199,7 +288,7 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 		 * @param array $settings The page settings.
 		 * @return \Themosis\Page\PageBuilder
 		 */
-		public function addSettings(array $settings = [])
+		public function add_settings(array $settings = [])
 		{
 			$this->settings = $settings;
 
@@ -228,25 +317,11 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 				foreach ( $this->settings as $section => $settings ) {
 					foreach( $settings as &$setting) {
 						$setting['section'] = $section;
-						add_settings_field( $setting['slug'], $setting['title'], array( $this, 'display_settings' ), $section, $section, $setting);
-						register_setting( $section, $setting['slug'] );
+						add_settings_field( $section . '-' . $setting['slug'], $setting['title'], array( $this, 'display_settings' ), $section, $section, $setting);
+						register_setting( $section, $section . '-' . $setting['slug'] );
 					}
 				}
 			}
-		}
-
-		/**
-		 * Save settings
-		 *
-		 * @param array $args
-		 * @return void
-		 */
-		public function save_settings( $values )
-		{
-			//var_dump( $values );
-			//var_dump( $_POST );
-			//die();
-			return $values;
 		}
 
 		/**
@@ -278,20 +353,18 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 		public function display_settings( $setting ) {
 
 			// Check if a registered value exists.
-			$value = get_option( $setting['section'] );
+			$value = get_option( $setting['section'] . '-' . $setting['slug'] );
 
-			if ( isset( $value[ $setting['slug'] ] ) ) {
-				$setting['field']['value'] = $value[ $setting['slug'] ];
-			} elseif( isset( $setting['field']['value'] ) ) {
-				$setting['field']['value'] = $setting['field']['value'];
+			if ( isset( $value ) ) {
+				$setting['field']['value'] = $value;
 			} else {
 				$setting['field']['value'] = '';
 			}
 
 			// Set the name attribute.
-			$setting['field']['name'] = $setting['slug'];//$setting['section'].'['.$setting['field']['slug'].']';
+			$setting['field']['name'] = $setting['section'] . '-' . $setting['slug'];
 
-			if ( ! empty( $setting['type'] ) && class_exists( 'UI_' . ucfirst( $setting['type'] ) ) ) {
+			if ( class_exists( 'UI_' . ucfirst( $setting['type'] ) ) ) {
 				$ui_class = 'UI_' . ucfirst( $setting['type'] );
 				$ui_element = new $ui_class( $setting['field'] );
 
@@ -300,5 +373,16 @@ if ( ! class_exists( 'Page_Builder' ) ) {
 			}
 		}
 
+		/**
+		 * Returns the instance.
+		 *
+		 * @since  1.0.0
+		 * @return object
+		 */
+		public static function get_instance( $core, $args ) {
+			return new self( $core, $args );
+		}
+
 	}
+
 }

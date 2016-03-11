@@ -129,7 +129,7 @@ class TM_Real_Estate {
 							'priority'	=> 999,
 							'autoload'	=> true,
 						),
-						'cherry-admin-menu'	=> array(
+						'cherry-page-builder'	=> array(
 							'priority'	=> 999,
 							'autoload'	=> true,
 						),
@@ -277,51 +277,50 @@ class TM_Real_Estate {
 
 		$sections = array(
 
-			'section-slug-name' => array(
-				'slug'			=> 'section-slug-name',
-				'name'			=> 'Section Title',
-				'description'	=> 'This is description',
-			),
+				'tm-properties-main-settings' => array(
+					'slug'			=> 'tm-properties-main-settings',
+					'name'			=> __( 'Main', 'tm-real-estate' ),
+				),
 
-			'section-slug-name-2' => array(
-				'slug'	=> 'section-slug-name-2',
-				'name'	=> 'Section Title 2',
-			),
+				'tm-properties-types' => array(
+					'slug'	=> 'tm-properties-types',
+					'name'	=> __( 'Property type', 'tm-real-estate' ),
+				),
 
-		);
-
-		$settings['section-slug-name'][] = array(
-				'slug'	=> 'interest',
-				'title'	=> 'Settings Title',
-				'type'			=> 'text',
-				'field'	=> array(
-						'type'			=> 'text',
-						'id'			=> 'title',
-						'name'			=> 'title',
-						'placeholder'	=> 'placeholder text',
-					),
 			);
 
-		$settings['section-slug-name'][] = array(
-				'slug'	=> 'interest-2',
-				'title'	=> 'Title',
+		$settings['tm-properties-main-settings'][] = array(
+						'type'			=> 'select',
+						'slug'			=> 'area-unit',
+						'title'			=> 'Area unit',
+						'field'			=> array(
+							'id'			=> 'area-unit',
+							'size'			=> 1,
+							'value'			=> 'feets',
+							'options'		=> array(
+								'feets'	=> 'feets',
+								'meters'	=> 'meters',
+							),
+						),
+					);
+
+		$settings['tm-properties-main-settings'][] = array(
+				'slug'	=> 'сurrency-sign',
+				'title'	=> 'Currency Sign',
 				'type'	=> 'text',
 				'field'	=> array(
-						'id'			=> 'about',
-						'name'			=> 'about',
-						'value'			=> 'about value',
-						'placeholder'	=> 'placeholder about',
-						'label'			=> 'about',
+						'id'			=> 'сurrency-sign',
+						'value'			=> '$',
+						'placeholder'	=> '$',
 					),
 			);
 
-		$settings['section-slug-name-2'][] = array(
+		$settings['tm-properties-types'][] = array(
 				'slug'	=> 'field-switcher',
 				'title'	=> 'Switcher',
 				'type'				=> 'switcher',
 				'field'	=> array(
 						'id'				=> 'test-switcher',
-						'name'				=> 'test-switcher',
 						'value'				=> 'true',
 						'toggle'			=> array(
 							'true_toggle'	=> 'On',
@@ -333,55 +332,18 @@ class TM_Real_Estate {
 					),
 			);
 
-		$settings['section-slug-name-2'][] = array(
-						'type'			=> 'select',
-						'slug'			=> 'Select',
-						'title'			=> null,
-						'field'			=> array(
-							'id'			=> 'select',
-							'name'			=> 'select',
-							'multiple'		=> false,
-							'filter'		=> true,
-							'size'			=> 1,
-							'value'			=> 'select-8',
-							'options'		=> array(
-								'select-1'	=> 'select 1',
-								'select-2'	=> 'select 2',
-								'select-3'	=> 'select 3',
-								'select-4'	=> 'select 4',
-								'select-5'	=> 'select 5',
-							),
-						),
-			);
-
-		$page = new Cherry_Admin_Menu( $this->core, array(
-					'slug'          => 'cherry-admin-page',
-					'title'         => 'Cherry Admin Page',
+		$page = new Cherry_Page_Builder( $this->core, array(
+					'slug'          => 'cherry-property-settings',
+					'title'         => 'Property Settings',
 					'parent'		=> null,
 					'capability'	=> 'manage_options',
 					'position'      => 20,
 					'icon'			=> 'dashicons-admin-site',
-					'callback_view' => false,
-					'sections'      => $sections,
-					'settings'      => $settings,
-					'tabs'          => true,
+					'sections'		=> $sections,
+					'settings'		=> $settings,
 				)
 			);
 		$page->add_admin_page();
-
-		$page2 = new Cherry_Admin_Menu( $this->core, array(
-					'slug'          => 'cherry-sub-admin-page',
-					'title'         => 'Cherry Sub Page',
-					'parent'		=> 'cherry-admin-page',
-					'capability'	=> 'manage_options',
-					'position'      => 20,
-					'icon'			=> 'envalve',
-					'callback_view' => false,
-					'sections'      => array(),
-					'tabs'          => true,
-				)
-			);
-		$page2->add_admin_page();
 	}
 
 	/**
