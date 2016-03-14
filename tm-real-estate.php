@@ -280,11 +280,13 @@ class TM_Real_Estate {
 				'tm-properties-main-settings' => array(
 					'slug'			=> 'tm-properties-main-settings',
 					'name'			=> __( 'Main', 'tm-real-estate' ),
+					'description'	=> '',
 				),
 
 				'tm-properties-types' => array(
 					'slug'	=> 'tm-properties-types',
 					'name'	=> __( 'Property type', 'tm-real-estate' ),
+					'description'	=> '',
 				),
 
 			);
@@ -340,6 +342,8 @@ class TM_Real_Estate {
 					'icon'			=> 'dashicons-admin-site',
 					'sections'		=> $sections,
 					'settings'		=> $settings,
+					'before'		=> 'Before page description',
+					'after'			=> 'After page description',
 				) );
 	}
 
