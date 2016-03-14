@@ -199,10 +199,16 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 			$page_after		= ! empty( $this->args['after'] ) ? $this->args['after'] : '';
 			$sections		= ( ! empty( $this->sections ) && is_array( $this->sections ) ) ? $this->sections : array();
 
-			ob_start();
-			include( $this->views . 'page.php' );
-			$html = ob_get_contents();
-			ob_end_clean();
+			$html = Cherry_Core::render_view(
+				$this->views . 'page.php',
+				array(
+					'title'			=> $title,
+					'page_slug'		=> $page_slug,
+					'page_before'	=> $page_before,
+					'page_after'	=> $page_after,
+					'sections'		=> $sections,
+				)
+			);
 			echo $html;
 		}
 
@@ -270,7 +276,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 
 			if ( $this->has_settings() ) {
 				foreach ( $this->settings as $section => $settings ) {
-					foreach( $settings as &$setting) {
+					foreach( $settings as &$setting ) {
 						$setting['section'] = $section;
 						add_settings_field( $setting['slug'], $setting['title'], array( $this, 'display_settings' ), $section, $section, $setting);
 					}
@@ -292,17 +298,20 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 					$description = $this->sections[ $args['id'] ]['description'];
 				}
 			}
-			ob_start();
-			include( $this->views . 'section.php' );
-			$html = ob_get_contents();
-			ob_end_clean();
+
+			$html = Cherry_Core::render_view(
+				$this->views . 'section.php',
+				array(
+					'description'			=> $description,
+				)
+			);
 			echo $html;
 		}
 
 		/**
 		 * Handle setting display of the Settings API.
 		 *
-		 * @param mixed $setting
+		 * @param array $setting
 		 * @return void
 		 */
 		public function display_settings( $setting ) {
@@ -375,7 +384,6 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		public static function get_instance( $core, $args ) {
 			return new self( $core, $args );
 		}
-
 	}
 
 }
