@@ -11,10 +11,10 @@
  */
 
 ?>
-<?php if ( is_array( $__data['properties'] ) && count( $__data['properties'] ) ): ?>
+<?php if ( is_array( $__data[ 'properties' ] ) && count( $__data[ 'properties' ] ) ): ?>
 
 	<div class="properties">
-		<?php foreach ( $__data['properties'] as $property ): ?>
+		<?php foreach ( $__data[ 'properties' ] as $property ): ?>
 			<article class="property-item">
 				<header class="property-content">
 					<h4><a href="#"><?php echo $property->post_title; ?></a></h4>
@@ -83,4 +83,3 @@
 	</div>
 
 <?php endif; ?>
-	
