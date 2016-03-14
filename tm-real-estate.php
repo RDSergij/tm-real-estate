@@ -77,8 +77,14 @@ class TM_Real_Estate {
 		// Add tm-re-properties shortcode
 		add_shortcode( 'tm-re-properties', array( 'Model_Properties', 'shortcode_properties' ) );
 
+		// Register taxonomy Properties Types
+		add_action( 'init', array( $this, 'taxonomy_properties_types' ) );
+
 		// After activated plugin
 		register_activation_hook( __FILE__, array( $this, 'plugin_activated' ) );
+
+		// Custom assets
+		add_action('admin_enqueue_scripts', array( $this, 'assets') );
 	}
 
 	/**
@@ -306,6 +312,72 @@ class TM_Real_Estate {
 	}
 
 	/**
+	 * Registry taxonomy
+	 * 
+	 * @since 1.0
+	 * @return void
+	 */
+	public function taxonomy_properties_types() {
+
+		// Create taxonomy Property Type
+		$labels = array(
+			'name'              => __( 'Properties Types', 'tm-real-estate' ),
+			'singular_name'     => __( 'Property Type', 'tm-real-estate' ),
+			'search_items'      => __( 'Search Properties Types' ),
+			'all_items'         => __( 'All Properties Types' ),
+			'parent_item'       => __( 'Parent Property Type' ),
+			'parent_item_colon' => __( 'Parent Property Type:' ),
+			'edit_item'         => __( 'Edit Property Type' ),
+			'update_item'       => __( 'Update Property Type' ),
+			'add_new_item'      => __( 'Add New Property Type' ),
+			'new_item_name'     => __( 'New Property Type Name' ),
+			'menu_name'         => __( 'Properties Types' ),
+		);
+
+		$args = array(
+			'hierarchical'      => true,
+			'labels'            => $labels,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+			'rewrite'           => array( 'slug' => 'property' ),
+		);
+
+		register_taxonomy( 'property-type', array( 'property' ), $args );
+
+		// Create terms for taxonomy Property Type
+		$terms = array(
+			'Commercial'	=> array( 'slug' => 'commercial', 'parent'=> null ),
+			'Shop'			=> array( 'slug' => 'shop', 'parent'=> 'commercial' ),
+			'Office'		=> array( 'slug' => 'office', 'parent'=> 'commercial' ),
+
+			'Residential'			=> array( 'slug' => 'residential', 'parent'=> null, ),
+			'Appartment'			=> array( 'slug' => 'appartment', 'parent'=> 'residential' ),
+			'Appartment Building'	=> array( 'slug' => 'appartment-building', 'parent'=> 'residential' ),
+			'Villa'					=> array( 'slug' => 'villa', 'parent'=> 'residential' ),
+		);
+		foreach( $terms as $title => &$term ) {
+			if ( ! term_exists( $term['slug'], 'property-type', $term['parent'] ) ) {
+				if ( $term['parent'] ) {
+					$term_data = get_term_by( 'slug', ucfirst( $term['parent'] ), 'property-type');
+					$parent = $term_data->term_id;
+				} else {
+					$parent = null;
+				}
+				$result = wp_insert_term(
+					$title,
+					'property-type',
+						array(
+							'slug'			=> $term['slug'],
+							'parent'		=> $parent
+						)
+					);
+				$term['id'] = $result['term_id'];
+			}
+		}
+	}
+
+	/**
 	 * Set default options
 	 * 
 	 * @since 1.0
@@ -320,6 +392,7 @@ class TM_Real_Estate {
 				'property-item-page'			=> null,
 				'properties-list-page'			=> null,
 				'properties-submission-page'	=> null,
+				'reset-default-page'					=> 'Reset to default page',
 				'area-unit'						=> 'meters',
 				'сurrency-sign'					=> '$',
 			),
@@ -440,6 +513,17 @@ class TM_Real_Estate {
 				);
 
 		$settings['tm-properties-main-settings'][] = array(
+				'slug'	=> 'reset-default-page',
+				'title'	=> '', //__( 'Reset to default page', 'tm-real-estate' ),
+				'type'	=> 'text',
+				'field'	=> array(
+						'type'		=> 'button',
+						'id'		=> 'reset-default-page',
+						'class'		=> 'button button-warning pull-right',
+					),
+			);
+
+		$settings['tm-properties-main-settings'][] = array(
 					'type'			=> 'select',
 					'slug'			=> 'area-unit',
 					'title'			=> __( 'Area unit', 'tm-real-estate' ),
@@ -535,13 +619,38 @@ class TM_Real_Estate {
 
 		$page->make( 'cherry-property-settings', 'Property Settings', null )->set( array(
 					'capability'	=> 'manage_options',
-					'position'		=> 20,
+					'position'		=> 22,
 					'icon'			=> 'dashicons-admin-site',
 					'sections'		=> $sections,
 					'settings'		=> $settings,
 					'before'		=> 'Before page description',
 					'after'			=> 'After page description',
 				) );
+	}
+
+	/**
+	 * Include assets files
+	 * 
+	 * @since 1.0
+	 * @return void
+	 */
+	public function assets() {
+
+		wp_enqueue_script(
+			'tm-real-state-settings-page',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/page-settings.min.js',
+			array( 'jquery' ),
+			'1.0.0',
+			true
+		);
+
+		wp_enqueue_style(
+			'tm-real-state-settings-page',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/page-settings.min.css',
+			array(),
+			'1.0.0',
+			'all'
+		);
 	}
 
 	/**
