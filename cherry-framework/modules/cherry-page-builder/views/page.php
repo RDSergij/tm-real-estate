@@ -1,5 +1,8 @@
 <div class="wrap cherry-settings-page">
 	<h2><?php echo $title ?></h2>
+	<?php if ( ! empty( $page_before ) ) : ?>
+	<div class="description"><?php echo $page_before ?></div>
+	<?php endif; ?>
 	<?php if ( ! empty( $sections ) && is_array( $sections ) ) : ?>
 	<div class="cherry-settings-tabs">
 		<ul>
@@ -18,5 +21,8 @@
 		</div>
 		<?php endforeach; ?>
 	</div>
+	<?php endif; ?>
+	<?php if ( ! empty( $page_after ) ) : ?>
+	<div class="description"><?php echo $page_after ?></div>
 	<?php endif; ?>
 </div>
