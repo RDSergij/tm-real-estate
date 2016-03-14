@@ -1,5 +1,7 @@
 <?php
 /**
+ * Create options page
+ *
  * @package    Cherry_Framework
  * @subpackage Class
  * @author     Cherry Team <cherryframework@gmail.com>
@@ -16,7 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 
 	/**
-	 * Post meta management module
+	 * Create options page
 	 */
 	class Cherry_Page_Builder {
 
@@ -140,13 +142,13 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 			$page->data['slug'] = $slug;
 			$page->data['title'] = $title;
 			$page->data['parent'] = $parent;
-			$page->data['args'] = [
+			$page->data['args'] = array(
 				'capability'    => 'manage_options',
 				'icon'          => '',
 				'position'      => null,
 				'tabs'          => true,
 				'menu'          => $title
-			];
+			);
 			$page->data['rules'] = [];
 
 			return $page;
