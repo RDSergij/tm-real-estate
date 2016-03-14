@@ -17,7 +17,7 @@ class Model_Properties {
 	/**
 	 * Get all properties
 	 *
-	 * @param  integer $posts_per_page count.
+	 * @param  [type] $posts_per_page count.
 	 * @return array properties
 	 */
 	public static function get_properties( $posts_per_page = 5 ) {
