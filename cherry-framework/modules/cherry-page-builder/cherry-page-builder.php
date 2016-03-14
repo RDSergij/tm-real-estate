@@ -42,6 +42,13 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		public $args = array();
 
 		/**
+		 * Page data
+		 *
+		 * @var array
+		 */
+		public $data = array();
+
+		/**
 		 * Core instance
 		 *
 		 * @var object
@@ -87,6 +94,8 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				'icon'			=> 'dashicons-admin-site',
 				'sections'      => array(),
 				'settings'      => array(),
+				'before'        => '',
+				'after'			=> '',
 			) );
 
 			$this->views = $this->core->get_core_dir() . 'modules/' . $this->module_slug . '/views/';
@@ -182,9 +191,11 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @return void
 		 */
 		public function render() {
-			$title		= $this->data['title'];
-			$page_slug	= $this->data['slug'];
-			$sections	= $this->sections;
+			$title			= ! empty( $this->data['title'] ) ? $this->data['title'] : '';
+			$page_slug		= ! empty( $this->data['slug'] ) ? $this->data['slug'] : '';
+			$page_before	= ! empty( $this->args['before'] ) ? $this->args['before'] : '';
+			$page_after		= ! empty( $this->args['after'] ) ? $this->args['after'] : '';
+			$sections		= ( ! empty( $this->sections ) && is_array( $this->sections ) ) ? $this->sections : array();
 
 			ob_start();
 			include( $this->views . 'page.php' );
@@ -259,9 +270,9 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				foreach ( $this->settings as $section => $settings ) {
 					foreach( $settings as &$setting) {
 						$setting['section'] = $section;
-						add_settings_field( $section . '-' . $setting['slug'], $setting['title'], array( $this, 'display_settings' ), $section, $section, $setting);
-						register_setting( $section, $section . '-' . $setting['slug'] );
+						add_settings_field( $setting['slug'], $setting['title'], array( $this, 'display_settings' ), $section, $section, $setting);
 					}
+					register_setting( $section, $section );
 				}
 			}
 		}
@@ -295,16 +306,16 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		public function display_settings( $setting ) {
 
 			// Check if a registered value exists.
-			$value = get_option( $setting['section'] . '-' . $setting['slug'] );
+			$value = get_option( $setting['section'] );
 
-			if ( isset( $value ) ) {
-				$setting['field']['value'] = $value;
+			if ( isset( $value[ $setting['slug'] ] ) ) {
+				$setting['field']['value'] = $value[ $setting['slug'] ];
 			} else {
 				$setting['field']['value'] = '';
 			}
 
 			// Set the name attribute.
-			$setting['field']['name'] = $setting['section'] . '-' . $setting['slug'];
+			$setting['field']['name'] = $setting['section'] . '[' . $setting['slug'] . ']';
 
 			if ( class_exists( 'UI_' . ucfirst( $setting['type'] ) ) ) {
 				$ui_class = 'UI_' . ucfirst( $setting['type'] );
