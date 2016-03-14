@@ -1,6 +1,7 @@
 <?php
 /**
  * Properties
+ *
  * @package    Cherry_Framework
  * @subpackage Model
  * @author     Cherry Team <cherryframework@gmail.com>

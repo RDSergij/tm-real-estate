@@ -68,7 +68,7 @@ class TM_Real_Estate {
 	 * Add Scripts and Styles
 	 */
 	public function scripts_and_styles() {
-		// Styles 
+		// Styles
 		wp_enqueue_style( 'tm-real-estate', TM_REAL_ESTATE_URI.'assets/css/tm-real-estate.css' );
 	}
 
@@ -78,7 +78,7 @@ class TM_Real_Estate {
 	public function load_models() {
 		$models = array(
 			'Model_Main',
-			'Model_Properties'
+			'Model_Properties',
 		);
 
 		foreach ( $models as $model ) {
@@ -166,7 +166,7 @@ class TM_Real_Estate {
 										'options'    => array(
 											'rent' => __( 'Rent', 'tm-real-estate' ),
 											'sale' => __( 'Sale', 'tm-real-estate' ),
-										)
+										),
 									),
 									'type' => array(
 										'type'       => 'select',
@@ -177,28 +177,28 @@ class TM_Real_Estate {
 										'options'    => array(
 											'rent' => __( 'Rent', 'tm-real-estate' ),
 											'sale' => __( 'Sale', 'tm-real-estate' ),
-										)
+										),
 									),
 									'bathrooms' => array(
 										'type'    => 'number',
 										'id'      => 'bathrooms',
 										'name'    => 'bathrooms',
 										'value'   => 0,
-										'left_label' => __( 'Bathrooms', 'tm-real-estate' )
+										'left_label' => __( 'Bathrooms', 'tm-real-estate' ),
 									),
 									'bedrooms' => array(
 										'type'    => 'number',
 										'id'      => 'bedrooms',
 										'name'    => 'bedrooms',
 										'value'   => 0,
-										'left_label' => __( 'Bedrooms', 'tm-real-estate' )
+										'left_label' => __( 'Bedrooms', 'tm-real-estate' ),
 									),
 									'area' => array(
 										'type'    => 'number',
 										'id'      => 'area',
 										'name'    => 'area',
 										'value'   => 0,
-										'left_label' => __( 'Area', 'tm-real-estate' )
+										'left_label' => __( 'Area', 'tm-real-estate' ),
 									),
 									'gallery' => array(
 										'type'	  => 'collection',
@@ -212,7 +212,7 @@ class TM_Real_Estate {
 												'class'   => 'large_text',
 												'name'    => 'title',
 												'value'   => '',
-												'left_label' => __( 'Title', 'tm-real-estate' )
+												'left_label' => __( 'Title', 'tm-real-estate' ),
 											),
 											'UI_Media' => array(
 												'id'           => 'image',
@@ -280,8 +280,8 @@ class TM_Real_Estate {
 					'author',
 					'thumbnail',
 					'excerpt',
-					'comments'
-				)
+					'comments',
+				),
 			)
 		)->font_awesome_icon( 'f1ad' );
 	}
@@ -306,7 +306,7 @@ class TM_Real_Estate {
 				'edit_themes'       => false, // false denies this capability. User can’t edit your theme
 				'install_plugins'   => false, // User cant add new plugins
 				'update_plugin'     => false, // User can’t update any plugins
-				'update_core'       => false // user cant perform core updates
+				'update_core'       => false, // user cant perform core updates
 			)
 		);
 	}
