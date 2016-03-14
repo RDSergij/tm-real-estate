@@ -151,8 +151,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @param array $params
 		 * @return \Themosis\Page\PageBuilder
 		 */
-		public function set( array $params = array() )
-		{
+		public function set( array $params = array() ) {
 			$this->args = $params;
 	
 			$this->add_sections( $params['sections'] );
@@ -169,8 +168,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 *
 		 * @return void
 		 */
-		public function build()
-		{
+		public function build() {
 			if ( ! is_null( $this->data['parent'] ) ) {
 				add_submenu_page( $this->data['parent'], $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'));
 			} else {
@@ -201,8 +199,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @param array $sections
 		 * @return \Themosis\Page\PageBuilder
 		 */
-		public function add_sections(array $sections = [])
-		{
+		public function add_sections( array $sections = array() ) {
 			$this->sections = $sections;
 		}
 
@@ -234,7 +231,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @param array $settings The page settings.
 		 * @return \Themosis\Page\PageBuilder
 		 */
-		public function add_settings(array $settings = [])
+		public function add_settings( array $settings = array() )
 		{
 			$this->settings = $settings;
 
@@ -251,10 +248,9 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 */
 		public function install_settings()
 		{
-			//var_dump( $_POST );
 			foreach ( $this->sections as $section ) {
 				if ( false === get_option( $section['slug'] ) ) {
-					//add_option( $section['slug'] );
+					add_option( $section['slug'] );
 				}
 				add_settings_section( $section['slug'], $section['name'], array( $this, 'display_sections' ), $section['slug'] );
 			}
