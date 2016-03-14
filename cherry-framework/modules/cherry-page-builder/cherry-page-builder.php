@@ -183,7 +183,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 			if ( ! is_null( $this->data['parent'] ) ) {
 				add_submenu_page( $this->data['parent'], $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'));
 			} else {
-				add_menu_page( $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'), $this->data['args']['icon'], $this->data['args']['position']);
+				add_menu_page( $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'), $this->data['args']['icon'], $this->args['position']);
 			}
 		}
 
@@ -227,8 +227,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 *
 		 * @return bool
 		 */
-		public function has_sections()
-		{
+		public function has_sections() {
 			return count($this->sections) ? true : false;
 		}
 
@@ -237,8 +236,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 *
 		 * @return bool
 		 */
-		public function has_settings()
-		{
+		public function has_settings() {
 			return count($this->settings) ? true : false;
 		}
 
@@ -250,8 +248,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @param array $settings The page settings.
 		 * @return \Themosis\Page\PageBuilder
 		 */
-		public function add_settings( array $settings = array() )
-		{
+		public function add_settings( array $settings = array() ) {
 			$this->settings = $settings;
 
 			add_action('admin_init', array( $this, 'install_settings' ) );
@@ -265,13 +262,14 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 *
 		 * @return void
 		 */
-		public function install_settings()
-		{
-			foreach ( $this->sections as $section ) {
-				if ( false === get_option( $section['slug'] ) ) {
-					add_option( $section['slug'] );
+		public function install_settings() {
+			if ( $this->has_sections() ) {
+				foreach ( $this->sections as $section ) {
+					if ( false === get_option( $section['slug'] ) ) {
+						add_option( $section['slug'] );
+					}
+					add_settings_section( $section['slug'], $section['name'], array( $this, 'display_sections' ), $section['slug'] );
 				}
-				add_settings_section( $section['slug'], $section['name'], array( $this, 'display_sections' ), $section['slug'] );
 			}
 
 			if ( $this->has_settings() ) {
@@ -385,5 +383,4 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 			return new self( $core, $args );
 		}
 	}
-
 }
