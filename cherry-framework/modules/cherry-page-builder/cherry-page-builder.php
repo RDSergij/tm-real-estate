@@ -340,9 +340,9 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 			wp_enqueue_script( 'jquery-form' );
 
 			wp_localize_script( 'cherry-settings-page', 'TMRealEstateMessage', array(
-								'success' => __( 'Successfully', 'tm-real-estate' ),
-								'failed' => __( 'Failed', 'tm-real-estate' ),
-							) );
+				'success' => __( 'Successfully', 'tm-real-estate' ),
+				'failed' => __( 'Failed', 'tm-real-estate' ),
+			) );
 
 			wp_enqueue_script(
 				'cherry-settings-page',
