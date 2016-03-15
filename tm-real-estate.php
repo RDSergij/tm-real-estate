@@ -78,7 +78,7 @@ class TM_Real_Estate {
 		register_activation_hook( __FILE__, array( $this, 'plugin_activated' ) );
 
 		// Custom assets
-		add_action('admin_enqueue_scripts', array( $this, 'assets') );
+		add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
 	}
 
 	/**
@@ -291,22 +291,22 @@ class TM_Real_Estate {
 
 	/**
 	 * Get pages list
-	 * 
+	 *
 	 * @since 1.0
 	 * @return array
 	 */
 	public function get_pages_list() {
 		$args = array(
-			'sort_order' => 'asc',
+			'sort_order'  => 'asc',
 			'sort_column' => 'post_title',
-			'post_type' => 'page',
-			'post_status' => 'publish'
+			'post_type'   => 'page',
+			'post_status' => 'publish',
 		);
 
 		$pages = get_pages( $args );
 
 		$pages_list = array();
-		foreach( $pages as $page ) {
+		foreach ( $pages as $page ) {
 			$pages_list[ $page->ID ] = $page->post_title;
 		}
 
@@ -315,7 +315,7 @@ class TM_Real_Estate {
 
 	/**
 	 * Registry taxonomy
-	 * 
+	 *
 	 * @since 1.0
 	 * @return void
 	 */
@@ -349,19 +349,19 @@ class TM_Real_Estate {
 
 		// Create terms for taxonomy Property Type
 		$terms = array(
-			'Commercial'	=> array( 'slug' => 'commercial', 'parent'=> null ),
-			'Shop'			=> array( 'slug' => 'shop', 'parent'=> 'commercial' ),
-			'Office'		=> array( 'slug' => 'office', 'parent'=> 'commercial' ),
+			'Commercial'	=> array( 'slug' => 'commercial', 'parent' => null ),
+			'Shop'			=> array( 'slug' => 'shop', 'parent' => 'commercial' ),
+			'Office'		=> array( 'slug' => 'office', 'parent' => 'commercial' ),
 
-			'Residential'			=> array( 'slug' => 'residential', 'parent'=> null, ),
-			'Appartment'			=> array( 'slug' => 'appartment', 'parent'=> 'residential' ),
-			'Appartment Building'	=> array( 'slug' => 'appartment-building', 'parent'=> 'residential' ),
-			'Villa'					=> array( 'slug' => 'villa', 'parent'=> 'residential' ),
+			'Residential'			=> array( 'slug' => 'residential', 'parent' => null ),
+			'Appartment'			=> array( 'slug' => 'appartment', 'parent' => 'residential' ),
+			'Appartment Building'	=> array( 'slug' => 'appartment-building', 'parent' => 'residential' ),
+			'Villa'					=> array( 'slug' => 'villa', 'parent' => 'residential' ),
 		);
-		foreach( $terms as $title => &$term ) {
+		foreach ( $terms as $title => &$term ) {
 			if ( ! term_exists( $term['slug'], 'property-type', $term['parent'] ) ) {
 				if ( $term['parent'] ) {
-					$term_data = get_term_by( 'slug', ucfirst( $term['parent'] ), 'property-type');
+					$term_data = get_term_by( 'slug', ucfirst( $term['parent'] ), 'property-type' );
 					$parent = $term_data->term_id;
 				} else {
 					$parent = null;
@@ -370,8 +370,8 @@ class TM_Real_Estate {
 					$title,
 					'property-type',
 						array(
-							'slug'			=> $term['slug'],
-							'parent'		=> $parent
+							'slug'   => $term['slug'],
+							'parent' => $parent,
 						)
 					);
 				$term['id'] = $result['term_id'];
@@ -381,7 +381,7 @@ class TM_Real_Estate {
 
 	/**
 	 * Set default options
-	 * 
+	 *
 	 * @since 1.0
 	 * @return void
 	 */
@@ -434,14 +434,14 @@ class TM_Real_Estate {
 		$page_parameter['post_content']	= '[tm-real-estate-search]'; // must be change
 		self::$default_options['tm-properties-main-settings']['properties-submission-page']		= wp_insert_post( $page_parameter );
 
-		foreach( self::$default_options as $section => $settings) {
+		foreach ( self::$default_options as $section => $settings ) {
 			add_option( $section, $settings );
 		}
 	}
 
-	/*
+	/**
 	 * Add some admin menu
-	 * 
+	 *
 	 * @since 1.0
 	 */
 	public function add_admin_menu_page() {
@@ -516,7 +516,7 @@ class TM_Real_Estate {
 
 		$settings['tm-properties-main-settings'][] = array(
 			'slug'	=> 'reset-default-page',
-			'title'	=> '', //__( 'Reset to default page', 'tm-real-estate' ),
+			'title'	=> '',
 			'type'	=> 'text',
 			'field'	=> array(
 				'type'		=> 'button',
@@ -634,7 +634,7 @@ class TM_Real_Estate {
 
 	/**
 	 * Include assets files
-	 * 
+	 *
 	 * @since 1.0
 	 * @return void
 	 */

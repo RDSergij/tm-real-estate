@@ -224,7 +224,7 @@ class Model_Properties {
 	/**
 	 * Get propeties pagination array
 	 *
-	 * @param  integer $posts_per_page properties per page.
+	 * @param  [type] $posts_per_page properties per page.
 	 * @return array pagination.
 	 */
 	public static function get_pagination( $posts_per_page = 5 ) {
@@ -232,18 +232,18 @@ class Model_Properties {
 			'base'               => '%_%',
 			'format'             => '?page=%#%',
 			'total'              => self::get_total_pages( $posts_per_page ),
-			'current'            => max( 1, get_query_var('page') ),
-			'show_all'           => False,
+			'current'            => max( 1, get_query_var( 'page' ) ),
+			'show_all'           => false,
 			'end_size'           => 1,
 			'mid_size'           => 2,
-			'prev_next'          => True,
-			'prev_text'          => __('« Previous'),
-			'next_text'          => __('Next »'),
+			'prev_next'          => true,
+			'prev_text'          => __( '« Previous' ),
+			'next_text'          => __( 'Next »' ),
 			'type'               => 'array',
-			'add_args'           => False,
+			'add_args'           => false,
 			'add_fragment'       => '',
 			'before_page_number' => '',
-			'after_page_number'  => ''
+			'after_page_number'  => '',
 		);
 		return paginate_links( $args );
 	}
