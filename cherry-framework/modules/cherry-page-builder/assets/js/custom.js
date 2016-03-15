@@ -55,7 +55,7 @@ jQuery( document ).ready( function( $ ) {
 			function reposition() {
 				var
 					topDelta = 100;
-				$( '.notice-box' ).each(function( index ) {
+				$( '.notice-box' ).each(function() {
 					$( this ).css( { top: topDelta } );
 					topDelta += $( this ).outerHeight( true );
 				});
