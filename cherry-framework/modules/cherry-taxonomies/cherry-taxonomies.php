@@ -66,11 +66,10 @@ class Cherry_Taxonomies implements I_Module {
 	/**
 	 * Create new Post Type.
 	 *
-	 * @param [type] $slug The post type slug name.
-	 * @param [type] $plural The post type plural name for display.
-	 * @param [type] $singular The post type singular name for display.
-	 * @param array  $args The custom post type arguments.
-	 * @throws Exception Invalid custom post type parameter.
+	 * @param  [type] $single         name.
+	 * @param  string $post_type_slug post types slug.
+	 * @param  string $plural         name.
+	 * @param  array  $args           arguments.
 	 * @return Cherry_Post_Type
 	 */
 	public function create( $single, $post_type_slug = 'post', $plural = '', array $args = array() ) {

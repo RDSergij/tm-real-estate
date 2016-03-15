@@ -51,9 +51,12 @@ class Cherry_Taxonomy {
 	private $arguments = array();
 
 	/**
-	 * Cherry taxonomy 
-	 * @param [type] $single name.
-	 * @param string $plural name.
+	 * Cherry taxonomy
+	 *
+	 * @param [type] $single         name.
+	 * @param string $post_type_slug post type slug.
+	 * @param string $plural         name.
+	 * @param array  $args           arguments.
 	 */
 	public function __construct( $single, $post_type_slug = 'post', $plural = '', $args = array() ) {
 		$this->set_single( $single );
@@ -171,6 +174,11 @@ class Cherry_Taxonomy {
 		return $this->post_type_slug;
 	}
 
+	/**
+	 * Set arguments
+	 *
+	 * @param array $args arguments.
+	 */
 	public function set_arguments( $args = array() ) {
 		$this->arguments = array_merge( $this->arguments, (array) $args );
 		return $this;

@@ -171,7 +171,6 @@ if ( ! class_exists( 'Cherry_Core' ) ) {
 		 * @return bool
 		 */
 		public function load_module( $module ) {
-			
 			$class_name = $this->get_class_name( $module );
 
 			if ( class_exists( $class_name ) ) {
