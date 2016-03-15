@@ -124,9 +124,9 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		/**
 		 * Set base data of page
 		 *
-		 * @param type $slug        The page slug name.
-		 * @param type $title       The page display title.
-		 * @param type $parent       The parent's page slug if a subpage.
+		 * @param type string $slug        The page slug name.
+		 * @param type string $title       The page display title.
+		 * @param type string $parent       The parent's page slug if a subpage.
 		 *
 		 * @return object
 		 */
