@@ -80,8 +80,6 @@ class TM_Real_Estate {
 		// Add ajax action
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
-
-		//$this->settings_reset();
 	}
 
 	/**
