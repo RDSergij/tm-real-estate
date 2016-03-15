@@ -21,7 +21,7 @@ class Model_Properties {
 	 * @return array properties
 	 */
 	public static function get_properties( $posts_per_page = 5 ) {
-		 $args = array(
+		$args = array(
 			'posts_per_page'   => $posts_per_page,
 			'offset'           => 0,
 			'category'         => '',
@@ -73,7 +73,10 @@ class Model_Properties {
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . '/views/property.php',
-			array( 'properties' => $properties )
+			array(
+				'properties' => $properties,
+				'pagination' => self::get_pagination( $posts_per_page ),
+			)
 		);
 	}
 
@@ -181,7 +184,7 @@ class Model_Properties {
 		if ( array_key_exists( 'medium', $images ) ) {
 			return $images['medium'][0];
 		}
-		return TM_REAL_ESTATE_URI.'assets/image/placehold.png';
+		return TM_REAL_ESTATE_URI.'assets/images/placehold.png';
 	}
 
 	/**
@@ -216,5 +219,70 @@ class Model_Properties {
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * Get propeties pagination array
+	 *
+	 * @param  integer $posts_per_page properties per page.
+	 * @return array pagination.
+	 */
+	public static function get_pagination( $posts_per_page = 5 ) {
+		$args = array(
+			'base'               => '%_%',
+			'format'             => '?page=%#%',
+			'total'              => self::get_total_pages( $posts_per_page ),
+			'current'            => max( 1, get_query_var('page') ),
+			'show_all'           => False,
+			'end_size'           => 1,
+			'mid_size'           => 2,
+			'prev_next'          => True,
+			'prev_text'          => __('« Previous'),
+			'next_text'          => __('Next »'),
+			'type'               => 'array',
+			'add_args'           => False,
+			'add_fragment'       => '',
+			'before_page_number' => '',
+			'after_page_number'  => ''
+		);
+		return paginate_links( $args );
+	}
+
+	/**
+	 * Get total properties count
+	 *
+	 * @return total properties count.
+	 */
+	public static function get_total_count() {
+		$args = array(
+			'posts_per_page'   => -1,
+			'offset'           => 0,
+			'fields'           => 'ids',
+			'category'         => '',
+			'category_name'    => '',
+			'orderby'          => 'date',
+			'order'            => 'DESC',
+			'include'          => '',
+			'exclude'          => '',
+			'meta_key'         => '',
+			'meta_value'       => '',
+			'post_type'        => 'property',
+			'post_mime_type'   => '',
+			'post_parent'      => '',
+			'author'           => '',
+			'post_status'      => 'publish',
+			'suppress_filters' => true,
+		);
+		return count( get_posts( $args ) );
+	}
+
+	/**
+	 * Get total pages count
+	 *
+	 * @param  integer $posts_per_page properties per page.
+	 * @return total pages.
+	 */
+	public static function get_total_pages( $posts_per_page = 5 ) {
+		return ceil( self::get_total_count() / $posts_per_page );
 	}
 }

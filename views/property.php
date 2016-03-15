@@ -80,6 +80,13 @@
 
 			</article>
 		<?php endforeach; ?>
+		<?php if ( is_array( $__data['pagination'] ) && count( $__data['pagination'] ) ) : ?>
+			<ul class="pagination">
+				<?php foreach ( $__data['pagination'] as $el ) : ?>
+					<?php echo $el; ?>
+				<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
 	</div>
 
 <?php endif; ?>
