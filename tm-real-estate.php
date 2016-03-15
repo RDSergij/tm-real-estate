@@ -80,6 +80,8 @@ class TM_Real_Estate {
 		// Add ajax action
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
+
+		//$this->settings_reset();
 	}
 
 	/**
@@ -476,6 +478,8 @@ class TM_Real_Estate {
 		if ( empty( self::$default_options ) ) {
 			$this->generate_default_settings();
 		}
+
+		$this->set_default_page();
 
 		foreach ( self::$default_options as $section => $settings ) {
 			add_option( $section, $settings );
