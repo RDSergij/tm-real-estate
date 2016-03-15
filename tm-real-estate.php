@@ -367,7 +367,9 @@ class TM_Real_Estate {
 	}
 
 	/**
-	 * Reset default settings
+	 * Reset settings to default
+	 *
+	 * @return void
 	 */
 	public function settings_reset() {
 		$this->clear_settings();
@@ -375,6 +377,11 @@ class TM_Real_Estate {
 		wp_send_json( self::$default_options );
 	}
 
+	/**
+	 * Clear settings
+	 *
+	 * @return void
+	 */
 	private function clear_settings() {
 		$this->get_default_settings();
 		foreach ( self::$default_options as $section => $settings ) {
@@ -384,6 +391,8 @@ class TM_Real_Estate {
 
 	/**
 	 * Get default settings
+	 *
+	 * @return void
 	 */
 	public function get_default_settings() {
 		self::$default_options = get_option( 'tm-real-estate-default-settings' );
@@ -392,6 +401,11 @@ class TM_Real_Estate {
 		}
 	}
 
+	/**
+	 * Set default settings
+	 *
+	 * @return void
+	 */
 	private function set_default_page() {
 		if ( empty( self::$default_options ) ) {
 			return;
@@ -724,7 +738,7 @@ class TM_Real_Estate {
 		wp_localize_script( 'tm-real-state-settings-page', 'TMPageSettings', array(
 			'ajaxurl'				=> admin_url( 'admin-ajax.php' ),
 			'resetMessage'			=> __( 'Settings have been reseted' ),
-			'confirmResetMessage'	=> __( 'Are you sure?' )
+			'confirmResetMessage'	=> __( 'Are you sure?' ),
 		) );
 
 		wp_enqueue_style(

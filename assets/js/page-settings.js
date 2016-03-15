@@ -10,9 +10,11 @@ jQuery( document ).ready( function( $ ) {
 
 		psc.resetSettingsToDefault = function() {
 			jQuery( '.cherry-settings-page #reset-default-page' ).click( function() {
-				if ( ! confirm( window.TMPageSettings.confirmResetMessage ) ) return false;
+				if ( ! confirm( window.TMPageSettings.confirmResetMessage ) ) {
+					return false;
+				}
 				$.ajax({
-					type: "POST",
+					type: 'POST',
 					url: window.TMPageSettings.ajaxurl,
 					data: { 'action': 'tm_property_settings_reset' },
 					success: psc.setFormsValues,
@@ -23,9 +25,11 @@ jQuery( document ).ready( function( $ ) {
 
 		psc.setFormsValues = function( data ) {
 			var temp = [];
-			for( var key in data ) {
+			var id;
+			var key;
+			for ( key in data ) {
 				temp = data[ key ];
-				for( var id in temp ) {
+				for ( id in temp ) {
 					jQuery( '#form-' + key + ' #' + id ).val( temp[ id ] );
 				}
 			}
