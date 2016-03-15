@@ -24,15 +24,18 @@
 	<label id="property_status_label_1" for="property_status_input_1" >rent</label>
 	<input type="radio" class="form-radio" id="property_status_input_2" name="property[meta][status]" value="2">
 	<label id="property_status_label_2" for="property_status_input_2">sale</label>
-
+ 
 	<label class="" id="property_type_label" for="property_type_input"> Type </label>
 	<select class="form-dropdown" style="width:150px" id="property_type_input" name="property[type]">
-		<option value="">  </option>
-		<option value="Option 1"> Option 1 </option>
-		<option value="Option 2"> Option 2 </option>
-		<option value="Option 3"> Option 3 </option>
+	<option disabled selected value="">  </option>
+	<?php foreach ($__data as $type) { ?>
+		<optgroup label="<?php echo $type['name']; ?>">
+			<?php foreach ($type['child'] as $child) { ?>
+				<option value="<?php echo $child['term_id']; ?>"><?php echo $child['name']; ?></option>
+			<?php } ?>
+		</optgroup>
+	<?php } ?>
 	</select>
-
 	<label class="" id="property_bathrooms_label" for="property_bathrooms_input"> Bathrooms </label>
 	<input type="number" id="property_bathrooms_input"  min="0" max="10" name="property[meta][bathrooms]" value="">
 
