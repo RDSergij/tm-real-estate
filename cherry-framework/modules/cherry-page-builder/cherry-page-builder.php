@@ -130,7 +130,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 *
 		 * @return object
 		 */
-		public function make( $slug, $title, $parent = null ) {
+		public function make( string $slug, string $title, string $parent = null ) {
 			$page	= new Cherry_Page_Builder( $this->core, $this->args );
 
 			// Set the page properties.
