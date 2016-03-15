@@ -178,7 +178,7 @@ class Model_Properties {
 	 *
 	 * @return array
 	 */
-	public static function get_all_property_types(){
+	public static function get_all_property_types() {
 		return get_terms(
 			array( 'property-type' ),
 			array(
