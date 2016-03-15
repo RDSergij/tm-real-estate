@@ -59,7 +59,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 
 		/**
 		 * Current nonce name to check
-		 * 
+		 *
 		 * @var string
 		 */
 		public $nonce = 'cherry-admin-menu-nonce';
@@ -124,20 +124,13 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		/**
 		 * Set base data of page
 		 *
-		 * @param string $slug The page slug name.
-		 * @param string $title The page display title.
+		 * @param string $slug        The page slug name.
+		 * @param string $title       The page display title.
 		 * @param string/null $parent The parent's page slug if a subpage.
 		 * @return object
 		 */
 		public function make( $slug, $title, $parent = null ) {
 			$page	= new Cherry_Page_Builder( $this->core, $this->args );
-			$params	= compact( 'slug', 'title' );
-
-			foreach ( $params as $name => $param ) {
-				if ( ! is_string( $param ) ) {
-					throw new PageException( 'Invalid page parameter " ' . $name . ' " ' );
-				}
-			}
 
 			// Set the page properties.
 			$page->data['slug']		= $slug;
@@ -160,7 +153,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * the default page properties and add its own
 		 * properties.
 		 *
-		 * @param array $params      Base parameter
+		 * @param array $params      Base parameter.
 		 * @return \Themosis\Page\PageBuilder
 		 */
 		public function set( array $params = array() ) {
@@ -216,7 +209,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		/**
 		 * Add custom sections for your settings.
 		 *
-		 * @param array $sections    List of sections
+		 * @param array $sections    List of sections.
 		 * @return void
 		 */
 		public function add_sections( array $sections = array() ) {
@@ -287,7 +280,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		/**
 		 * Handle section display of the Settings API.
 		 *
-		 * @param array $args     Page parameter
+		 * @param array $args     Page parameter.
 		 * @return void
 		 */
 		public function display_sections( array $args ) {
@@ -310,7 +303,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		/**
 		 * Handle setting display of the Settings API.
 		 *
-		 * @param array $setting     Fields setting
+		 * @param array $setting     Fields setting.
 		 * @return void
 		 */
 		public function display_settings( $setting ) {

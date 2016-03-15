@@ -29,7 +29,7 @@ jQuery( document ).ready( function( $ ) {
 			});
 		};
 
-		pb.noticeCreate = function( type, message ){
+		pb.noticeCreate = function( type, message ) {
 			var
 				notice = $( '<div class="notice-box ' + type + '-notice"><span class="dashicons"></span><div class="inner">' + message + '</div></div>' ),
 				rightDelta = 0,
@@ -38,25 +38,30 @@ jQuery( document ).ready( function( $ ) {
 			jQuery( 'body' ).prepend( notice );
 			reposition();
 			rightDelta = -1 * ( notice.outerWidth( true ) + 10 );
-			notice.css({'right' : rightDelta });
+			notice.css( { 'right': rightDelta } );
 
-			timeoutId = setTimeout( function () { notice.css( { 'right' : 10 } ).addClass( 'show-state' ) }, 100 );
-			timeoutId = setTimeout( function () {
-				rightDelta = -1*(notice.outerWidth( true ) + 10);
+			timeoutId = setTimeout( function() {
+				notice.css( { 'right': 10 } ).addClass( 'show-state' );
+			}, 100 );
+			timeoutId = setTimeout( function() {
+				rightDelta = -1 * ( notice.outerWidth( true ) + 10 );
 				notice.css( { right: rightDelta } ).removeClass( 'show-state' );
 			}, 4000 );
-			timeoutId = setTimeout( function () { notice.remove(); clearTimeout( timeoutId ); }, 4500 );
+			timeoutId = setTimeout( function() {
+				notice.remove();
+				clearTimeout( timeoutId );
+			}, 4500 );
 
-				function reposition(){
-					var
-						topDelta = 100;
-					$( '.notice-box' ).each(function( index ) {
-						$( this ).css( { top: topDelta } );
-						topDelta += $( this ).outerHeight( true );
-					})
-				}
-		}
-	}
+			function reposition() {
+				var
+					topDelta = 100;
+				$( '.notice-box' ).each(function( index ) {
+					$( this ).css( { top: topDelta } );
+					topDelta += $( this ).outerHeight( true );
+				});
+			}
+		};
+	};
 
 	var pb = new pageBuilder();
 	pb.init();
