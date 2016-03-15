@@ -301,7 +301,7 @@ class Model_Properties {
 	/**
 	 * Get total pages count
 	 *
-	 * @param  integer $posts_per_page properties per page.
+	 * @param type integer $posts_per_page properties per page.
 	 * @return total pages.
 	 */
 	public static function get_total_pages( $posts_per_page = 5 ) {

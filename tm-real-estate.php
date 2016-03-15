@@ -286,6 +286,10 @@ class TM_Real_Estate {
 							'priority'	=> 999,
 							'autoload'	=> true,
 						),
+						'cherry-taxonomies' => array(
+							'priority'	=> 999,
+							'autoload'	=> true,
+						),
 					),
 				)
 			);
@@ -293,7 +297,15 @@ class TM_Real_Estate {
 			$this->add_admin_menu_page();
 			$this->add_post_type();
 			$this->add_user_role();
+			$this->add_taxonomies();
 		}
+	}
+
+	/**
+	 * Add taxonomies to wp
+	 */
+	public function add_taxonomies() {
+		$this->core->modules['cherry-taxonomies']->create( 'Property', 'property', 'Properties' )->set_slug( 'property-type' )->init();
 	}
 
 	/**
@@ -327,32 +339,6 @@ class TM_Real_Estate {
 	 * @return void
 	 */
 	public function taxonomy_properties_types() {
-
-		// Create taxonomy Property Type
-		$labels = array(
-			'name'              => __( 'Properties Types', 'tm-real-estate' ),
-			'singular_name'     => __( 'Property Type', 'tm-real-estate' ),
-			'search_items'      => __( 'Search Properties Types' ),
-			'all_items'         => __( 'All Properties Types' ),
-			'parent_item'       => __( 'Parent Property Type' ),
-			'parent_item_colon' => __( 'Parent Property Type:' ),
-			'edit_item'         => __( 'Edit Property Type' ),
-			'update_item'       => __( 'Update Property Type' ),
-			'add_new_item'      => __( 'Add New Property Type' ),
-			'new_item_name'     => __( 'New Property Type Name' ),
-			'menu_name'         => __( 'Properties Types' ),
-		);
-
-		$args = array(
-			'hierarchical'      => true,
-			'labels'            => $labels,
-			'show_ui'           => true,
-			'show_admin_column' => true,
-			'query_var'         => true,
-			'rewrite'           => array( 'slug' => 'property' ),
-		);
-
-		register_taxonomy( 'property-type', array( 'property' ), $args );
 
 		// Create terms for taxonomy Property Type
 		$terms = array(
@@ -431,7 +417,7 @@ class TM_Real_Estate {
 
 		$page_parameter['post_title']	= __( 'Property item', 'tm-real-estate' );
 		$page_parameter['post_content']	= '[tm-real-estate-item]'; // must be change
-		self::$default_options['tm-properties-main-settings']['property-item-page']	= wp_insert_post( $page_parameter );
+		self::$default_options['tm-properties-main-settings']['property-item-page']				= wp_insert_post( $page_parameter );
 
 		$page_parameter['post_title']	= __( 'Search result', 'tm-real-estate' );
 		$page_parameter['post_content']	= '[tm-real-estate-search]'; // must be change
