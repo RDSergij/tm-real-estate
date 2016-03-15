@@ -1,0 +1,66 @@
+jQuery( document ).ready( function( $ ) {
+
+	var pageSettingsCustom = function() {
+
+		var psc = this;
+
+		psc.init = function() {
+			psc.resetSettingsToDefault();
+		};
+
+		psc.resetSettingsToDefault = function() {
+			jQuery( '.cherry-settings-page #reset-default-page' ).click( function() {
+				$.ajax({
+					type: "POST",
+					url: window.TMPageSettings.ajaxurl,
+					data: { 'action': 'tm_property_settings_reset' },
+					success: psc.setFormsValues,
+					dataType: 'json'
+				});
+			});
+		};
+
+		psc.setFormsValues = function( data ) {
+			console.log( data )
+			data.forEach(function(item, index, data) {
+				alert( index + ": " + item + " (массив:" + data + ")" );
+			});
+		};
+
+		psc.noticeCreate = function( type, message ) {
+			var
+				notice = $( '<div class="notice-box ' + type + '-notice"><span class="dashicons"></span><div class="inner">' + message + '</div></div>' ),
+				rightDelta = 0,
+				timeoutId;
+
+			jQuery( 'body' ).prepend( notice );
+			reposition();
+			rightDelta = -1 * ( notice.outerWidth( true ) + 10 );
+			notice.css( { 'right': rightDelta } );
+
+			timeoutId = setTimeout( function() {
+				notice.css( { 'right': 10 } ).addClass( 'show-state' );
+			}, 100 );
+			timeoutId = setTimeout( function() {
+				rightDelta = -1 * ( notice.outerWidth( true ) + 10 );
+				notice.css( { right: rightDelta } ).removeClass( 'show-state' );
+			}, 4000 );
+			timeoutId = setTimeout( function() {
+				notice.remove();
+				clearTimeout( timeoutId );
+			}, 4500 );
+
+			function reposition() {
+				var
+					topDelta = 100;
+				$( '.notice-box' ).each(function() {
+					$( this ).css( { top: topDelta } );
+					topDelta += $( this ).outerHeight( true );
+				});
+			}
+		};
+	};
+
+	var psc = new pageSettingsCustom();
+	psc.init();
+} );

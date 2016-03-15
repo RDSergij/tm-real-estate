@@ -1,3 +1,14 @@
+.cherry-settings-page {
+	.description {
+		&:after {
+			content: ' ';
+			clear: both;
+			height: 10px;
+			width: 100%;
+		}
+	}
+}
+
 .notice-box{
 	background: #222222;
 	position: fixed;
