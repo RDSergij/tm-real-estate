@@ -1,14 +1,6 @@
 <?php
 /**
  * Plugin Name: TM Real Estate
-<<<<<<< HEAD
- * Description: 
- * Version: 1.0
- * Author: Guriev Eugen and Serhii Osadchyi
- * Author URI: http://www.templatemonster.com/
- * License: GPLv2 or later
- * Text Domain: tm-real-estate
-=======
  * Plugin URI:  http://www.templatemonster.com/
  * Description: Plugin for adding real estate functionality to the site.
  * Version:     1.0.0
@@ -22,7 +14,6 @@
  * @package  TM Real Estate
  * @author   Guriev Eugen & Sergyj Osadchij
  * @license  GPL-2.0+
->>>>>>> master
  */
 
 /**
@@ -422,7 +413,7 @@ class TM_Real_Estate {
 
 		$page_parameter['post_title']	= __( 'Property item', 'tm-real-estate' );
 		$page_parameter['post_content']	= '[tm-real-estate-item]'; // must be change
-		self::$default_options['tm-properties-main-settings']['property-item-page']	= wp_insert_post( $page_parameter );
+		self::$default_options['tm-properties-main-settings']['property-item-page']				= wp_insert_post( $page_parameter );
 
 		$page_parameter['post_title']	= __( 'Search result', 'tm-real-estate' );
 		$page_parameter['post_content']	= '[tm-real-estate-search]'; // must be change
@@ -446,174 +437,174 @@ class TM_Real_Estate {
 
 		$sections = array(
 
-				'tm-properties-main-settings' => array(
-					'slug'			=> 'tm-properties-main-settings',
-					'name'			=> __( 'Main', 'tm-real-estate' ),
-					'description'	=> '',
+			'tm-properties-main-settings' => array(
+				'slug'			=> 'tm-properties-main-settings',
+				'name'			=> __( 'Main', 'tm-real-estate' ),
+				'description'	=> '',
+			),
+
+			'tm-properties-contact-form' => array(
+				'slug'			=> 'tm-properties-contact-form',
+				'name'			=> __( 'Contact form', 'tm-real-estate' ),
+			),
+
+			'tm-properties-submission-form' => array(
+				'slug'			=> 'tm-properties-submission-form',
+				'name'			=> __( 'Submission form', 'tm-real-estate' ),
+			),
+
+		);
+
+		$settings['tm-properties-main-settings'][] = array(
+			'type'			=> 'select',
+			'slug'			=> 'properties-list-page',
+			'title'			=> __( 'Properties list page', 'tm-real-estate' ),
+			'field'			=> array(
+				'id'			=> 'properties-list-page',
+				'size'			=> 1,
+				'value'			=> '',
+				'options'		=> $this->get_pages_list(),
+			),
+		);
+
+		$settings['tm-properties-main-settings'][] = array(
+			'type'			=> 'select',
+			'slug'			=> 'property-item-page',
+			'title'			=> __( 'Property item page', 'tm-real-estate' ),
+			'field'			=> array(
+				'id'			=> 'property-item-page',
+				'size'			=> 1,
+				'value'			=> '',
+				'options'		=> $this->get_pages_list(),
+			),
+		);
+
+		$settings['tm-properties-main-settings'][] = array(
+			'type'			=> 'select',
+			'slug'			=> 'properties-search-result-page',
+			'title'			=> __( 'Search result page', 'tm-real-estate' ),
+			'field'			=> array(
+				'id'			=> 'properties-search-result',
+				'size'			=> 1,
+				'value'			=> '',
+				'options'		=> $this->get_pages_list(),
+			),
+		);
+
+		$settings['tm-properties-main-settings'][] = array(
+			'type'			=> 'select',
+			'slug'			=> 'properties-submission-page',
+			'title'			=> __( 'Submission property page', 'tm-real-estate' ),
+			'field'			=> array(
+				'id'			=> 'properties-submission-page',
+				'size'			=> 1,
+				'value'			=> '',
+				'options'		=> $this->get_pages_list(),
+			),
+		);
+
+		$settings['tm-properties-main-settings'][] = array(
+			'slug'	=> 'reset-default-page',
+			'title'	=> '', //__( 'Reset to default page', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'type'		=> 'button',
+				'id'		=> 'reset-default-page',
+				'class'		=> 'button button-warning pull-right',
+			),
+		);
+
+		$settings['tm-properties-main-settings'][] = array(
+			'type'			=> 'select',
+			'slug'			=> 'area-unit',
+			'title'			=> __( 'Area unit', 'tm-real-estate' ),
+			'field'			=> array(
+				'id'			=> 'area-unit',
+				'size'			=> 1,
+				'value'			=> 'feets',
+				'options'		=> array(
+					'feets'	=> 'feets',
+					'meters'	=> 'meters',
 				),
-
-				'tm-properties-contact-form' => array(
-					'slug'			=> 'tm-properties-contact-form',
-					'name'			=> __( 'Contact form', 'tm-real-estate' ),
-				),
-
-				'tm-properties-submission-form' => array(
-					'slug'			=> 'tm-properties-submission-form',
-					'name'			=> __( 'Submission form', 'tm-real-estate' ),
-				),
-
-			);
+			),
+		);
 
 		$settings['tm-properties-main-settings'][] = array(
-					'type'			=> 'select',
-					'slug'			=> 'properties-list-page',
-					'title'			=> __( 'Properties list page', 'tm-real-estate' ),
-					'field'			=> array(
-						'id'			=> 'properties-list-page',
-						'size'			=> 1,
-						'value'			=> '',
-						'options'		=> $this->get_pages_list(),
-					),
-				);
-
-		$settings['tm-properties-main-settings'][] = array(
-					'type'			=> 'select',
-					'slug'			=> 'property-item-page',
-					'title'			=> __( 'Property item page', 'tm-real-estate' ),
-					'field'			=> array(
-						'id'			=> 'property-item-page',
-						'size'			=> 1,
-						'value'			=> '',
-						'options'		=> $this->get_pages_list(),
-					),
-				);
-
-		$settings['tm-properties-main-settings'][] = array(
-					'type'			=> 'select',
-					'slug'			=> 'properties-search-result-page',
-					'title'			=> __( 'Search result page', 'tm-real-estate' ),
-					'field'			=> array(
-						'id'			=> 'properties-search-result',
-						'size'			=> 1,
-						'value'			=> '',
-						'options'		=> $this->get_pages_list(),
-					),
-				);
-
-		$settings['tm-properties-main-settings'][] = array(
-					'type'			=> 'select',
-					'slug'			=> 'properties-submission-page',
-					'title'			=> __( 'Submission property page', 'tm-real-estate' ),
-					'field'			=> array(
-						'id'			=> 'properties-submission-page',
-						'size'			=> 1,
-						'value'			=> '',
-						'options'		=> $this->get_pages_list(),
-					),
-				);
-
-		$settings['tm-properties-main-settings'][] = array(
-				'slug'	=> 'reset-default-page',
-				'title'	=> '', //__( 'Reset to default page', 'tm-real-estate' ),
-				'type'	=> 'text',
-				'field'	=> array(
-						'type'		=> 'button',
-						'id'		=> 'reset-default-page',
-						'class'		=> 'button button-warning pull-right',
-					),
-			);
-
-		$settings['tm-properties-main-settings'][] = array(
-					'type'			=> 'select',
-					'slug'			=> 'area-unit',
-					'title'			=> __( 'Area unit', 'tm-real-estate' ),
-					'field'			=> array(
-						'id'			=> 'area-unit',
-						'size'			=> 1,
-						'value'			=> 'feets',
-						'options'		=> array(
-							'feets'	=> 'feets',
-							'meters'	=> 'meters',
-						),
-					),
-				);
-
-		$settings['tm-properties-main-settings'][] = array(
-				'slug'	=> 'сurrency-sign',
-				'title'	=> __( 'Currency sign', 'tm-real-estate' ),
-				'type'	=> 'text',
-				'field'	=> array(
-						'id'			=> 'сurrency-sign',
-						'value'			=> '$',
-						'placeholder'	=> '$',
-					),
-			);
+			'slug'	=> 'сurrency-sign',
+			'title'	=> __( 'Currency sign', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'сurrency-sign',
+				'value'			=> '$',
+				'placeholder'	=> '$',
+			),
+		);
 
 		$settings['tm-properties-contact-form'][] = array(
-				'slug'	=> 'mail-subject',
-				'title'	=> __( 'Subject of email', 'tm-real-estate' ),
-				'type'	=> 'text',
-				'field'	=> array(
-						'id'			=> 'mail-subject',
-						'value'			=> '',
-						'placeholder'	=> 'subject',
-					),
-			);
+			'slug'	=> 'mail-subject',
+			'title'	=> __( 'Subject of email', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'mail-subject',
+				'value'			=> '',
+				'placeholder'	=> 'subject',
+			),
+		);
 
 		$settings['tm-properties-contact-form'][] = array(
-				'slug'	=> 'success-message',
-				'title'	=> __( 'Success message', 'tm-real-estate' ),
-				'type'	=> 'text',
-				'field'	=> array(
-						'id'			=> 'success-message',
-						'value'			=> '',
-						'placeholder'	=> 'successfully',
-					),
-			);
+			'slug'	=> 'success-message',
+			'title'	=> __( 'Success message', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'success-message',
+				'value'			=> '',
+				'placeholder'	=> 'successfully',
+			),
+		);
 
 		$settings['tm-properties-contact-form'][] = array(
-				'slug'	=> 'failed-message',
-				'title'	=> __( 'Failed message', 'tm-real-estate' ),
-				'type'	=> 'text',
-				'field'	=> array(
-						'id'			=> 'failed-message',
-						'value'			=> '',
-						'placeholder'	=> 'failed',
-					),
-			);
+			'slug'	=> 'failed-message',
+			'title'	=> __( 'Failed message', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'failed-message',
+				'value'			=> '',
+				'placeholder'	=> 'failed',
+			),
+		);
 
 		$settings['tm-properties-submission-form'][] = array(
-				'slug'	=> 'mail-subject',
-				'title'	=> __( 'Subject of email', 'tm-real-estate' ),
-				'type'	=> 'text',
-				'field'	=> array(
-						'id'			=> 'mail-subject',
-						'value'			=> '',
-						'placeholder'	=> 'subject',
-					),
-			);
+			'slug'	=> 'mail-subject',
+			'title'	=> __( 'Subject of email', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'mail-subject',
+				'value'			=> '',
+				'placeholder'	=> 'subject',
+			),
+		);
 
 		$settings['tm-properties-submission-form'][] = array(
-				'slug'	=> 'success-message',
-				'title'	=> __( 'Success message', 'tm-real-estate' ),
-				'type'	=> 'text',
-				'field'	=> array(
-						'id'			=> 'success-message',
-						'value'			=> '',
-						'placeholder'	=> 'successfully',
-					),
-			);
+			'slug'	=> 'success-message',
+			'title'	=> __( 'Success message', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'success-message',
+				'value'			=> '',
+				'placeholder'	=> 'successfully',
+			),
+		);
 
 		$settings['tm-properties-submission-form'][] = array(
-				'slug'	=> 'failed-message',
-				'title'	=> __( 'Failed message', 'tm-real-estate' ),
-				'type'	=> 'text',
-				'field'	=> array(
-						'id'			=> 'failed-message',
-						'value'			=> '',
-						'placeholder'	=> 'failed',
-					),
-			);
+			'slug'	=> 'failed-message',
+			'title'	=> __( 'Failed message', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'failed-message',
+				'value'			=> '',
+				'placeholder'	=> 'failed',
+			),
+		);
 
 		$page = new Cherry_Page_Builder( $this->core );
 

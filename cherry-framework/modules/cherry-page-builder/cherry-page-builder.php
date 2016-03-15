@@ -124,7 +124,6 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @param string $slug The page slug name.
 		 * @param string $title The page display title.
 		 * @param string $parent The parent's page slug if a subpage.
-		 * @param IRenderable $view The page main view file.
 		 * @throws PageException
 		 * @return \Themosis\Page\PageBuilder
 		 */
@@ -139,9 +138,9 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 			}
 
 			// Set the page properties.
-			$page->data['slug'] = $slug;
-			$page->data['title'] = $title;
-			$page->data['parent'] = $parent;
+			$page->data['slug']		= $slug;
+			$page->data['title']	= $title;
+			$page->data['parent']	= $parent;
 			$page->data['args'] = array(
 				'capability'    => 'manage_options',
 				'icon'          => '',
