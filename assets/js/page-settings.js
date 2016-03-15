@@ -10,6 +10,7 @@ jQuery( document ).ready( function( $ ) {
 
 		psc.resetSettingsToDefault = function() {
 			jQuery( '.cherry-settings-page #reset-default-page' ).click( function() {
+				if ( ! confirm( window.TMPageSettings.confirmResetMessage ) ) return false;
 				$.ajax({
 					type: "POST",
 					url: window.TMPageSettings.ajaxurl,
@@ -21,10 +22,14 @@ jQuery( document ).ready( function( $ ) {
 		};
 
 		psc.setFormsValues = function( data ) {
-			console.log( data )
-			data.forEach(function(item, index, data) {
-				alert( index + ": " + item + " (массив:" + data + ")" );
-			});
+			var temp = [];
+			for( var key in data ) {
+				temp = data[ key ];
+				for( var id in temp ) {
+					jQuery( '#form-' + key + ' #' + id ).val( temp[ id ] );
+				}
+			}
+			psc.noticeCreate( 'info', window.TMPageSettings.resetMessage );
 		};
 
 		psc.noticeCreate = function( type, message ) {

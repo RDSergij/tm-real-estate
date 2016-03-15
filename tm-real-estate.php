@@ -722,7 +722,9 @@ class TM_Real_Estate {
 		);
 
 		wp_localize_script( 'tm-real-state-settings-page', 'TMPageSettings', array(
-			'ajaxurl'			=> admin_url( 'admin-ajax.php' )
+			'ajaxurl'				=> admin_url( 'admin-ajax.php' ),
+			'resetMessage'			=> __( 'Settings have been reseted' ),
+			'confirmResetMessage'	=> __( 'Are you sure?' )
 		) );
 
 		wp_enqueue_style(
