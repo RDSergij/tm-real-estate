@@ -425,7 +425,7 @@ class TM_Real_Estate {
 
 		$page_parameter['post_title']	= __( 'Property item', 'tm-real-estate' );
 		$page_parameter['post_content']	= '[tm-real-estate-item]'; // must be change
-		self::$default_options['tm-properties-main-settings']['property-item-page']	= wp_insert_post( $page_parameter );
+		self::$default_options['tm-properties-main-settings']['property-item-page']				= wp_insert_post( $page_parameter );
 
 		$page_parameter['post_title']	= __( 'Search result', 'tm-real-estate' );
 		$page_parameter['post_content']	= '[tm-real-estate-search]'; // must be change
