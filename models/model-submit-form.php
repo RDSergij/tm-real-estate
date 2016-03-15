@@ -64,9 +64,8 @@
 	public function insert_attacment( $file, $post_id ) {
 	
 		require_once( ABSPATH . 'wp-admin/includes/admin.php' );
-		$file_return = wp_handle_upload( $file, array('test_form' => false ) );
+		$file_return = wp_handle_upload( $file, array( 'test_form' => false ) );
 		if( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
-			echo 1;
 			return false;
 		} else {
 			$filename = $file_return['file'];
@@ -77,8 +76,8 @@
 				'post_status' => 'inherit',
 				'guid' => $file_return['url']
 			);
-			$attachment_id = wp_insert_attachment( $attachment, $file_return['url'], $post_id);
-			require_once(ABSPATH . 'wp-admin/includes/image.php');
+			$attachment_id = wp_insert_attachment( $attachment, $file_return['url'], $post_id );
+			require_once( ABSPATH . 'wp-admin/includes/image.php' );
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
 
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
@@ -90,23 +89,18 @@
 	}
 
 	public function custom_taxonomy_walker( $taxonomy, $parent = 0 ) {
-
-		$terms = get_terms($taxonomy, array('parent' => $parent, 'hide_empty' => false));
+		$terms = get_terms( $taxonomy, array('parent' => $parent, 'hide_empty' => false ) );
 		if ( count( $terms ) > 0) {
-
 			foreach ( $terms as $term ) {
-				$child = Model_Submit_Form::custom_taxonomy_walker($taxonomy, $term->term_id); 
+				$child = Model_Submit_Form::custom_taxonomy_walker( $taxonomy, $term->term_id ); 
 				$types[] = array(
 					'term_id' => $term->term_id,
 					'name' => $term->name,
 					'child' => $child,
 					);
 			}
-
-			 
 			return $types;
 		}
-		
 		return false;
 	}
 }
