@@ -59,7 +59,8 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 
 		/**
 		 * Current nonce name to check
-		 * @var null
+		 * 
+		 * @var string
 		 */
 		public $nonce = 'cherry-admin-menu-nonce';
 
@@ -101,10 +102,10 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 			) );
 
 			$this->views = $this->core->get_core_dir() . 'modules/' . $this->module_slug . '/views/';
-			add_action('admin_enqueue_scripts', array( $this, 'assets') );
+			add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
 		}
 
-		/*
+		/**
 		 * Add admin menu page
 		 */
 		function add_admin_page() {
@@ -121,15 +122,16 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		}
 
 		/**
+		 * Set base data of page
+		 *
 		 * @param string $slug The page slug name.
 		 * @param string $title The page display title.
-		 * @param string $parent The parent's page slug if a subpage.
-		 * @throws PageException
-		 * @return \Themosis\Page\PageBuilder
+		 * @param string/null $parent The parent's page slug if a subpage.
+		 * @return object
 		 */
 		public function make( $slug, $title, $parent = null ) {
-			$page = new Cherry_Page_Builder( $this->core, $this->args );
-			$params = compact('slug', 'title');
+			$page	= new Cherry_Page_Builder( $this->core, $this->args );
+			$params	= compact( 'slug', 'title' );
 
 			foreach ( $params as $name => $param ) {
 				if ( ! is_string( $param ) ) {
@@ -146,7 +148,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				'icon'          => '',
 				'position'      => null,
 				'tabs'          => true,
-				'menu'          => $title
+				'menu'          => $title,
 			);
 			$page->data['rules'] = [];
 
@@ -158,16 +160,16 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * the default page properties and add its own
 		 * properties.
 		 *
-		 * @param array $params
+		 * @param array $params      Base parameter
 		 * @return \Themosis\Page\PageBuilder
 		 */
 		public function set( array $params = array() ) {
 			$this->args = $params;
-	
+
 			$this->add_sections( $params['sections'] );
 			$this->add_settings( $params['settings'] );
 
-			add_action('admin_menu', array( $this, 'build' ) );
+			add_action( 'admin_menu', array( $this, 'build' ) );
 
 			return $this;
 		}
@@ -180,9 +182,9 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 */
 		public function build() {
 			if ( ! is_null( $this->data['parent'] ) ) {
-				add_submenu_page( $this->data['parent'], $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'));
+				add_submenu_page( $this->data['parent'], $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array( $this, 'render' ) );
 			} else {
-				add_menu_page( $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array($this, 'render'), $this->data['args']['icon'], $this->args['position']);
+				add_menu_page( $this->data['title'], $this->data['args']['menu'], $this->data['args']['capability'], $this->data['slug'], array( $this, 'render' ), $this->data['args']['icon'], $this->args['position'] );
 			}
 		}
 
@@ -214,8 +216,8 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		/**
 		 * Add custom sections for your settings.
 		 *
-		 * @param array $sections
-		 * @return \Themosis\Page\PageBuilder
+		 * @param array $sections    List of sections
+		 * @return void
 		 */
 		public function add_sections( array $sections = array() ) {
 			$this->sections = $sections;
@@ -227,7 +229,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @return bool
 		 */
 		public function has_sections() {
-			return count($this->sections) ? true : false;
+			return count( $this->sections ) ? true : false;
 		}
 
 		/**
@@ -236,7 +238,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @return bool
 		 */
 		public function has_settings() {
-			return count($this->settings) ? true : false;
+			return count( $this->settings ) ? true : false;
 		}
 
 		/**
@@ -250,7 +252,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		public function add_settings( array $settings = array() ) {
 			$this->settings = $settings;
 
-			add_action('admin_init', array( $this, 'install_settings' ) );
+			add_action( 'admin_init', array( $this, 'install_settings' ) );
 
 			return $this;
 		}
@@ -273,9 +275,9 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 
 			if ( $this->has_settings() ) {
 				foreach ( $this->settings as $section => $settings ) {
-					foreach( $settings as &$setting ) {
+					foreach ( $settings as &$setting ) {
 						$setting['section'] = $section;
-						add_settings_field( $setting['slug'], $setting['title'], array( $this, 'display_settings' ), $section, $section, $setting);
+						add_settings_field( $setting['slug'], $setting['title'], array( $this, 'display_settings' ), $section, $section, $setting );
 					}
 					register_setting( $section, $section );
 				}
@@ -285,7 +287,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		/**
 		 * Handle section display of the Settings API.
 		 *
-		 * @param array $args
+		 * @param array $args     Page parameter
 		 * @return void
 		 */
 		public function display_sections( array $args ) {
@@ -308,7 +310,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		/**
 		 * Handle setting display of the Settings API.
 		 *
-		 * @param array $setting
+		 * @param array $setting     Fields setting
 		 * @return void
 		 */
 		public function display_settings( $setting ) {

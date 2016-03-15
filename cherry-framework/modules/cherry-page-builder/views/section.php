@@ -1,7 +1,7 @@
 <?php
 /**
  * View for section of settings
- * 
+ *
  * @package  TM Real Estate
  * @author   Guriev Eugen & Sergyj Osadchij
  * @license  GPL-2.0+
