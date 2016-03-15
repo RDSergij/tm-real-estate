@@ -59,6 +59,12 @@ class TM_Real_Estate {
 
 		// Add tm-re-properties shortcode
 		add_shortcode( 'tm-re-properties', array( 'Model_Properties', 'shortcode_properties' ) );
+
+		// Add tm-submit-form shortcode
+		add_shortcode( 'tm-submit-form', array( 'Model_Submit_Form', 'shortcode_submit_form' ) );
+		
+		// Add ajax action
+		add_action( 'after_setup_theme', array( 'Model_Submit_Form', 'register_ajax' ), 20 );
 	}
 
 	/**
@@ -67,12 +73,13 @@ class TM_Real_Estate {
 	public function load_models() {
 		$models = array(
 			'Model_Main',
-			'Model_Properties'
+			'Model_Properties',
+			'Model_Submit_Form',
 		);
 
 		foreach ( $models as $model ) {
 			if ( ! class_exists( $model ) ) {
-				$path = 'models'.DIRECTORY_SEPARATOR.str_replace( '_', '-', $model ).'.php';
+				$path = 'models'.DIRECTORY_SEPARATOR.str_replace( '_', '-', strtolower ( $model ) ).'.php';
 				require_once( $path );
 			}
 		}

@@ -67,4 +67,27 @@ class Model_Properties {
 			array( 'properties' => $properties )
 		);
 	}
+		/**
+	 * Add new properties
+	 *
+	 * @param  [type] $atts attributes.
+	 * @return html code.
+	 */
+	public static function add_property( $attr ) {
+		
+		if ( current_user_can('administrator') || current_user_can('re_agent') ) {
+			$property_status = 'publish';
+		} else {
+			$property_status = 'pending';
+		}
+		$property = array(
+			'post_title'     => $attr['title'],
+			'post_author'    => get_current_user_id(),
+			'post_content'   => $attr['description'],
+			'post_status'    => $property_status,
+			'post_type'      => 'property',
+			);
+		$property = sanitize_post($property, 'db');
+		return wp_insert_post($property);
+	}
 }
