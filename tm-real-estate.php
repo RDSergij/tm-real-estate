@@ -347,6 +347,7 @@ class TM_Real_Estate {
 
 		register_taxonomy( 'property-type', array( 'property' ), $args );
 
+
 		// Create terms for taxonomy Property Type
 		$terms = array(
 			'Commercial'	=> array( 'slug' => 'commercial', 'parent' => null ),
