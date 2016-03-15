@@ -54,8 +54,8 @@ class Cherry_Taxonomy {
 	 * Cherry taxonomy
 	 *
 	 * @param [type] $single         name.
-	 * @param string $post_type_slug post type slug.
-	 * @param string $plural         name.
+	 * @param [type] string $post_type_slug post type slug.
+	 * @param [type] string $plural         name.
 	 * @param array  $args           arguments.
 	 */
 	public function __construct( $single, $post_type_slug = 'post', $plural = '', $args = array() ) {
@@ -102,7 +102,7 @@ class Cherry_Taxonomy {
 	/**
 	 * Set plural property
 	 *
-	 * @param string $plural property.
+	 * @param [type] string $plural property.
 	 * @return Cherry_Taxonomy object
 	 */
 	public function set_plural( $plural = '' ) {

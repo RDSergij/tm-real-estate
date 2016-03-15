@@ -67,8 +67,8 @@ class Cherry_Taxonomies implements I_Module {
 	 * Create new Post Type.
 	 *
 	 * @param  [type] $single         name.
-	 * @param  string $post_type_slug post types slug.
-	 * @param  string $plural         name.
+	 * @param  [type] string $post_type_slug post types slug.
+	 * @param  [type] string $plural         name.
 	 * @param  array  $args           arguments.
 	 * @return Cherry_Post_Type
 	 */
