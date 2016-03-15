@@ -144,7 +144,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				'tabs'          => true,
 				'menu'          => $title,
 			);
-			$page->data['rules'] = [];
+			$page->data['rules'] = array();
 
 			return $page;
 		}
