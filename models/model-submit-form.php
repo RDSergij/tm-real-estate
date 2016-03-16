@@ -33,8 +33,8 @@
 			)
 		);
 
-		$terms = Model_Submit_Form::custom_taxonomy_walker( 'property-type' );
-		
+		 $terms = get_terms( 'property-type' );
+		var_dump(get_terms( 'property-type' ));
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . '/views/submit-form.php',

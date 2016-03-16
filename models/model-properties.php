@@ -72,7 +72,7 @@ class Model_Properties {
 		$properties = (array) self::get_properties( $posts_per_page );
 
 		return Cherry_Core::render_view(
-			TM_REAL_ESTATE_DIR . '/views/property.php',
+			TM_REAL_ESTATE_DIR . 'views/property.php',
 			array(
 				'properties' => $properties,
 				'pagination' => self::get_pagination( $posts_per_page ),
@@ -102,6 +102,22 @@ class Model_Properties {
 		$property = sanitize_post($property, 'db');
 		return wp_insert_post($property);
 	}
+	/**
+	 * Shortcode tm-re-search-form
+	 *
+	 * @param  [type] $atts attributes.
+	 * @return html code.
+	 */
+	public static function shortcode_search_form( $atts ) {
+		return Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/search-form.php',
+			array(
+				'property_statuses' => self::get_allowed_property_statuses(),
+				'property_types'    => self::get_all_property_types(),
+			)
+		);
+	}
+
 	/**
 	 * Get property price
 	 *
@@ -176,6 +192,21 @@ class Model_Properties {
 		return array(
 			'rent' => __( 'Rent', 'tm-real-estate' ),
 			'sale' => __( 'Sale', 'tm-real-estate' ),
+		);
+	}
+
+	/**
+	 * Get all property types
+	 *
+	 * @return array
+	 */
+	public static function get_all_property_types() {
+		return get_terms(
+			array( 'property-type' ),
+			array(
+				'hide_empty' => false,
+				'orderby'    => 'term_group',
+			)
 		);
 	}
 
