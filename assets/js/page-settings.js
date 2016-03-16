@@ -25,6 +25,7 @@ jQuery( document ).ready( function( $ ) {
 
 		psc.gen_page_list = function( pagesList ) {
 			var options = '';
+			var id;
 			for ( id in pagesList ) {
 				options = options + '<option value="' + id + '">' + pagesList[ id ] + '</options>';
 			}
