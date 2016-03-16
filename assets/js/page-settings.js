@@ -46,8 +46,8 @@ jQuery( document ).ready( function( $ ) {
 			var temp			= [];
 			var id;
 			var key;
-			var pagesList		= data[ 'pagesList' ];
-			var defaultOptions = data[ 'defaultOptions' ];
+			var pagesList		= data.pagesList;
+			var defaultOptions	= data.defaultOptions;
 			psc.set_page_list( pagesList );
 			for ( key in defaultOptions ) {
 				temp = defaultOptions[ key ];
