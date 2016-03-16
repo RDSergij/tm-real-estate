@@ -336,7 +336,6 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @return void
 		 */
 		public function assets() {
-			wp_enqueue_script( 'jquery-ui-tabs' );
 			wp_enqueue_script( 'jquery-form' );
 
 			wp_localize_script( 'cherry-settings-page', 'TMRealEstateMessage', array(
@@ -352,13 +351,6 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				true
 			);
 
-			wp_enqueue_style(
-				'jquery-ui-tabs',
-				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/css/jquery-ui.min.css',
-				array(),
-				'1.11.4',
-				'all'
-			);
 			wp_enqueue_style(
 				'cherry-settings-page',
 				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/css/custom.min.css',
