@@ -25,7 +25,16 @@
 			<form method="POST" action="options.php" id="form-<?php echo $section_slug ?>">
 				<?php settings_fields( $section_slug ); ?>
 				<?php do_settings_sections( $section_slug ); ?>
-				<?php submit_button( __( 'Save', 'tm-real-estate' ), 'primary small', null, true, array( 'data-ajax' => true ) ); ?> 
+
+				<?php if ( ! empty( $__data['button_before'] ) ) : ?>
+				<?php echo $__data['button_before'] ?>
+				<?php endif; ?>
+
+				<?php submit_button( __( 'Save', 'tm-real-estate' ) . ' ' . $section['name'], 'primary small', null, true, array( 'data-ajax' => true ) ); ?> 
+
+				<?php if ( ! empty( $__data['button_after'] ) ) : ?>
+				<?php echo $__data['button_after'] ?>
+				<?php endif; ?>
 			</form>
 		</div>
 		<?php endforeach; ?>

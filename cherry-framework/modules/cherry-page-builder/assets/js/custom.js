@@ -10,7 +10,7 @@ jQuery( document ).ready( function( $ ) {
 		};
 
 		pb.tabs = function( selectors ) {
-			jQuery( selectors + ' .tabs-section a' ).each( function( index ){
+			jQuery( selectors + ' .tabs-section a' ).each( function( index ) {
 				var id = jQuery( this ).attr( 'href' );
 				if ( ! index ) {
 					jQuery( this ).addClass( 'nav-tab-active' );
@@ -23,7 +23,7 @@ jQuery( document ).ready( function( $ ) {
 				jQuery( selectors + ' .section' ).hide();
 				jQuery( selectors + ' .section' + id ).show();
 				jQuery( selectors + ' .tabs-section a' ).removeClass( 'nav-tab-active' );
-				jQuery( this ).addClass('nav-tab-active');
+				jQuery( this ).addClass( 'nav-tab-active' );
 				e.preventDefault();
 			});
 		};

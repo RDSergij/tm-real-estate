@@ -9,7 +9,7 @@ jQuery( document ).ready( function( $ ) {
 		};
 
 		psc.resetSettingsToDefault = function() {
-			jQuery( '.cherry-settings-page #reset-default-page' ).click( function() {
+			jQuery( '.cherry-settings-page .reset-default-page' ).click( function() {
 				if ( ! window.confirm( window.TMPageSettings.confirmResetMessage ) ) {
 					return false;
 				}
