@@ -23,12 +23,34 @@ jQuery( document ).ready( function( $ ) {
 			});
 		};
 
+		psc.gen_page_list = function( pages_list ) {
+			var options = '';
+			for ( id in pages_list ) {
+				options = options + '<option value="' + id + '">' + pages_list[ id ] + '</options>';
+			}
+			return options;
+		};
+
+		psc.set_page_list = function( pages_list ) {
+			jQuery( 'form#form-tm-properties-main-settings select' ).each( function() {
+				var select = $( this );
+				var id = select.attr( 'id' );
+				var options = psc.gen_page_list( pages_list );
+				if ( id.indexOf( '-page' ) >= 0 ) {
+					select.html( options );
+				}
+			});
+		};
+
 		psc.setFormsValues = function( data ) {
-			var temp = [];
+			var temp			= [];
 			var id;
 			var key;
-			for ( key in data ) {
-				temp = data[ key ];
+			var pages_list		= data['pages_list'];
+			var default_options = data['default_options'];
+			psc.set_page_list( pages_list );
+			for ( key in default_options ) {
+				temp = default_options[ key ];
 				for ( id in temp ) {
 					jQuery( '#form-' + key + ' #' + id ).val( temp[ id ] );
 				}
