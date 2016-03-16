@@ -53,5 +53,6 @@
 		<?php endforeach; ?>
 		</select>
 	<?php endif; ?>
+
 	<button type="submit"><?php _e( 'Search', 'tm-real-estate' ); ?></button>
 </form>
