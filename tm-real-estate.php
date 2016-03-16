@@ -376,8 +376,8 @@ class TM_Real_Estate {
 		$this->clear_settings();
 		$this->set_default_settings();
 		$return = array(
-			'default_options'	=> self::$default_options,
-			'pages_list'		=> $this->get_pages_list(),
+			'defaultOptions'	=> self::$default_options,
+			'pagesList'		=> $this->get_pages_list(),
 		);
 		wp_send_json( $return );
 	}
