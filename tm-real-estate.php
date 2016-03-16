@@ -71,6 +71,9 @@ class TM_Real_Estate {
 		// Add tm-re-search-form shortcode
 		add_shortcode( 'tm-re-search-form', array( 'Model_Properties', 'shortcode_search_form' ) );
 
+		// Add tm-re-properties shortcode
+		//add_shortcode( 'tm-re-search-result', array( 'Model_Properties', 'shortcode_search_result' ) );
+
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 
@@ -452,7 +455,7 @@ class TM_Real_Estate {
 
 		// List of properties search
 		$page_parameter['post_title']	= __( 'Search result', 'tm-real-estate' );
-		$page_parameter['post_content']	= '[tm-real-estate-search]'; // must be change
+		$page_parameter['post_content']	= '[TMRE_SearchResult]';
 		$page = get_post( self::$default_options['tm-properties-main-settings']['properties-search-result-page'] );
 		if ( is_object( $page ) ) {
 			$page_parameter['ID'] = $page->ID;
@@ -465,7 +468,7 @@ class TM_Real_Estate {
 
 		// Submission page
 		$page_parameter['post_title']	= __( 'Submission form', 'tm-real-estate' );
-		$page_parameter['post_content']	= '[TMRE_Submission]'; // must be change
+		$page_parameter['post_content']	= '[TMRE_Submission]';
 		$page = get_post( self::$default_options['tm-properties-main-settings']['properties-submission-page'] );
 		if ( is_object( $page ) ) {
 			$page_parameter['ID'] = $page->ID;
@@ -574,9 +577,9 @@ class TM_Real_Estate {
 
 		$button_reset = new UI_Text( array(
 			'type'		=> 'button',
-			'id'		=> 'reset-default-page',
-			'class'		=> 'button button-warning pull-right',
-			'value'		=> __( 'Reset settings', 'tm-real-estate' ),
+			'class'		=> 'button button-warning reset-default-page',
+			'value'		=> __( 'Reset all settings', 'tm-real-estate' ),
+			'master'	=> 'block-reset',
 		) );
 
 		$settings['tm-properties-main-settings'][] = array(
@@ -728,8 +731,7 @@ class TM_Real_Estate {
 				'icon'			=> 'dashicons-admin-site',
 				'sections'		=> $sections,
 				'settings'		=> $settings,
-				'before'		=> '',
-				'after'			=> $button_reset->render(),
+				'button_after'	=> $button_reset->render(),
 			)
 		);
 	}
