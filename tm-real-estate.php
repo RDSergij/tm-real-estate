@@ -68,6 +68,9 @@ class TM_Real_Estate {
 		// Add tm-re-properties shortcode
 		add_shortcode( 'tm-re-properties', array( 'Model_Properties', 'shortcode_properties' ) );
 
+		// Add tm-re-search-form shortcode
+		add_shortcode( 'tm-re-search-form', array( 'Model_Properties', 'shortcode_search_form' ) );
+
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 
@@ -135,164 +138,162 @@ class TM_Real_Estate {
 	 * @since  1.0.0
 	 */
 	public function launch() {
-		if ( is_admin() ) {
-			if ( null !== $this->core ) {
-				return $this->core;
-			}
+		if ( null !== $this->core ) {
+			return $this->core;
+		}
 
-			$this->core = new Cherry_Core(
-				array(
-					'base_dir'	=> TM_REAL_ESTATE_DIR . 'cherry-framework',
-					'base_url'	=> TM_REAL_ESTATE_URI . 'cherry-framework',
-					'modules'	=> array(
-						'cherry-js-core'	=> array(
-							'priority'	=> 999,
-							'autoload'	=> true,
-						),
-						'cherry-page-builder'	=> array(
-							'priority'	=> 999,
-							'autoload'	=> true,
-						),
-						'cherry-ui-elements' => array(
-							'priority'	=> 999,
-							'autoload'	=> true,
-							'args'		=> array(
-								'ui_elements' => array(
-									'text',
-									'select',
-									'switcher',
-									'collection',
-									'media',
-								),
+		$this->core = new Cherry_Core(
+			array(
+				'base_dir'	=> TM_REAL_ESTATE_DIR . 'cherry-framework',
+				'base_url'	=> TM_REAL_ESTATE_URI . 'cherry-framework',
+				'modules'	=> array(
+					'cherry-js-core'	=> array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+					),
+					'cherry-page-builder'	=> array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+					),
+					'cherry-ui-elements' => array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+						'args'		=> array(
+							'ui_elements' => array(
+								'text',
+								'select',
+								'switcher',
+								'collection',
+								'media',
 							),
-						),
-						'cherry-post-meta'	=> array(
-							'priority'	=> 999,
-							'autoload'	=> true,
-							'args'      => array(
-								'title' => __( 'Settings', 'cherry' ),
-								'page'  => array( 'property' ),
-								'fields' => array(
-									'price' => array(
-										'type'       => 'text',
-										'id'         => 'price',
-										'name'       => 'property_price',
-										'value'      => 0,
-										'left_label' => __( 'Price', 'tm-real-estate' ),
-									),
-									'status' => array(
-										'type'       => 'select',
-										'id'         => 'status',
-										'name'       => 'status',
-										'value'      => 'rent',
-										'left_label' => __( 'Property status', 'tm-real-estate' ),
-										'options'    => array(
-											'rent' => __( 'Rent', 'tm-real-estate' ),
-											'sale' => __( 'Sale', 'tm-real-estate' ),
-										),
-									),
-									'type' => array(
-										'type'       => 'select',
-										'id'         => 'type',
-										'name'       => 'type',
-										'value'      => 'rent',
-										'left_label' => __( 'Property type', 'tm-real-estate' ),
-										'options'    => array(
-											'rent' => __( 'Rent', 'tm-real-estate' ),
-											'sale' => __( 'Sale', 'tm-real-estate' ),
-										),
-									),
-									'bathrooms' => array(
-										'type'    => 'number',
-										'id'      => 'bathrooms',
-										'name'    => 'bathrooms',
-										'value'   => 0,
-										'left_label' => __( 'Bathrooms', 'tm-real-estate' ),
-									),
-									'bedrooms' => array(
-										'type'    => 'number',
-										'id'      => 'bedrooms',
-										'name'    => 'bedrooms',
-										'value'   => 0,
-										'left_label' => __( 'Bedrooms', 'tm-real-estate' ),
-									),
-									'area' => array(
-										'type'    => 'number',
-										'id'      => 'area',
-										'name'    => 'area',
-										'value'   => 0,
-										'left_label' => __( 'Area', 'tm-real-estate' ),
-									),
-									'gallery' => array(
-										'type'	  => 'collection',
-										'id'      => 'gallery',
-										'name'    => 'gallery',
-										'left_label' => __( 'Gallery', 'tm-real-estate' ),
-										'controls' => array(
-											'UI_Text' => array(
-												'type'    => 'text',
-												'id'      => 'title',
-												'class'   => 'large_text',
-												'name'    => 'title',
-												'value'   => '',
-												'left_label' => __( 'Title', 'tm-real-estate' ),
-											),
-											'UI_Media' => array(
-												'id'           => 'image',
-												'name'         => 'image',
-												'value'        => '',
-												'multi_upload' => false,
-												'left_label'   => __( 'Image', 'tm-real-estate' ),
-											),
-										),
-									),
-									'tag' => array(
-										'type'        => 'select',
-										'id'          => 'tag',
-										'name'        => 'tag',
-										'multiple'	  => true,
-										'value'       => '',
-										'left_label'  => __( 'Tag', 'tm-real-estate' ),
-										'options'     => Model_Main::get_tags(),
-									),
-									'categories' => array(
-										'type'        => 'select',
-										'id'          => 'categories',
-										'name'        => 'categories',
-										'multiple'	  => false,
-										'value'       => '',
-										'left_label'  => __( 'Categories', 'tm-real-estate' ),
-										'options'     => Model_Main::get_categories(),
-									),
-									'agent' => array(
-										'type'        => 'select',
-										'id'          => 'agent',
-										'name'        => 'agent',
-										'multiple'	  => false,
-										'value'       => '',
-										'left_label'  => __( 'Agent', 'tm-real-estate' ),
-										'options'     => Model_Main::get_agents(),
-									),
-								),
-							),
-						),
-						'cherry-post-types' => array(
-							'priority'	=> 999,
-							'autoload'	=> true,
-						),
-						'cherry-taxonomies' => array(
-							'priority'	=> 999,
-							'autoload'	=> true,
 						),
 					),
-				)
-			);
+					'cherry-post-meta'	=> array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+						'args'      => array(
+							'title' => __( 'Settings', 'cherry' ),
+							'page'  => array( 'property' ),
+							'fields' => array(
+								'price' => array(
+									'type'       => 'text',
+									'id'         => 'price',
+									'name'       => 'property_price',
+									'value'      => 0,
+									'left_label' => __( 'Price', 'tm-real-estate' ),
+								),
+								'status' => array(
+									'type'       => 'select',
+									'id'         => 'status',
+									'name'       => 'status',
+									'value'      => 'rent',
+									'left_label' => __( 'Property status', 'tm-real-estate' ),
+									'options'    => array(
+										'rent' => __( 'Rent', 'tm-real-estate' ),
+										'sale' => __( 'Sale', 'tm-real-estate' ),
+									),
+								),
+								'type' => array(
+									'type'       => 'select',
+									'id'         => 'type',
+									'name'       => 'type',
+									'value'      => 'rent',
+									'left_label' => __( 'Property type', 'tm-real-estate' ),
+									'options'    => array(
+										'rent' => __( 'Rent', 'tm-real-estate' ),
+										'sale' => __( 'Sale', 'tm-real-estate' ),
+									),
+								),
+								'bathrooms' => array(
+									'type'    => 'number',
+									'id'      => 'bathrooms',
+									'name'    => 'bathrooms',
+									'value'   => 0,
+									'left_label' => __( 'Bathrooms', 'tm-real-estate' ),
+								),
+								'bedrooms' => array(
+									'type'    => 'number',
+									'id'      => 'bedrooms',
+									'name'    => 'bedrooms',
+									'value'   => 0,
+									'left_label' => __( 'Bedrooms', 'tm-real-estate' ),
+								),
+								'area' => array(
+									'type'    => 'number',
+									'id'      => 'area',
+									'name'    => 'area',
+									'value'   => 0,
+									'left_label' => __( 'Area', 'tm-real-estate' ),
+								),
+								'gallery' => array(
+									'type'	  => 'collection',
+									'id'      => 'gallery',
+									'name'    => 'gallery',
+									'left_label' => __( 'Gallery', 'tm-real-estate' ),
+									'controls' => array(
+										'UI_Text' => array(
+											'type'    => 'text',
+											'id'      => 'title',
+											'class'   => 'large_text',
+											'name'    => 'title',
+											'value'   => '',
+											'left_label' => __( 'Title', 'tm-real-estate' ),
+										),
+										'UI_Media' => array(
+											'id'           => 'image',
+											'name'         => 'image',
+											'value'        => '',
+											'multi_upload' => false,
+											'left_label'   => __( 'Image', 'tm-real-estate' ),
+										),
+									),
+								),
+								'tag' => array(
+									'type'        => 'select',
+									'id'          => 'tag',
+									'name'        => 'tag',
+									'multiple'	  => true,
+									'value'       => '',
+									'left_label'  => __( 'Tag', 'tm-real-estate' ),
+									'options'     => Model_Main::get_tags(),
+								),
+								'categories' => array(
+									'type'        => 'select',
+									'id'          => 'categories',
+									'name'        => 'categories',
+									'multiple'	  => false,
+									'value'       => '',
+									'left_label'  => __( 'Categories', 'tm-real-estate' ),
+									'options'     => Model_Main::get_categories(),
+								),
+								'agent' => array(
+									'type'        => 'select',
+									'id'          => 'agent',
+									'name'        => 'agent',
+									'multiple'	  => false,
+									'value'       => '',
+									'left_label'  => __( 'Agent', 'tm-real-estate' ),
+									'options'     => Model_Main::get_agents(),
+								),
+							),
+						),
+					),
+					'cherry-post-types' => array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+					),
+					'cherry-taxonomies' => array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+					),
+				),
+			)
+		);
 
-			$this->add_admin_menu_page();
-			$this->add_post_type();
-			$this->add_user_role();
-			$this->add_taxonomies();
-		}
+		$this->add_admin_menu_page();
+		$this->add_post_type();
+		$this->add_user_role();
+		$this->add_taxonomies();
 	}
 
 	/**

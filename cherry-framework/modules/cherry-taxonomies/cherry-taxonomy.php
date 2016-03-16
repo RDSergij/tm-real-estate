@@ -73,7 +73,7 @@ class Cherry_Taxonomy {
 	 */
 	public function init() {
 		// Register Taxonomy
-		add_action( 'init', array( &$this, 'register' ) );
+		add_action( 'init', array( &$this, 'register' ), 0 );
 		return $this;
 	}
 
