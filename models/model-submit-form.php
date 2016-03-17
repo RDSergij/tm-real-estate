@@ -30,7 +30,7 @@ class Model_Submit_Form {
 	 */
 	public function shortcode_submit_form() {
 
-		wp_localize_script( 'cherry-js-core', 'form_url', 
+		wp_localize_script( 'cherry-js-core', 'form_url',
 			array(
 				'url' => admin_url( 'admin-ajax.php' ),
 			)
@@ -44,8 +44,6 @@ class Model_Submit_Form {
 
 	/**
 	 * Callback of shortcode submit form
-	 *
-	 *
 	 */
 	public function submit_form_callback() {
 
