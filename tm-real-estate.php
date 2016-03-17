@@ -111,7 +111,7 @@ class TM_Real_Estate {
 
 		foreach ( $models as $model ) {
 			if ( ! class_exists( $model ) ) {
-				$path = 'models' . DIRECTORY_SEPARATOR . str_replace( '_', '-', strtolower ( $model ) ) . '.php';
+				$path = 'models' . DIRECTORY_SEPARATOR . str_replace( '_', '-', strtolower( $model ) ) . '.php';
 				require_once( $path );
 			}
 		}

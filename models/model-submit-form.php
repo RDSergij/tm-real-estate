@@ -14,7 +14,10 @@
  * Model properties
  */
 class Model_Submit_Form {
-
+	
+	/**
+	 * register all hocks
+	 */
 	public function register_ajax() {
 
 		add_action( 'wp_ajax_nopriv_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
