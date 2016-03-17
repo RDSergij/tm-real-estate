@@ -18,6 +18,7 @@ jQuery( document ).ready( function( $ ) {
 					url: window.TMPageSettings.ajaxurl,
 					data: { 'action': 'tm_property_settings_reset' },
 					success: psc.setFormsValues,
+					error: function() { psc.noticeCreate( 'error', window.TMPageSettings.errorMessage ); }, 
 					dataType: 'json'
 				});
 			});
