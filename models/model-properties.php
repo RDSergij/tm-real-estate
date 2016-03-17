@@ -20,12 +20,11 @@ class Model_Properties {
 	 * @param  [type] $posts_per_page count.
 	 * @return array properties
 	 */
-	public static function get_properties( $posts_per_page = 5 ) {
+	public static function get_properties( $atts = array() ) {
 		$args = array(
-			'posts_per_page'   => $posts_per_page,
+			'posts_per_page'   => 20,
 			'offset'           => 0,
-			'category'         => '',
-			'category_name'    => '',
+			'tax_query' => array(),
 			'orderby'          => 'date',
 			'order'            => 'DESC',
 			'include'          => '',
@@ -39,6 +38,9 @@ class Model_Properties {
 			'post_status'      => 'publish',
 			'suppress_filters' => true,
 		);
+		$args = array_merge( $args, $atts );
+		//var_dump($args);
+
 		$properties = (array) get_posts( $args );
 		if ( count( $properties ) ) {
 			foreach ( $properties as &$property ) {
@@ -63,19 +65,73 @@ class Model_Properties {
 	 * @param  [type] $atts attributes.
 	 * @return html code.
 	 */
-	public static function shortcode_properties( $atts ) {
-		$posts_per_page = 5;
-		if ( is_array( $atts ) && array_key_exists( 'posts_per_page', $atts ) ) {
-			$posts_per_page = $atts['posts_per_page'];
+	public static function prepare_param_properties( $atts ) {
+		if ( ! is_array( $atts ) || ! array_key_exists( 'posts_per_page', $atts ) ) {
+			$atts['posts_per_page']= 5;
 		}
 
-		$properties = (array) self::get_properties( $posts_per_page );
+		if ( is_array( $atts ) && array_key_exists( 'keyword', $atts ) ) {
+			$atts['s'] = $atts['keyword'];
+			unset( $atts['keyword'] );
+		}
+
+		if ( is_array( $atts ) && array_key_exists( 'property_type', $atts ) ) {
+			$atts['tax_query'][] = array(
+				'taxonomy' => 'property-type',
+				'field' => 'term_id',
+				'terms' => (int) $atts['property_type']
+			);
+			unset( $atts['type'] );
+		}
+
+		if ( is_array( $atts ) && array_key_exists( 'property_status', $atts ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'status',
+				'value' => (string) $atts['property_status'],
+				'compare' => '=',
+			);
+			unset( $atts['property_status'] );
+		}
+
+		return $atts;
+	}
+
+	/**
+	 * Shortcode properties
+	 *
+	 * @param  [type] $atts attributes.
+	 * @return html code.
+	 */
+	public static function shortcode_search_result() {
+
+		$form		= self::shortcode_search_form( $_GET );
+		$properties	= self::shortcode_properties( $_GET );
+
+		return Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/search-result.php',
+			array(
+				'form'			=> $form,
+				'properties'	=> $properties,
+			)
+		);
+	}
+
+	/**
+	 * Shortcode properties
+	 *
+	 * @param  [type] $atts attributes.
+	 * @return html code.
+	 */
+	public static function shortcode_properties( $atts ) {
+
+		$atts = self::prepare_param_properties( $atts );
+		$properties = (array) self::get_properties( $atts );
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/property.php',
 			array(
 				'properties' => $properties,
-				'pagination' => self::get_pagination( $posts_per_page ),
+				'pagination' => self::get_pagination( $atts['posts_per_page'] ),
 			)
 		);
 	}
@@ -87,6 +143,7 @@ class Model_Properties {
 	 * @return html code.
 	 */
 	public static function shortcode_search_form( $atts ) {
+		$atts = self::prepare_param_properties( $atts );
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/search-form.php',
 			array(
