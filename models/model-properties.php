@@ -338,5 +338,27 @@ class Model_Properties {
 	public static function get_total_pages( $posts_per_page = 5 ) {
 		return ceil( self::get_total_count() / $posts_per_page );
 	}
+
+	/**
+	 * Get Types of properties
+	 *
+	 * @param type integer $parent ID of parent types.
+	 * @return total pages.
+	 */
+	public function get_types( $parent = 0 ) {
+		$terms = get_terms( 'property-type', array( 'parent' => $parent, 'hide_empty' => false ) );
+		if ( count( $terms ) > 0) {
+			foreach ( $terms as $term ) {
+				$child = Model_Submit_Form::custom_taxonomy_walker( 'property-type', $term->term_id );
+				$types[] = array(
+					'term_id' => $term->term_id,
+					'name' => $term->name,
+					'child' => $child,
+					);
+			}
+			return $types;
+		}
+		return false;
+	}
 }
 

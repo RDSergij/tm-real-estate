@@ -1,9 +1,15 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Submit form View
+ *
+ * @package    TM Real Estate
+ * @subpackage View
+ * @author     Cherry Team <cherryframework@gmail.com>
+ * @copyright  Copyright (c) 2012 - 2016, Cherry Team
+ * @link       http://www.cherryframework.com/
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
+
 ?>
 <form class="" action="" method="post" enctype="multipart/form-data" name="" id="property_submit_format">
 

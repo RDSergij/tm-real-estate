@@ -1,19 +1,19 @@
-	<?php
-	/**
-	 * Model for submite form.
-	 *
-	 * @package    Cherry_Framework
-	 * @subpackage Model
-	 * @author     Cherry Team <cherryframework@gmail.com>
-	 * @copyright  Copyright (c) 2012 - 2016, Cherry Team
-	 * @link       http://www.cherryframework.com/
-	 * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-	 */
+<?php
+/**
+ * Model for submite form.
+ *
+ * @package    Cherry_Framework
+ * @subpackage Model
+ * @author     Cherry Team <cherryframework@gmail.com>
+ * @copyright  Copyright (c) 2012 - 2016, Cherry Team
+ * @link       http://www.cherryframework.com/
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ */
 
-	/**
-	 * Model properties
-	*/
-	class Model_Submit_Form {
+/**
+ * Model properties
+*/
+class Model_Submit_Form {
 
 	public function register_ajax() {
 
@@ -35,7 +35,7 @@
 				'url' => admin_url( 'admin-ajax.php' ),
 			)
 		);
-		$terms = Model_Submit_Form::custom_taxonomy_walker( 'property-type' );
+		$terms = Model_Properties::get_types( 'property-type' );
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . '/views/submit-form.php',
 			$terms
@@ -92,22 +92,6 @@
 			if ( 0 < intval( $attachment_id ) ) {
 				return $attachment_id;
 			}
-		}
-		return false;
-	}
-
-	public function custom_taxonomy_walker( $taxonomy, $parent = 0 ) {
-		$terms = get_terms( $taxonomy, array( 'parent' => $parent, 'hide_empty' => false ) );
-		if ( count( $terms ) > 0) {
-			foreach ( $terms as $term ) {
-				$child = Model_Submit_Form::custom_taxonomy_walker( $taxonomy, $term->term_id );
-				$types[] = array(
-					'term_id' => $term->term_id,
-					'name' => $term->name,
-					'child' => $child,
-					);
-			}
-			return $types;
 		}
 		return false;
 	}
