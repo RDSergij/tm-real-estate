@@ -326,7 +326,7 @@ class Model_Properties {
 	/**
 	 * Shortcode tm-re-search-form
 	 *
-	 * @param  [type] $atts attributes.
+	 * @param [type]      $atts attributes.
 	 * @return html code.
 	 */
 	public static function shortcode_search_form() {
@@ -519,7 +519,7 @@ class Model_Properties {
 	 * Get propeties pagination array
 	 *
 	 * @param type array $atts parameters.
-	 * @param  [type] $posts_per_page properties per page.
+	 * @param [type]      $posts_per_page properties per page.
 	 * @return array pagination.
 	 */
 	public static function get_pagination( $atts = array(), $posts_per_page = 5 ) {
@@ -573,8 +573,8 @@ class Model_Properties {
 	/**
 	 * Get total pages count
 	 *
-	 * @param type array $atts parameters.
-	 * @param type integer $posts_per_page properties per page.
+	 * @param type      array $atts parameters.
+	 * @param type      integer $posts_per_page properties per page.
 	 * @return total pages.
 	 */
 	public static function get_total_pages( $atts = array(), $posts_per_page = 5 ) {
