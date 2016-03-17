@@ -40,3 +40,4 @@ assets/js/uploader/jquery.fileupload-audio.js
 assets/js/uploader/jquery.fileupload-image.js
 assets/js/uploader/jquery.fileupload-jquery-ui.js
 assets/js/uploader/jquery.fileupload-process.js
+assets/js/uploader/jquery.fileupload-validate.js
