@@ -382,7 +382,11 @@ class TM_Real_Estate {
 	public function settings_reset() {
 		$this->clear_settings();
 		$this->set_default_settings();
-		wp_send_json( self::$default_options );
+		$return = array(
+			'defaultOptions'	=> self::$default_options,
+			'pagesList'		=> $this->get_pages_list(),
+		);
+		wp_send_json( $return );
 	}
 
 	/**
@@ -423,16 +427,17 @@ class TM_Real_Estate {
 		$page_parameter = array(
 			'post_title'	=> __( 'Properties list', 'tm-real-estate' ),
 			'post_content'	=> '[tm-real-estate-list]', // must be change
-			'post_status'	=> 'publish',
 			'post_author'	=> 1,
 			'post_type'		=> 'page',
+			'post_status'	=> 'publish',
 		);
 
 		// Insert or update pages
 		// List properties
 		$page = get_post( self::$default_options['tm-properties-main-settings']['properties-list-page'] );
-		if ( is_object( $page ) && ( 'publish' == $page->post_status ) ) {
-			$page_parameter['ID'] = $page->ID;
+		if ( is_object( $page ) ) {
+			$page_parameter['ID']			= self::$default_options['tm-properties-main-settings']['properties-list-page'];
+			$page_parameter['post_status']	= 'publish';
 			wp_update_post( $page_parameter );
 			unset( $page_parameter['ID'] );
 		} else {
@@ -443,8 +448,9 @@ class TM_Real_Estate {
 		$page_parameter['post_title']	= __( 'Property item', 'tm-real-estate' );
 		$page_parameter['post_content']	= '[tm-real-estate-item]'; // must be change
 		$page = get_post( self::$default_options['tm-properties-main-settings']['properties-item-page'] );
-		if ( is_object( $page ) && ( 'publish' == $page->post_status ) ) {
+		if ( is_object( $page ) ) {
 			$page_parameter['ID'] = $page->ID;
+			$page_parameter['post_status']	= 'publish';
 			wp_update_post( $page_parameter );
 			unset( $page_parameter['ID'] );
 		} else {
@@ -453,10 +459,11 @@ class TM_Real_Estate {
 
 		// List of properties search
 		$page_parameter['post_title']	= __( 'Search result', 'tm-real-estate' );
-		$page_parameter['post_content']	= '[tm-real-estate-search]'; // must be change
+		$page_parameter['post_content']	= '[TMRE_SearchResult]';
 		$page = get_post( self::$default_options['tm-properties-main-settings']['properties-search-result-page'] );
-		if ( is_object( $page ) && ( 'publish' == $page->post_status ) ) {
+		if ( is_object( $page ) ) {
 			$page_parameter['ID'] = $page->ID;
+			$page_parameter['post_status']	= 'publish';
 			wp_update_post( $page_parameter );
 			unset( $page_parameter['ID'] );
 		} else {
@@ -465,10 +472,11 @@ class TM_Real_Estate {
 
 		// Submission page
 		$page_parameter['post_title']	= __( 'Submission form', 'tm-real-estate' );
-		$page_parameter['post_content']	= '[tm-real-submission-form]'; // must be change
+		$page_parameter['post_content']	= '[TMRE_Submission]';
 		$page = get_post( self::$default_options['tm-properties-main-settings']['properties-submission-page'] );
-		if ( is_object( $page ) && ( 'publish' == $page->post_status ) ) {
+		if ( is_object( $page ) ) {
 			$page_parameter['ID'] = $page->ID;
+			$page_parameter['post_status']	= 'publish';
 			self::$default_options['tm-properties-main-settings']['properties-submission-page']	= wp_update_post( $page_parameter );
 			unset( $page_parameter['ID'] );
 		} else {
@@ -482,14 +490,18 @@ class TM_Real_Estate {
 	private function set_default_settings() {
 
 		if ( empty( self::$default_options ) ) {
-			$this->generate_default_settings();
+			$this->get_default_settings();
 		}
 
-		$this->set_default_page();
+		if ( empty( self::$default_options ) ) {
+			$this->generate_default_settings();
+		}
 
 		foreach ( self::$default_options as $section => $settings ) {
 			add_option( $section, $settings );
 		}
+
+		$this->set_default_page();
 
 		add_option( 'tm-real-estate-default-settings', self::$default_options );
 	}
@@ -569,9 +581,9 @@ class TM_Real_Estate {
 
 		$button_reset = new UI_Text( array(
 			'type'		=> 'button',
-			'id'		=> 'reset-default-page',
-			'class'		=> 'button button-warning pull-right',
-			'value'		=> __( 'Reset settings', 'tm-real-estate' ),
+			'class'		=> 'button button-warning reset-default-page',
+			'value'		=> __( 'Reset all settings', 'tm-real-estate' ),
+			'master'	=> 'block-reset',
 		) );
 
 		$settings['tm-properties-main-settings'][] = array(
@@ -723,8 +735,7 @@ class TM_Real_Estate {
 				'icon'			=> 'dashicons-admin-site',
 				'sections'		=> $sections,
 				'settings'		=> $settings,
-				'before'		=> '',
-				'after'			=> $button_reset->render(),
+				'button_after'	=> $button_reset->render(),
 			)
 		);
 	}

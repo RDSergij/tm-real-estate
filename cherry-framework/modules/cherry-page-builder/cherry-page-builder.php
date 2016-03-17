@@ -99,6 +99,8 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				'settings'      => array(),
 				'before'        => '',
 				'after'			=> '',
+				'before_button'	=> '',
+				'after_button'	=> '',
 			) );
 
 			$this->views = $this->core->get_core_dir() . 'modules/' . $this->module_slug . '/views/';
@@ -192,6 +194,8 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 			$page_slug		= ! empty( $this->data['slug'] ) ? $this->data['slug'] : '';
 			$page_before	= ! empty( $this->args['before'] ) ? $this->args['before'] : '';
 			$page_after		= ! empty( $this->args['after'] ) ? $this->args['after'] : '';
+			$button_before	= ! empty( $this->args['button_before'] ) ? $this->args['button_before'] : '';
+			$button_after	= ! empty( $this->args['button_after'] ) ? $this->args['button_after'] : '';
 			$sections		= ( ! empty( $this->sections ) && is_array( $this->sections ) ) ? $this->sections : array();
 
 			$html = Cherry_Core::render_view(
@@ -201,6 +205,8 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 					'page_slug'		=> $page_slug,
 					'page_before'	=> $page_before,
 					'page_after'	=> $page_after,
+					'button_before'	=> $button_before,
+					'button_after'	=> $button_after,
 					'sections'		=> $sections,
 				)
 			);
@@ -336,7 +342,6 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @return void
 		 */
 		public function assets() {
-			wp_enqueue_script( 'jquery-ui-tabs' );
 			wp_enqueue_script( 'jquery-form' );
 
 			wp_localize_script( 'cherry-settings-page', 'TMRealEstateMessage', array(
@@ -352,13 +357,6 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				true
 			);
 
-			wp_enqueue_style(
-				'jquery-ui-tabs',
-				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/css/jquery-ui.min.css',
-				array(),
-				'1.11.4',
-				'all'
-			);
 			wp_enqueue_style(
 				'cherry-settings-page',
 				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/css/custom.min.css',

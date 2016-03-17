@@ -1,21 +1,32 @@
 .cherry-settings-page {
-	#reset-default-page {
-		width: 200px;
-		&:after {
-			content: ' ';
-			clear: both;
-			height: 1px;
-			width: 100%;
-		}
+	p.submit {
+		display: inline;
 	}
 
-	.button-warning {
-		background: #c00;
-		color: #fff;
-		border-color: #F30101;
-		&:hover {
-			background: #fff;
-			color: #c00;
+	.block-reset {
+		display: inline;
+
+		.reset-default-page {
+			width: 120px;
+			height: 26px;
+
+			&:after {
+				content: ' ';
+				clear: both;
+				height: 1px;
+				width: 100%;
+			}
 		}
+
+		.button-warning {
+			background: #c00;
+			color: #fff;
+			border-color: #F30101;
+			&:active {
+				background: #fff;
+				color: #c00;
+			}
+		}
+
 	}
 }
