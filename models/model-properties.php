@@ -59,14 +59,59 @@ class Model_Properties {
 	}
 
 	/**
+	 * Get total properties count
+	 *
+	 * @return total properties count.
+	 */
+	public static function get_total_count( $atts = array() ) {
+		unset( $atts['posts_per_page'], $atts['offset'] );
+
+		$args = array(
+			'posts_per_page'   => -1,
+			'offset'           => 0,
+			'fields'           => 'ids',
+			'category'         => '',
+			'category_name'    => '',
+			'orderby'          => 'date',
+			'order'            => 'DESC',
+			'include'          => '',
+			'exclude'          => '',
+			'meta_key'         => '',
+			'meta_value'       => '',
+			'post_type'        => 'property',
+			'post_mime_type'   => '',
+			'post_parent'      => '',
+			'author'           => '',
+			'post_status'      => 'publish',
+			'suppress_filters' => true,
+		);
+		$args = array_merge( $args, $atts );
+
+		return count( get_posts( $args ) );
+	}
+
+	/**
 	 * Shortcode properties
 	 *
 	 * @param  [type] $atts attributes.
 	 * @return html code.
 	 */
 	public static function prepare_param_properties( $atts ) {
-		if ( ! is_array( $atts ) || empty( $atts['posts_per_page'] ) ) {
+		if ( is_array( $atts ) && ! empty( $atts['limit'] ) ) {
+			$atts['posts_per_page'] = $atts['limit'];
+			unset( $atts['limit'] );
+		} else {
 			$atts['posts_per_page'] = 5;
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['id'] ) ) {
+			$atts['include'] = explode( ',', $atts['id'] );
+			unset( $atts['id'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['agent'] ) ) {
+			$atts['author'] = $atts['agent'];
+			unset( $atts['agent'] );
 		}
 
 		if ( is_array( $atts ) && ! empty( $atts['keyword'] ) ) {
@@ -211,7 +256,7 @@ class Model_Properties {
 			TM_REAL_ESTATE_DIR . 'views/property.php',
 			array(
 				'properties' => $properties,
-				'pagination' => self::get_pagination( $atts['posts_per_page'] ),
+				'pagination' => self::get_pagination( $atts, $atts['posts_per_page'] ),
 			)
 		);
 	}
@@ -412,11 +457,11 @@ class Model_Properties {
 	 * @param  [type] $posts_per_page properties per page.
 	 * @return array pagination.
 	 */
-	public static function get_pagination( $posts_per_page = 5 ) {
+	public static function get_pagination( $atts = array(), $posts_per_page = 5 ) {
 		$args = array(
 			'base'               => '%_%',
 			'format'             => '?page=%#%',
-			'total'              => self::get_total_pages( $posts_per_page ),
+			'total'              => self::get_total_pages( $atts, $posts_per_page ),
 			'current'            => max( 1, get_query_var( 'page' ) ),
 			'show_all'           => false,
 			'end_size'           => 1,
@@ -434,31 +479,12 @@ class Model_Properties {
 	}
 
 	/**
-	 * Get total properties count
+	 * Get settings for submission form
 	 *
-	 * @return total properties count.
+	 * @return string property price.
 	 */
-	public static function get_total_count() {
-		$args = array(
-			'posts_per_page'   => -1,
-			'offset'           => 0,
-			'fields'           => 'ids',
-			'category'         => '',
-			'category_name'    => '',
-			'orderby'          => 'date',
-			'order'            => 'DESC',
-			'include'          => '',
-			'exclude'          => '',
-			'meta_key'         => '',
-			'meta_value'       => '',
-			'post_type'        => 'property',
-			'post_mime_type'   => '',
-			'post_parent'      => '',
-			'author'           => '',
-			'post_status'      => 'publish',
-			'suppress_filters' => true,
-		);
-		return count( get_posts( $args ) );
+	public static function get_submission_form_settings() {
+		return get_option( 'tm-properties-submission-form' );
 	}
 
 	/**
@@ -467,7 +493,7 @@ class Model_Properties {
 	 * @param type integer $posts_per_page properties per page.
 	 * @return total pages.
 	 */
-	public static function get_total_pages( $posts_per_page = 5 ) {
-		return ceil( self::get_total_count() / $posts_per_page );
+	public static function get_total_pages( $atts = array(), $posts_per_page = 5 ) {
+		return ceil( self::get_total_count( $atts ) / $posts_per_page );
 	}
 }
