@@ -46,5 +46,8 @@
         "assets/js/uploader/jquery.fileupload-jquery-ui.js",
         "assets/js/uploader/jquery.fileupload-process.js",
         "assets/js/uploader/jquery.fileupload-validate.js",
+        "assets/js/uploader/jquery.fileupload-video.js",
+        "assets/js/uploader/jquery.fileupload.js",
+        "assets/js/uploader/jquery.iframe-transport.js",
   ]
 }
