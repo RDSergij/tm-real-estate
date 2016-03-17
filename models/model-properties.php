@@ -256,7 +256,7 @@ class Model_Properties {
 		$properties_list = (array) self::get_properties( $atts );
 
 		$properties = array();
-		foreach( $properties_list as $property ) {
+		foreach ( $properties_list as $property ) {
 			$properties[] = Cherry_Core::render_view(
 				TM_REAL_ESTATE_DIR . 'views/property.php',
 				array(
@@ -277,7 +277,6 @@ class Model_Properties {
 	/**
 	 * Shortcode property item
 	 *
-	 * @param  [type] integer $id property id.
 	 * @return html code.
 	 */
 	public static function shortcode_property_single() {
@@ -556,7 +555,7 @@ class Model_Properties {
 	/**
 	 * Get settings for submission form
 	 *
-	 * @return string property price.
+	 * @return integer id.
 	 */
 	public static function get_submission_form_settings() {
 		return get_option( 'tm-properties-submission-form' );
