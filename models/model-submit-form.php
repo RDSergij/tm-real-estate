@@ -14,9 +14,9 @@
  * Model properties
  */
 class Model_Submit_Form {
-	
+
 	/**
-	 * register all hocks
+	 * Register all hocks
 	 */
 	public function register_ajax() {
 
