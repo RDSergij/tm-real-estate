@@ -11,7 +11,7 @@
  */
 
 ?>
-<form action="" class="search-form">
+<form action="<?php echo $__data['action_url'] ?>" class="search-form">
 
 	<label for="keyword"><?php _e( 'Keyword', 'tm-real-estate' ); ?></label>
 	<input type="text" name="keyword" id="keyword" placeholder="Any">
