@@ -45,7 +45,7 @@ class Model_Submit_Form {
 	/**
 	 * Callback of shortcode submit form
 	 *
-	 * @return html code.
+	 *
 	 */
 	public function submit_form_callback() {
 
