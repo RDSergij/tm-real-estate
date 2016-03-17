@@ -348,7 +348,7 @@ class Model_Properties {
 		$terms = get_terms( 'property-type', array( 'parent' => $parent, 'hide_empty' => false ) );
 		if ( count( $terms ) > 0 ) {
 			foreach ( $terms as $term ) {
-				$child = Model_Properties::get_types( 'property-type', $term->term_id );
+				$child = Model_Properties::get_types( $term->term_id );
 				$types[] = array(
 					'term_id' => $term->term_id,
 					'name' => $term->name,

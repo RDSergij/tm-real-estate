@@ -17,7 +17,7 @@
 	<input type="text" class=" form-textbox" data-type="input-textbox" id="property_title_input" name="property[title]" size="20" value="">
 
 	<label class="" id="property_price_label" for="property_price_input"> Price </label>
-	<input type="text" class=" form-textbox" data-type="input-textbox" id="property_price_input" name="property[meta][price]" size="20" value="">
+	<input type="number" class=" form-textbox" data-type="input-textbox" id="property_price_input" name="property[meta][price]" size="20" value="">
 
 	<label class="" id="property_description_label" for="property_description_input"> Description </label>
 	<textarea id="property_description_input" class="form-textarea" name="property[description]" cols="40" rows="6"></textarea>
@@ -154,6 +154,10 @@
 			method: "POST",
 			dataType: "html",
 			data: formData,
+			success: function(data){
+				
+				alert('Load was performed.');
+			}
 		});
 	})
 </script>
