@@ -26,7 +26,7 @@
 										multiple = $(this).data('multi-upload'),
 										library_type = $(this).data('library-type'),
 										cherry_uploader;
-
+									
 									cherry_uploader = wp.media.frames.file_frame = wp.media({
 										title: title_text,
 										button: {text: title_text},
