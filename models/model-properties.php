@@ -17,7 +17,7 @@ class Model_Properties {
 	/**
 	 * Get all properties
 	 *
-	 * @param  [type] $posts_per_page count.
+	 * @param  [type] $atts atriibutes.
 	 * @return array properties
 	 */
 	public static function get_properties( $atts = array() ) {
@@ -39,7 +39,6 @@ class Model_Properties {
 			'suppress_filters' => true,
 		);
 		$args = array_merge( $args, $atts );
-		//var_dump($args);
 
 		$properties = (array) get_posts( $args );
 		if ( count( $properties ) ) {
@@ -67,7 +66,7 @@ class Model_Properties {
 	 */
 	public static function prepare_param_properties( $atts ) {
 		if ( ! is_array( $atts ) || empty( $atts['posts_per_page'] ) ) {
-			$atts['posts_per_page']= 5;
+			$atts['posts_per_page'] = 5;
 		}
 
 		if ( is_array( $atts ) && ! empty( $atts['keyword'] ) ) {
@@ -79,7 +78,7 @@ class Model_Properties {
 			$atts['tax_query'][] = array(
 				'taxonomy' => 'property-type',
 				'field' => 'term_id',
-				'terms' => (int) $atts['property_type']
+				'terms' => (int) $atts['property_type'],
 			);
 			unset( $atts['type'] );
 		}
@@ -181,7 +180,6 @@ class Model_Properties {
 	/**
 	 * Shortcode properties
 	 *
-	 * @param  [type] $atts attributes.
 	 * @return html code.
 	 */
 	public static function shortcode_search_result() {
@@ -221,12 +219,11 @@ class Model_Properties {
 	/**
 	 * Get search result page
 	 *
-	 * @param  [type] $post_id id.
 	 * @return string property price.
 	 */
 	public static function get_search_result_page() {
-		$main_settings = get_option('tm-properties-main-settings');
-		$page_id = $main_settings['properties-search-result-page'];
+		$main_settings	= get_option( 'tm-properties-main-settings' );
+		$page_id		= $main_settings['properties-search-result-page'];
 
 		$permalink = str_replace( home_url(), './', get_permalink( $page_id ) );
 
