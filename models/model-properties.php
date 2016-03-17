@@ -330,7 +330,22 @@ class Model_Properties {
 	 * @param  [type] $atts attributes.
 	 * @return html code.
 	 */
-	public static function shortcode_search_form( $atts ) {
+	public static function shortcode_search_form() {
+
+		$default_value = array(
+			'keyword'			=> '',
+			'min_price'			=> '',
+			'max_price'			=> '',
+			'min_bedrooms'		=> '',
+			'max_bedrooms'		=> '',
+			'min_bathrooms'		=> '',
+			'max_bathrooms'		=> '',
+			'min_area'			=> '',
+			'max_area'			=> '',
+			'property_status'	=> '',
+			'property_type'		=> '',
+		);
+		$values = array_merge( $default_value, $_GET );
 
 		$action_url = self::get_search_result_page();
 
@@ -340,6 +355,7 @@ class Model_Properties {
 				'property_statuses'	=> self::get_allowed_property_statuses(),
 				'property_types'	=> self::get_all_property_types(),
 				'action_url'		=> $action_url,
+				'values'		=> $values,
 			)
 		);
 	}
