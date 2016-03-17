@@ -24,7 +24,7 @@ class Model_Submit_Form {
 
 	}
 	/**
-	 * Shortcode properties
+	 * Shortcode submit form
 	 *
 	 * @return html code.
 	 */
@@ -42,6 +42,11 @@ class Model_Submit_Form {
 		);
 	}
 
+	/**
+	 * Callback of shortcode submit form
+	 *
+	 * @return html code.
+	 */
 	public function submit_form_callback() {
 
 		$property['title'] = $_POST['property']['title'];
@@ -146,13 +151,13 @@ class Model_Submit_Form {
 			'1.0.0',
 			false
 		);
-		//wp_enqueue_style(
-		//	'tm-real-state-settings-page',
-		//	plugins_url( 'tm-real-estate' ) . '/assets/css/page-settings.min.css',
-		//	array(),
-		//	'1.0.0',
-		//	'all'
-		//);
+		wp_enqueue_style(
+			'tm-submit-form',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/tm-submit-form.css',
+			array(),
+			'1.0.0',
+			'all'
+		);
 	}
 	public function re_array_files( &$file_post ) {
 		$file_array = array();
