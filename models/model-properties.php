@@ -66,16 +66,16 @@ class Model_Properties {
 	 * @return html code.
 	 */
 	public static function prepare_param_properties( $atts ) {
-		if ( ! is_array( $atts ) || ! array_key_exists( 'posts_per_page', $atts ) ) {
+		if ( ! is_array( $atts ) || empty( $atts['posts_per_page'] ) ) {
 			$atts['posts_per_page']= 5;
 		}
 
-		if ( is_array( $atts ) && array_key_exists( 'keyword', $atts ) ) {
+		if ( is_array( $atts ) && ! empty( $atts['keyword'] ) ) {
 			$atts['s'] = $atts['keyword'];
 			unset( $atts['keyword'] );
 		}
 
-		if ( is_array( $atts ) && array_key_exists( 'property_type', $atts ) ) {
+		if ( is_array( $atts ) && ! empty( $atts['property_type'] ) ) {
 			$atts['tax_query'][] = array(
 				'taxonomy' => 'property-type',
 				'field' => 'term_id',
@@ -84,13 +84,95 @@ class Model_Properties {
 			unset( $atts['type'] );
 		}
 
-		if ( is_array( $atts ) && array_key_exists( 'property_status', $atts ) ) {
+		$atts['meta_query']['relation'] = 'AND';
+
+		if ( is_array( $atts ) && ! empty( $atts['property_status'] )  ) {
 			$atts['meta_query'][] = array(
 				'key' => 'status',
 				'value' => (string) $atts['property_status'],
 				'compare' => '=',
 			);
 			unset( $atts['property_status'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['min_price'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'price',
+				'value' => (int) $atts['min_price'],
+				'type' => 'numeric',
+				'compare' => '>=',
+			);
+			unset( $atts['min_price'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['max_price'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'price',
+				'value' => (int) $atts['max_price'],
+				'type' => 'numeric',
+				'compare' => '<=',
+			);
+			unset( $atts['min_price'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['min_bathrooms'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'bathrooms',
+				'value' => (int) $atts['min_bathrooms'],
+				'type' => 'numeric',
+				'compare' => '>=',
+			);
+			unset( $atts['min_bathrooms'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['max_bathrooms'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'bathrooms',
+				'value' => (int) $atts['max_bathrooms'],
+				'type' => 'numeric',
+				'compare' => ' <=',
+			);
+			unset( $atts['max_bathrooms'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['min_bedrooms'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'bedrooms',
+				'value' => (int) $atts['min_bedrooms'],
+				'type' => 'numeric',
+				'compare' => '>=',
+			);
+			unset( $atts['min_bedrooms'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['max_bedrooms'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'bedrooms',
+				'value' => (int) $atts['max_bedrooms'],
+				'type' => 'numeric',
+				'compare' => '<=',
+			);
+			unset( $atts['max_bedrooms'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['min_area'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'area',
+				'value' => (int) $atts['min_area'],
+				'type' => 'numeric',
+				'compare' => '>=',
+			);
+			unset( $atts['min_area'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['max_area'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'area',
+				'value' => (int) $atts['max_area'],
+				'type' => 'numeric',
+				'compare' => '<=',
+			);
+			unset( $atts['max_area'] );
 		}
 
 		return $atts;
@@ -137,18 +219,36 @@ class Model_Properties {
 	}
 
 	/**
+	 * Get search result page
+	 *
+	 * @param  [type] $post_id id.
+	 * @return string property price.
+	 */
+	public static function get_search_result_page() {
+		$main_settings = get_option('tm-properties-main-settings');
+		$page_id = $main_settings['properties-search-result-page'];
+
+		$permalink = str_replace( home_url(), './', get_permalink( $page_id ) );
+
+		return $permalink;
+	}
+
+	/**
 	 * Shortcode tm-re-search-form
 	 *
 	 * @param  [type] $atts attributes.
 	 * @return html code.
 	 */
 	public static function shortcode_search_form( $atts ) {
-		$atts = self::prepare_param_properties( $atts );
+
+		$action_url = self::get_search_result_page();
+
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/search-form.php',
 			array(
-				'property_statuses' => self::get_allowed_property_statuses(),
-				'property_types'    => self::get_all_property_types(),
+				'property_statuses'	=> self::get_allowed_property_statuses(),
+				'property_types'	=> self::get_all_property_types(),
+				'action_url'		=> $action_url,
 			)
 		);
 	}
