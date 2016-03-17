@@ -35,7 +35,7 @@ class Model_Submit_Form {
 				'url' => admin_url( 'admin-ajax.php' ),
 			)
 		);
-		$terms = Model_Properties::get_types( 'property-type' );
+		$terms = Model_Properties::get_types();
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . '/views/submit-form.php',
 			$terms
@@ -75,6 +75,14 @@ class Model_Submit_Form {
 		wp_die();
 	}
 
+	/**
+	 * Add new  attacment
+	 *
+	 * @param  [type] $file file of attachment.
+	 * @param  [type] $post_id  ID of post.
+	 * 
+	 * @return html code.
+	 */
 	public function insert_attacment( $file, $post_id ) {
 
 		require_once( ABSPATH . 'wp-admin/includes/admin.php' );
@@ -101,6 +109,10 @@ class Model_Submit_Form {
 		return false;
 	}
 
+	/**
+	 *Enable  form assets
+	 *
+	 */
 	public function form_assets() {
 		wp_enqueue_script(
 			'jquery_ui_widget',
@@ -159,6 +171,13 @@ class Model_Submit_Form {
 			'all'
 		);
 	}
+	/**
+	 * Reformate files array
+	 *
+	 * @param  [type] $file_post array of files.
+	 *
+	 * @return mixed file_array.
+	 */
 	public function re_array_files( &$file_post ) {
 		$file_array = array();
 		$file_count = count( $file_post['name'] );

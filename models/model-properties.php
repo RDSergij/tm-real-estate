@@ -79,15 +79,14 @@ class Model_Properties {
 			)
 		);
 	}
-		/**
+	/**
 	 * Add new properties
 	 *
 	 * @param  [type] $attr attributes.
 	 * @return html code.
 	 */
 	public static function add_property( $attr ) {
-		
-		if ( current_user_can('administrator') || current_user_can('re_agent') ) {
+		if ( current_user_can( 'administrator' ) || current_user_can( 're_agent' ) ) {
 			$property_status = 'publish';
 		} else {
 			$property_status = 'pending';
@@ -99,8 +98,8 @@ class Model_Properties {
 			'post_status'    => $property_status,
 			'post_type'      => 'property',
 			);
-		$property = sanitize_post($property, 'db');
-		return wp_insert_post($property);
+		$property = sanitize_post( $property, 'db' );
+		return wp_insert_post( $property );
 	}
 	/**
 	 * Shortcode tm-re-search-form
@@ -347,9 +346,9 @@ class Model_Properties {
 	 */
 	public function get_types( $parent = 0 ) {
 		$terms = get_terms( 'property-type', array( 'parent' => $parent, 'hide_empty' => false ) );
-		if ( count( $terms ) > 0) {
+		if ( count( $terms ) > 0 ) {
 			foreach ( $terms as $term ) {
-				$child = Model_Submit_Form::custom_taxonomy_walker( 'property-type', $term->term_id );
+				$child = Model_Properties::get_types( 'property-type', $term->term_id );
 				$types[] = array(
 					'term_id' => $term->term_id,
 					'name' => $term->name,
