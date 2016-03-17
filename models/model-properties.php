@@ -518,7 +518,7 @@ class Model_Properties {
 	 * Get propeties pagination array
 	 *
 	 * @param [type] array $atts parameters.
-	 * @param [type]      $posts_per_page properties per page.
+	 * @param [type] integer      $posts_per_page properties per page.
 	 * @return array pagination.
 	 */
 	public static function get_pagination( $atts = array(), $posts_per_page = 5 ) {
@@ -572,7 +572,7 @@ class Model_Properties {
 	/**
 	 * Get total pages count
 	 *
-	 * @param [type]  array $atts parameters.
+	 * @param [type]  array   $atts parameters.
 	 * @param [type]  integer $posts_per_page properties per page.
 	 * @return total pages.
 	 */
