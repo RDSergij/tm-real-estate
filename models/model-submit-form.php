@@ -12,7 +12,7 @@
 
 /**
  * Model properties
-*/
+ */
 class Model_Submit_Form {
 
 	public function register_ajax() {
@@ -80,8 +80,8 @@ class Model_Submit_Form {
 	 *
 	 * @param  [type] $file file of attachment.
 	 * @param  [type] $post_id  ID of post.
-	 * 
-	 * @return html code.
+	 *
+	 * @return [type] code.
 	 */
 	public function insert_attacment( $file, $post_id ) {
 
@@ -110,8 +110,7 @@ class Model_Submit_Form {
 	}
 
 	/**
-	 *Enable  form assets
-	 *
+	 * Enable  form assets
 	 */
 	public function form_assets() {
 		wp_enqueue_script(
