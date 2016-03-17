@@ -40,6 +40,8 @@ class Model_Properties {
 		);
 		$args = array_merge( $args, $atts );
 
+		$single_page = self::get_search_single_page();
+
 		$properties = (array) get_posts( $args );
 		if ( count( $properties ) ) {
 			foreach ( $properties as &$property ) {
@@ -53,6 +55,7 @@ class Model_Properties {
 				$property->bathrooms = self::get_bathrooms( $property->ID );
 				$property->bedrooms  = self::get_bedrooms( $property->ID );
 				$property->area      = self::get_area( $property->ID );
+				$property->url		 = $single_page . '?id=' . $property->ID;
 			}
 		}
 		return $properties;
@@ -250,15 +253,47 @@ class Model_Properties {
 	public static function shortcode_properties( $atts ) {
 
 		$atts = self::prepare_param_properties( $atts );
-		$properties = (array) self::get_properties( $atts );
+		$properties_list = (array) self::get_properties( $atts );
+
+		$properties = array();
+		foreach( $properties_list as $property ) {
+			$properties[] = Cherry_Core::render_view(
+				TM_REAL_ESTATE_DIR . 'views/property.php',
+				array(
+					'property'		=> $property,
+				)
+			);
+		}
 
 		return Cherry_Core::render_view(
-			TM_REAL_ESTATE_DIR . 'views/property.php',
+			TM_REAL_ESTATE_DIR . 'views/properties.php',
 			array(
 				'properties' => $properties,
 				'pagination' => self::get_pagination( $atts, $atts['posts_per_page'] ),
 			)
 		);
+	}
+
+	/**
+	 * Shortcode property item
+	 *
+	 * @param  [type] integer $id property id.
+	 * @return html code.
+	 */
+	public static function shortcode_property_single() {
+		if ( is_numeric( $_GET['id'] ) ) {
+			$id = $_GET['id'];
+			$properties	= (array) self::get_properties( array( 'include' => $id, 'limit' => 1 ) );
+			$property	= $properties[0];
+
+			return Cherry_Core::render_view(
+				TM_REAL_ESTATE_DIR . 'views/property.php',
+				array(
+					'property'		=> $property,
+					'is_single'		=> true,
+				)
+			);
+		}
 	}
 
 	/**
@@ -271,6 +306,20 @@ class Model_Properties {
 		$page_id		= $main_settings['properties-search-result-page'];
 
 		$permalink = str_replace( home_url(), './', get_permalink( $page_id ) );
+
+		return $permalink;
+	}
+
+	/**
+	 * Get single page link
+	 *
+	 * @return string property price.
+	 */
+	public static function get_search_single_page() {
+		$main_settings	= get_option( 'tm-properties-main-settings' );
+		$page_id		= $main_settings['property-item-page'];
+
+		$permalink = get_permalink( $page_id );
 
 		return $permalink;
 	}
@@ -480,12 +529,30 @@ class Model_Properties {
 	}
 
 	/**
+	 * Get main settings
+	 *
+	 * @return string property price.
+	 */
+	public static function get_main_settings() {
+		return get_option( 'tm-properties-main-settings' );
+	}
+
+	/**
 	 * Get settings for submission form
 	 *
 	 * @return string property price.
 	 */
 	public static function get_submission_form_settings() {
 		return get_option( 'tm-properties-submission-form' );
+	}
+
+	/**
+	 * Get settings for contact form
+	 *
+	 * @return string property price.
+	 */
+	public static function get_contact_form_settings() {
+		return get_option( 'tm-properties-contact-form' );
 	}
 
 	/**

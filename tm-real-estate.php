@@ -65,14 +65,17 @@ class TM_Real_Estate {
 		// Launch our plugin.
 		add_action( 'after_setup_theme', array( $this, 'launch' ), 10 );
 
+		// Add tm-re-property item shortcode
+		add_shortcode( 'tm-re-properties-single', array( 'Model_Properties', 'shortcode_property_single' ) );
+
 		// Add tm-re-properties shortcode
 		add_shortcode( 'tm-re-properties', array( 'Model_Properties', 'shortcode_properties' ) );
 
 		// Add tm-re-search-form shortcode
 		add_shortcode( 'tm-re-search-form', array( 'Model_Properties', 'shortcode_search_form' ) );
 
-		// Add tm-re-properties shortcode
-		add_shortcode( 'tm-re-search-result', array( 'Model_Properties', 'shortcode_search_result' ) );
+		// Add tm-re-properties search result shortcode
+		add_shortcode( 'TMRE_SearchResult', array( 'Model_Properties', 'shortcode_search_result' ) );
 
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
