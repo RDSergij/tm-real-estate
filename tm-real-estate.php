@@ -69,7 +69,7 @@ class TM_Real_Estate {
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTIES, array( 'Model_Properties', 'shortcode_properties' ) );
 
 		// Add tm-submit-form shortcode
-		add_shortcode( 'tm-submit-form', array( 'Model_Submit_Form', 'shortcode_submit_form' ) );
+		add_shortcode( Model_Main::SHORT_CODE_SUBMISSION_FORM, array( 'Model_Submit_Form', 'shortcode_submit_form' ) );
 
 		// Add ajax action
 		add_action( 'after_setup_theme', array( 'Model_Submit_Form', 'register_ajax' ), 20 );
