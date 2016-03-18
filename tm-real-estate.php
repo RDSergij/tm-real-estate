@@ -68,6 +68,12 @@ class TM_Real_Estate {
 		// Add tm-re-properties shortcode
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTIES, array( 'Model_Properties', 'shortcode_properties' ) );
 
+		// Add tm-submit-form shortcode
+		add_shortcode( 'tm-submit-form', array( 'Model_Submit_Form', 'shortcode_submit_form' ) );
+
+		// Add ajax action
+		add_action( 'after_setup_theme', array( 'Model_Submit_Form', 'register_ajax' ), 20 );
+
 		// Add tm-re-search-form shortcode
 		add_shortcode( Model_Main::SHORT_CODE_SEARCH_FORM, array( 'Model_Properties', 'shortcode_search_form' ) );
 
@@ -86,15 +92,16 @@ class TM_Real_Estate {
 		// Set default data
 		add_action( 'init', array( &$this, 'set_defaults' ) );
 
-		// Scripts and Styles
-		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
-
 		// Custom assets
 		add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
 
 		// Add ajax action
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
+
+		add_action( 'wp_ajax_nopriv_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
+		add_action( 'wp_ajax_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
+
 	}
 
 	/**
@@ -103,6 +110,71 @@ class TM_Real_Estate {
 	public function scripts_and_styles() {
 		// Styles
 		wp_enqueue_style( 'tm-real-estate', TM_REAL_ESTATE_URI.'assets/css/tm-real-estate.css' );
+
+		wp_enqueue_script(
+			'jquery_ui_widget',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/vendor/jquery.ui.widget.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'load_image',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/load-image.all.min.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'canvas_to_blob',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/canvas-to-blob.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'iframe_transport',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/jquery.iframe-transport.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'fileupload',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/jquery.fileupload.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'fileupload_process',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/jquery.fileupload-process.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'fileupload_image',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/jquery.fileupload-image.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_style(
+			'tm-submit-form',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/tm-submit-form.css',
+			array(),
+			'1.0.0',
+			'all'
+		);
+
+		wp_localize_script(
+			'cherry-js-core',
+			'form_url',
+			array(
+				'url' => admin_url( 'admin-ajax.php' ),
+			)
+		);
 	}
 
 	/**
@@ -113,11 +185,12 @@ class TM_Real_Estate {
 			'Model_Main',
 			'Model_Properties',
 			'Model_Settings',
+			'Model_Submit_Form',
 		);
 
 		foreach ( $models as $model ) {
 			if ( ! class_exists( $model ) ) {
-				$path = 'models'.DIRECTORY_SEPARATOR.str_replace( '_', '-', $model ).'.php';
+				$path = 'models' . DIRECTORY_SEPARATOR . str_replace( '_', '-', strtolower( $model ) ) . '.php';
 				require_once( $path );
 			}
 		}
