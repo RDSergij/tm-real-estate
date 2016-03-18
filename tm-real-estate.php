@@ -62,11 +62,11 @@ class TM_Real_Estate {
 			require_once( TM_REAL_ESTATE_DIR . '/cherry-framework/cherry-core.php' );
 		}
 
-		// Launch our plugin.
-		add_action( 'after_setup_theme', array( $this, 'launch' ), 10 );
+		// Add tm-re-property item shortcode
+		add_shortcode( Model_Main::SHORT_CODE_PROPERTY, array( 'Model_Properties', 'shortcode_property_single' ) );
 
 		// Add tm-re-properties shortcode
-		add_shortcode( 'tm-re-properties', array( 'Model_Properties', 'shortcode_properties' ) );
+		add_shortcode( Model_Main::SHORT_CODE_PROPERTIES, array( 'Model_Properties', 'shortcode_properties' ) );
 
 		// Add tm-submit-form shortcode
 		add_shortcode( 'tm-submit-form', array( 'Model_Submit_Form', 'shortcode_submit_form' ) );
@@ -75,7 +75,10 @@ class TM_Real_Estate {
 		add_action( 'after_setup_theme', array( 'Model_Submit_Form', 'register_ajax' ), 20 );
 
 		// Add tm-re-search-form shortcode
-		add_shortcode( 'tm-re-search-form', array( 'Model_Properties', 'shortcode_search_form' ) );
+		add_shortcode( Model_Main::SHORT_CODE_SEARCH_FORM, array( 'Model_Properties', 'shortcode_search_form' ) );
+
+		// Add tm-re-properties search result shortcode
+		add_shortcode( Model_main::SHORT_CODE_SEARCH_RESULT, array( 'Model_Properties', 'shortcode_search_result' ) );
 
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
@@ -83,14 +86,26 @@ class TM_Real_Estate {
 		// After activated plugin
 		register_activation_hook( __FILE__, array( $this, 'plugin_activated' ) );
 
+		// Launch our plugin.
+		add_action( 'after_setup_theme', array( $this, 'launch' ), 10 );
+
+		// Set default data
+		add_action( 'init', array( &$this, 'set_defaults' ) );
+
 		// Custom assets
 		add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
 
 		// Add ajax action
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
+
 		add_action ('admin_init', array( 'Shortcode_Tinymce', 'tm_shortcode_button' ));
 		add_action ('admin_footer', array( 'Shortcode_Tinymce', 'tm_get_shortcodes' ));
+
+		add_action( 'wp_ajax_nopriv_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
+		add_action( 'wp_ajax_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
+
+
 	}
 
 	/**
@@ -99,6 +114,71 @@ class TM_Real_Estate {
 	public function scripts_and_styles() {
 		// Styles
 		wp_enqueue_style( 'tm-real-estate', TM_REAL_ESTATE_URI.'assets/css/tm-real-estate.css' );
+
+		wp_enqueue_script(
+			'jquery_ui_widget',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/vendor/jquery.ui.widget.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'load_image',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/load-image.all.min.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'canvas_to_blob',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/canvas-to-blob.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'iframe_transport',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/jquery.iframe-transport.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'fileupload',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/jquery.fileupload.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'fileupload_process',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/jquery.fileupload-process.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'fileupload_image',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/jquery.fileupload-image.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_style(
+			'tm-submit-form',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/tm-submit-form.css',
+			array(),
+			'1.0.0',
+			'all'
+		);
+
+		wp_localize_script(
+			'cherry-js-core',
+			'form_url',
+			array(
+				'url' => admin_url( 'admin-ajax.php' ),
+			)
+		);
 	}
 
 	/**
@@ -108,6 +188,7 @@ class TM_Real_Estate {
 		$models = array(
 			'Model_Main',
 			'Model_Properties',
+			'Model_Settings',
 			'Model_Submit_Form',
 			'Model_Shortcode_Tinymce',
 		);
@@ -296,6 +377,14 @@ class TM_Real_Estate {
 						'priority'	=> 999,
 						'autoload'	=> true,
 					),
+					'cherry-widget-factory' => array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+					),
+					'cherry-creator' => array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+					),
 				),
 			)
 		);
@@ -304,6 +393,18 @@ class TM_Real_Estate {
 		$this->add_post_type();
 		$this->add_user_role();
 		$this->add_taxonomies();
+		$this->add_widgets();
+	}
+
+	/**
+	 * Add some widgets
+	 */
+	public function add_widgets() {
+		// Require real estate search form widget
+		if ( ! class_exists( 'TM_Real_Estate_Search_Form_Widget' ) ) {
+			require_once( TM_REAL_ESTATE_DIR . '/widgets/tm-real-estate-search-form-widget.php' );
+			register_widget( 'TM_Real_Estate_Search_Form_Widget' );
+		}
 	}
 
 	/**
@@ -314,67 +415,17 @@ class TM_Real_Estate {
 	}
 
 	/**
-	 * Get pages list
-	 *
-	 * @since 1.0
-	 * @return array
-	 */
-	public function get_pages_list() {
-		$args = array(
-			'sort_order'  => 'asc',
-			'sort_column' => 'post_title',
-			'post_type'   => 'page',
-			'post_status' => 'publish',
-		);
-
-		$pages = get_pages( $args );
-
-		$pages_list = array();
-		foreach ( $pages as $page ) {
-			$pages_list[ $page->ID ] = $page->post_title;
-		}
-
-		return $pages_list;
-	}
-
-	/**
-	 * Registry taxonomy
+	 * Registry terms and posts
 	 *
 	 * @since 1.0
 	 * @return void
 	 */
-	public function taxonomy_properties_types() {
-
-		// Create terms for taxonomy Property Type
-		$terms = array(
-			'Commercial'	=> array( 'slug' => 'commercial', 'parent' => null ),
-			'Shop'			=> array( 'slug' => 'shop', 'parent' => 'commercial' ),
-			'Office'		=> array( 'slug' => 'office', 'parent' => 'commercial' ),
-
-			'Residential'			=> array( 'slug' => 'residential', 'parent' => null ),
-			'Appartment'			=> array( 'slug' => 'appartment', 'parent' => 'residential' ),
-			'Appartment Building'	=> array( 'slug' => 'appartment-building', 'parent' => 'residential' ),
-			'Villa'					=> array( 'slug' => 'villa', 'parent' => 'residential' ),
-		);
-		foreach ( $terms as $title => &$term ) {
-			if ( ! term_exists( $term['slug'], 'property-type', $term['parent'] ) ) {
-				if ( $term['parent'] ) {
-					$term_data = get_term_by( 'slug', ucfirst( $term['parent'] ), 'property-type' );
-					$parent = $term_data->term_id;
-				} else {
-					$parent = null;
-				}
-				$result = wp_insert_term(
-					$title,
-					'property-type',
-						array(
-							'slug'   => $term['slug'],
-							'parent' => $parent,
-						)
-					);
-				$term['id'] = $result['term_id'];
-			}
+	public function set_defaults() {
+		if ( Model_Settings::is_created() ) {
+			return;
 		}
+
+		Model_Settings::create_settings();
 	}
 
 	/**
@@ -383,176 +434,16 @@ class TM_Real_Estate {
 	 * @return void
 	 */
 	public function settings_reset() {
-		$this->clear_settings();
-		$this->set_default_settings();
-		$return = array(
-			'defaultOptions'	=> self::$default_options,
-			'pagesList'		=> $this->get_pages_list(),
+		$this->core->modules['cherry-page-builder']->clear_sections();
+		Model_Settings::create_settings();
+
+		wp_send_json(
+			array(
+				'defaultOptions' => Model_Settings::get_default_options(),
+				'pagesList'      => Model_Settings::get_page_list(),
+				'debug'          => get_option( Model_Settings::SETTINGS_KEY ),
+			)
 		);
-		wp_send_json( $return );
-	}
-
-	/**
-	 * Clear settings
-	 *
-	 * @return void
-	 */
-	private function clear_settings() {
-		$this->get_default_settings();
-		foreach ( self::$default_options as $section => $settings ) {
-			delete_option( $section );
-		}
-	}
-
-	/**
-	 * Get default settings
-	 *
-	 * @return void
-	 */
-	public function get_default_settings() {
-		self::$default_options = get_option( 'tm-real-estate-default-settings' );
-		if ( empty( self::$default_options ) ) {
-			$this->set_default_settings();
-		}
-	}
-
-	/**
-	 * Set default settings
-	 *
-	 * @return void
-	 */
-	private function set_default_page() {
-		if ( empty( self::$default_options ) ) {
-			return;
-		}
-
-		// Page parameter
-		$page_parameter = array(
-			'post_title'	=> __( 'Properties list', 'tm-real-estate' ),
-			'post_content'	=> '[tm-real-estate-list]', // must be change
-			'post_author'	=> 1,
-			'post_type'		=> 'page',
-			'post_status'	=> 'publish',
-		);
-
-		// Insert or update pages
-		// List properties
-		$page = get_post( self::$default_options['tm-properties-main-settings']['properties-list-page'] );
-		if ( is_object( $page ) ) {
-			$page_parameter['ID']			= self::$default_options['tm-properties-main-settings']['properties-list-page'];
-			$page_parameter['post_status']	= 'publish';
-			wp_update_post( $page_parameter );
-			unset( $page_parameter['ID'] );
-		} else {
-			self::$default_options['tm-properties-main-settings']['properties-list-page']	= wp_insert_post( $page_parameter );
-		}
-
-		// Property item
-		$page_parameter['post_title']	= __( 'Property item', 'tm-real-estate' );
-		$page_parameter['post_content']	= '[tm-real-estate-item]'; // must be change
-		$page = get_post( self::$default_options['tm-properties-main-settings']['properties-item-page'] );
-		if ( is_object( $page ) ) {
-			$page_parameter['ID'] = $page->ID;
-			$page_parameter['post_status']	= 'publish';
-			wp_update_post( $page_parameter );
-			unset( $page_parameter['ID'] );
-		} else {
-			self::$default_options['tm-properties-main-settings']['properties-item-page']	= wp_insert_post( $page_parameter );
-		}
-
-		// List of properties search
-		$page_parameter['post_title']	= __( 'Search result', 'tm-real-estate' );
-		$page_parameter['post_content']	= '[TMRE_SearchResult]';
-		$page = get_post( self::$default_options['tm-properties-main-settings']['properties-search-result-page'] );
-		if ( is_object( $page ) ) {
-			$page_parameter['ID'] = $page->ID;
-			$page_parameter['post_status']	= 'publish';
-			wp_update_post( $page_parameter );
-			unset( $page_parameter['ID'] );
-		} else {
-			self::$default_options['tm-properties-main-settings']['properties-search-result-page']	= wp_insert_post( $page_parameter );
-		}
-
-		// Submission page
-		$page_parameter['post_title']	= __( 'Submission form', 'tm-real-estate' );
-		$page_parameter['post_content']	= '[TMRE_Submission]';
-		$page = get_post( self::$default_options['tm-properties-main-settings']['properties-submission-page'] );
-		if ( is_object( $page ) ) {
-			$page_parameter['ID'] = $page->ID;
-			$page_parameter['post_status']	= 'publish';
-			self::$default_options['tm-properties-main-settings']['properties-submission-page']	= wp_update_post( $page_parameter );
-			unset( $page_parameter['ID'] );
-		} else {
-			self::$default_options['tm-properties-main-settings']['properties-submission-page']	= wp_insert_post( $page_parameter );
-		}
-	}
-
-	/**
-	 * Set default settings
-	 */
-	private function set_default_settings() {
-
-		if ( empty( self::$default_options ) ) {
-			$this->get_default_settings();
-		}
-
-		if ( empty( self::$default_options ) ) {
-			$this->generate_default_settings();
-		}
-
-		foreach ( self::$default_options as $section => $settings ) {
-			add_option( $section, $settings );
-		}
-
-		$this->set_default_page();
-
-		add_option( 'tm-real-estate-default-settings', self::$default_options );
-	}
-
-	/**
-	 * Generating default settings
-	 */
-	private function generate_default_settings() {
-
-		// List default options
-		self::$default_options = array(
-			'tm-properties-main-settings'	=> array(
-				'properties-list-page'			=> null,
-				'property-item-page'			=> null,
-				'properties-list-page'			=> null,
-				'properties-submission-page'	=> null,
-				'area-unit'						=> 'meters',
-				'сurrency-sign'					=> '$',
-			),
-			'tm-properties-contact-form'	=> array(
-				'mail-subject'		=> __( 'New mail', 'tm-real-estate' ),
-				'success-message'	=> __( 'Message send', 'tm-real-estate' ),
-				'failed-message'	=> __( 'Message don`t send', 'tm-real-estate' ),
-			),
-			'tm-properties-submission-form'	=> array(
-				'mail-subject'		=> __( 'New mail', 'tm-real-estate' ),
-				'success-message'	=> __( 'Message send', 'tm-real-estate' ),
-				'failed-message'	=> __( 'Message don`t send', 'tm-real-estate' ),
-			),
-		);
-
-		$this->set_default_page();
-
-	}
-
-	/**
-	 * Set default options
-	 *
-	 * @since 1.0
-	 * @return void
-	 */
-	public function plugin_activated() {
-
-		$this->get_default_settings();
-
-		if ( ! taxonomy_exists( 'property-type' ) ) {
-			$this->taxonomy_properties_types();
-		}
 	}
 
 	/**
@@ -562,32 +453,14 @@ class TM_Real_Estate {
 	 */
 	public function add_admin_menu_page() {
 
-		$sections = array(
-
-			'tm-properties-main-settings' => array(
-				'slug'			=> 'tm-properties-main-settings',
-				'name'			=> __( 'Main', 'tm-real-estate' ),
-				'description'	=> '',
-			),
-
-			'tm-properties-contact-form' => array(
-				'slug'			=> 'tm-properties-contact-form',
-				'name'			=> __( 'Contact form', 'tm-real-estate' ),
-			),
-
-			'tm-properties-submission-form' => array(
-				'slug'			=> 'tm-properties-submission-form',
-				'name'			=> __( 'Submission form', 'tm-real-estate' ),
-			),
-
+		$button_reset = new UI_Text(
+			array(
+				'type'		=> 'button',
+				'class'		=> 'button button-warning reset-default-page',
+				'value'		=> __( 'Reset all settings', 'tm-real-estate' ),
+				'master'	=> 'block-reset',
+			)
 		);
-
-		$button_reset = new UI_Text( array(
-			'type'		=> 'button',
-			'class'		=> 'button button-warning reset-default-page',
-			'value'		=> __( 'Reset all settings', 'tm-real-estate' ),
-			'master'	=> 'block-reset',
-		) );
 
 		$settings['tm-properties-main-settings'][] = array(
 			'type'			=> 'select',
@@ -597,7 +470,7 @@ class TM_Real_Estate {
 				'id'			=> 'properties-list-page',
 				'size'			=> 1,
 				'value'			=> '',
-				'options'		=> $this->get_pages_list(),
+				'options'		=> Model_Settings::get_page_list(),
 			),
 		);
 
@@ -609,7 +482,7 @@ class TM_Real_Estate {
 				'id'			=> 'property-item-page',
 				'size'			=> 1,
 				'value'			=> '',
-				'options'		=> $this->get_pages_list(),
+				'options'		=> Model_Settings::get_page_list(),
 			),
 		);
 
@@ -621,7 +494,7 @@ class TM_Real_Estate {
 				'id'			=> 'properties-search-result',
 				'size'			=> 1,
 				'value'			=> '',
-				'options'		=> $this->get_pages_list(),
+				'options'		=> Model_Settings::get_page_list(),
 			),
 		);
 
@@ -633,7 +506,7 @@ class TM_Real_Estate {
 				'id'			=> 'properties-submission-page',
 				'size'			=> 1,
 				'value'			=> '',
-				'options'		=> $this->get_pages_list(),
+				'options'		=> Model_Settings::get_page_list(),
 			),
 		);
 
@@ -645,10 +518,7 @@ class TM_Real_Estate {
 				'id'			=> 'area-unit',
 				'size'			=> 1,
 				'value'			=> 'feets',
-				'options'		=> array(
-					'feets'	=> 'feets',
-					'meters'	=> 'meters',
-				),
+				'options'		=> Model_Settings::get_area_unit(),
 			),
 		);
 
@@ -729,14 +599,28 @@ class TM_Real_Estate {
 			),
 		);
 
-		$page = new Cherry_Page_Builder( $this->core );
-
-		$page->make( 'cherry-property-settings', 'Property Settings', null )->set(
+		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Property Settings', null )->set(
 			array(
 				'capability'	=> 'manage_options',
 				'position'		=> 22,
 				'icon'			=> 'dashicons-admin-site',
-				'sections'		=> $sections,
+				'sections'		=> array(
+					'tm-properties-main-settings' => array(
+						'slug'			=> 'tm-properties-main-settings',
+						'name'			=> __( 'Main', 'tm-real-estate' ),
+						'description'	=> '',
+					),
+
+					'tm-properties-contact-form' => array(
+						'slug'			=> 'tm-properties-contact-form',
+						'name'			=> __( 'Contact form', 'tm-real-estate' ),
+					),
+
+					'tm-properties-submission-form' => array(
+						'slug'			=> 'tm-properties-submission-form',
+						'name'			=> __( 'Submission form', 'tm-real-estate' ),
+					),
+				),
 				'settings'		=> $settings,
 				'button_after'	=> $button_reset->render(),
 			)
@@ -762,6 +646,7 @@ class TM_Real_Estate {
 		wp_localize_script( 'tm-real-state-settings-page', 'TMPageSettings', array(
 			'ajaxurl'				=> admin_url( 'admin-ajax.php' ),
 			'resetMessage'			=> __( 'Settings have been reseted' ),
+			'errorMessage'			=> __( 'Something is wrong!' ),
 			'confirmResetMessage'	=> __( 'Are you sure?' ),
 		) );
 

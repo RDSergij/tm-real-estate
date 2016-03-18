@@ -17,15 +17,14 @@ class Model_Properties {
 	/**
 	 * Get all properties
 	 *
-	 * @param  [type] $posts_per_page count.
+	 * @param  [type] $atts atriibutes.
 	 * @return array properties
 	 */
-	public static function get_properties( $posts_per_page = 5 ) {
+	public static function get_properties( $atts = array() ) {
 		$args = array(
-			'posts_per_page'   => $posts_per_page,
+			'posts_per_page'   => 20,
 			'offset'           => 0,
-			'category'         => '',
-			'category_name'    => '',
+			'tax_query' => array(),
 			'orderby'          => 'date',
 			'order'            => 'DESC',
 			'include'          => '',
@@ -39,6 +38,10 @@ class Model_Properties {
 			'post_status'      => 'publish',
 			'suppress_filters' => true,
 		);
+		$args = array_merge( $args, $atts );
+
+		$single_page = self::get_search_single_page();
+
 		$properties = (array) get_posts( $args );
 		if ( count( $properties ) ) {
 			foreach ( $properties as &$property ) {
@@ -52,9 +55,197 @@ class Model_Properties {
 				$property->bathrooms = self::get_bathrooms( $property->ID );
 				$property->bedrooms  = self::get_bedrooms( $property->ID );
 				$property->area      = self::get_area( $property->ID );
+				$property->url		 = $single_page . '?id=' . $property->ID;
 			}
 		}
 		return $properties;
+	}
+
+	/**
+	 * Get total properties count
+	 *
+	 * @return total properties count.
+	 */
+	public static function get_total_count( $atts = array() ) {
+		unset( $atts['posts_per_page'], $atts['offset'] );
+
+		$args = array(
+			'posts_per_page'   => -1,
+			'offset'           => 0,
+			'fields'           => 'ids',
+			'category'         => '',
+			'category_name'    => '',
+			'orderby'          => 'date',
+			'order'            => 'DESC',
+			'include'          => '',
+			'exclude'          => '',
+			'meta_key'         => '',
+			'meta_value'       => '',
+			'post_type'        => 'property',
+			'post_mime_type'   => '',
+			'post_parent'      => '',
+			'author'           => '',
+			'post_status'      => 'publish',
+			'suppress_filters' => true,
+		);
+		$args = array_merge( $args, $atts );
+
+		return count( get_posts( $args ) );
+	}
+
+	/**
+	 * Shortcode properties
+	 *
+	 * @param  [type] $atts attributes.
+	 * @return html code.
+	 */
+	public static function prepare_param_properties( $atts ) {
+		if ( is_array( $atts ) && ! empty( $atts['limit'] ) ) {
+			$atts['posts_per_page'] = $atts['limit'];
+			unset( $atts['limit'] );
+		} else {
+			$atts['posts_per_page'] = 5;
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['id'] ) ) {
+			$atts['include'] = explode( ',', $atts['id'] );
+			unset( $atts['id'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['keyword'] ) ) {
+			$atts['s'] = $atts['keyword'];
+			unset( $atts['keyword'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['property_type'] ) ) {
+			$atts['tax_query'][] = array(
+				'taxonomy' => 'property-type',
+				'field' => 'term_id',
+				'terms' => (int) $atts['property_type'],
+			);
+			unset( $atts['type'] );
+		}
+
+		$atts['meta_query']['relation'] = 'AND';
+
+		if ( is_array( $atts ) && ! empty( $atts['property_status'] )  ) {
+			$atts['meta_query'][] = array(
+				'key' => 'status',
+				'value' => (string) $atts['property_status'],
+				'compare' => '=',
+			);
+			unset( $atts['property_status'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['min_price'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'price',
+				'value' => (int) $atts['min_price'],
+				'type' => 'numeric',
+				'compare' => '>=',
+			);
+			unset( $atts['min_price'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['max_price'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'price',
+				'value' => (int) $atts['max_price'],
+				'type' => 'numeric',
+				'compare' => '<=',
+			);
+			unset( $atts['min_price'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['min_bathrooms'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'bathrooms',
+				'value' => (int) $atts['min_bathrooms'],
+				'type' => 'numeric',
+				'compare' => '>=',
+			);
+			unset( $atts['min_bathrooms'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['max_bathrooms'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'bathrooms',
+				'value' => (int) $atts['max_bathrooms'],
+				'type' => 'numeric',
+				'compare' => ' <=',
+			);
+			unset( $atts['max_bathrooms'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['min_bedrooms'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'bedrooms',
+				'value' => (int) $atts['min_bedrooms'],
+				'type' => 'numeric',
+				'compare' => '>=',
+			);
+			unset( $atts['min_bedrooms'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['max_bedrooms'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'bedrooms',
+				'value' => (int) $atts['max_bedrooms'],
+				'type' => 'numeric',
+				'compare' => '<=',
+			);
+			unset( $atts['max_bedrooms'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['min_area'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'area',
+				'value' => (int) $atts['min_area'],
+				'type' => 'numeric',
+				'compare' => '>=',
+			);
+			unset( $atts['min_area'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['max_area'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'area',
+				'value' => (int) $atts['max_area'],
+				'type' => 'numeric',
+				'compare' => '<=',
+			);
+			unset( $atts['max_area'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['agent'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'agent',
+				'value' => (int) $atts['max_area'],
+				'compare' => '=',
+			);
+			unset( $atts['agent'] );
+		}
+
+		return $atts;
+	}
+
+	/**
+	 * Shortcode properties
+	 *
+	 * @return html code.
+	 */
+	public static function shortcode_search_result() {
+
+		$form		= self::shortcode_search_form( $_GET );
+		$properties	= self::shortcode_properties( $_GET );
+
+		return Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/search-result.php',
+			array(
+				'form'			=> $form,
+				'properties'	=> $properties,
+			)
+		);
 	}
 
 	/**
@@ -64,18 +255,25 @@ class Model_Properties {
 	 * @return html code.
 	 */
 	public static function shortcode_properties( $atts ) {
-		$posts_per_page = 5;
-		if ( is_array( $atts ) && array_key_exists( 'posts_per_page', $atts ) ) {
-			$posts_per_page = $atts['posts_per_page'];
+
+		$atts = self::prepare_param_properties( $atts );
+		$properties_list = (array) self::get_properties( $atts );
+
+		$properties = array();
+		foreach ( $properties_list as $property ) {
+			$properties[] = Cherry_Core::render_view(
+				TM_REAL_ESTATE_DIR . 'views/property.php',
+				array(
+					'property'		=> $property,
+				)
+			);
 		}
 
-		$properties = (array) self::get_properties( $posts_per_page );
-
 		return Cherry_Core::render_view(
-			TM_REAL_ESTATE_DIR . 'views/property.php',
+			TM_REAL_ESTATE_DIR . 'views/properties.php',
 			array(
 				'properties' => $properties,
-				'pagination' => self::get_pagination( $posts_per_page ),
+				'pagination' => self::get_pagination( $atts, $atts['posts_per_page'] ),
 			)
 		);
 	}
@@ -97,22 +295,90 @@ class Model_Properties {
 			'post_content'   => $attr['description'],
 			'post_status'    => $property_status,
 			'post_type'      => 'property',
-			);
+		);
 		$property = sanitize_post( $property, 'db' );
 		return wp_insert_post( $property );
 	}
 	/**
-	 * Shortcode tm-re-search-form
+	 * Shortcode property item
 	 *
-	 * @param  [type] $atts attributes.
 	 * @return html code.
 	 */
-	public static function shortcode_search_form( $atts ) {
+	public static function shortcode_property_single() {
+		if ( is_numeric( $_GET['id'] ) ) {
+			$id = $_GET['id'];
+			$properties	= (array) self::get_properties( array( 'include' => $id, 'limit' => 1 ) );
+			$property	= $properties[0];
+
+			return Cherry_Core::render_view(
+				TM_REAL_ESTATE_DIR . 'views/property.php',
+				array(
+					'property'		=> $property,
+					'is_single'		=> true,
+				)
+			);
+		}
+	}
+
+	/**
+	 * Get search result page
+	 *
+	 * @return string property price.
+	 */
+	public static function get_search_result_page() {
+		$main_settings	= get_option( 'tm-properties-main-settings' );
+		$page_id		= $main_settings['properties-search-result-page'];
+
+		$permalink = str_replace( home_url(), './', get_permalink( $page_id ) );
+
+		return $permalink;
+	}
+
+	/**
+	 * Get single page link
+	 *
+	 * @return string property price.
+	 */
+	public static function get_search_single_page() {
+		$main_settings	= get_option( 'tm-properties-main-settings' );
+		$page_id		= $main_settings['property-item-page'];
+
+		$permalink = get_permalink( $page_id );
+
+		return $permalink;
+	}
+
+	/**
+	 * Shortcode tm-re-search-form
+	 *
+	 * @return html code.
+	 */
+	public static function shortcode_search_form() {
+
+		$default_value = array(
+			'keyword'			=> '',
+			'min_price'			=> '',
+			'max_price'			=> '',
+			'min_bedrooms'		=> '',
+			'max_bedrooms'		=> '',
+			'min_bathrooms'		=> '',
+			'max_bathrooms'		=> '',
+			'min_area'			=> '',
+			'max_area'			=> '',
+			'property_status'	=> '',
+			'property_type'		=> '',
+		);
+		$values = array_merge( $default_value, $_GET );
+
+		$action_url = self::get_search_result_page();
+
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/search-form.php',
 			array(
-				'property_statuses' => self::get_allowed_property_statuses(),
-				'property_types'    => self::get_all_property_types(),
+				'property_statuses'	=> self::get_allowed_property_statuses(),
+				'property_types'	=> self::get_all_property_types(),
+				'action_url'		=> $action_url,
+				'values'		=> $values,
 			)
 		);
 	}
@@ -276,14 +542,15 @@ class Model_Properties {
 	/**
 	 * Get propeties pagination array
 	 *
-	 * @param  [type] $posts_per_page properties per page.
+	 * @param [type] array   $atts parameters.
+	 * @param [type] integer $posts_per_page properties per page.
 	 * @return array pagination.
 	 */
-	public static function get_pagination( $posts_per_page = 5 ) {
+	public static function get_pagination( $atts = array(), $posts_per_page = 5 ) {
 		$args = array(
 			'base'               => '%_%',
 			'format'             => '?page=%#%',
-			'total'              => self::get_total_pages( $posts_per_page ),
+			'total'              => self::get_total_pages( $atts, $posts_per_page ),
 			'current'            => max( 1, get_query_var( 'page' ) ),
 			'show_all'           => false,
 			'end_size'           => 1,
@@ -301,41 +568,41 @@ class Model_Properties {
 	}
 
 	/**
-	 * Get total properties count
+	 * Get main settings
 	 *
-	 * @return total properties count.
+	 * @return string property price.
 	 */
-	public static function get_total_count() {
-		$args = array(
-			'posts_per_page'   => -1,
-			'offset'           => 0,
-			'fields'           => 'ids',
-			'category'         => '',
-			'category_name'    => '',
-			'orderby'          => 'date',
-			'order'            => 'DESC',
-			'include'          => '',
-			'exclude'          => '',
-			'meta_key'         => '',
-			'meta_value'       => '',
-			'post_type'        => 'property',
-			'post_mime_type'   => '',
-			'post_parent'      => '',
-			'author'           => '',
-			'post_status'      => 'publish',
-			'suppress_filters' => true,
-		);
-		return count( get_posts( $args ) );
+	public static function get_main_settings() {
+		return get_option( 'tm-properties-main-settings' );
+	}
+
+	/**
+	 * Get settings for submission form
+	 *
+	 * @return integer id.
+	 */
+	public static function get_submission_form_settings() {
+		return get_option( 'tm-properties-submission-form' );
+	}
+
+	/**
+	 * Get settings for contact form
+	 *
+	 * @return string property price.
+	 */
+	public static function get_contact_form_settings() {
+		return get_option( 'tm-properties-contact-form' );
 	}
 
 	/**
 	 * Get total pages count
 	 *
-	 * @param type integer $posts_per_page properties per page.
+	 * @param [type]  array   $atts parameters.
+	 * @param [type]  integer $posts_per_page properties per page.
 	 * @return total pages.
 	 */
-	public static function get_total_pages( $posts_per_page = 5 ) {
-		return ceil( self::get_total_count() / $posts_per_page );
+	public static function get_total_pages( $atts = array(), $posts_per_page = 5 ) {
+		return ceil( self::get_total_count( $atts ) / $posts_per_page );
 	}
 
 	/**
@@ -353,7 +620,7 @@ class Model_Properties {
 					'term_id' => $term->term_id,
 					'name' => $term->name,
 					'child' => $child,
-					);
+				);
 			}
 			return $types;
 		}
