@@ -89,6 +89,8 @@ class TM_Real_Estate {
 		// Add ajax action
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
+		add_action ('admin_init', array( 'Shortcode_Tinymce', 'tm_shortcode_button' ));
+		add_action ('admin_footer', array( 'Shortcode_Tinymce', 'tm_get_shortcodes' ));
 	}
 
 	/**
@@ -107,6 +109,7 @@ class TM_Real_Estate {
 			'Model_Main',
 			'Model_Properties',
 			'Model_Submit_Form',
+			'Model_Shortcode_Tinymce',
 		);
 
 		foreach ( $models as $model ) {
