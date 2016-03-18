@@ -62,11 +62,20 @@ class TM_Real_Estate {
 			require_once( TM_REAL_ESTATE_DIR . '/cherry-framework/cherry-core.php' );
 		}
 
+		// Add tm-re-property item shortcode
+		add_shortcode( Model_Main::SHORT_CODE_PROPERTY, array( 'Model_Properties', 'shortcode_property_single' ) );
+
 		// Add tm-re-properties shortcode
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTIES, array( 'Model_Properties', 'shortcode_properties' ) );
 
 		// Add tm-re-search-form shortcode
 		add_shortcode( Model_Main::SHORT_CODE_SEARCH_FORM, array( 'Model_Properties', 'shortcode_search_form' ) );
+
+		// Add tm-re-properties search result shortcode
+		add_shortcode( Model_main::SHORT_CODE_SEARCH_RESULT, array( 'Model_Properties', 'shortcode_search_result' ) );
+
+		// Scripts and Styles
+		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 
 		// After activated plugin
 		register_activation_hook( __FILE__, array( $this, 'plugin_activated' ) );
@@ -559,6 +568,7 @@ class TM_Real_Estate {
 		wp_localize_script( 'tm-real-state-settings-page', 'TMPageSettings', array(
 			'ajaxurl'				=> admin_url( 'admin-ajax.php' ),
 			'resetMessage'			=> __( 'Settings have been reseted' ),
+			'errorMessage'			=> __( 'Something is wrong!' ),
 			'confirmResetMessage'	=> __( 'Are you sure?' ),
 		) );
 
