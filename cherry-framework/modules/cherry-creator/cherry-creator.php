@@ -66,8 +66,8 @@ class Cherry_Creator implements I_Module {
 	 * Create Chery_Creator_Term object
 	 *
 	 * @param  [type] $title term.
-	 * @param  string $tax   taxonomy.
-	 * @param  array  $args  arguments.
+	 * @param  [string] $tax   taxonomy.
+	 * @param  array $args  arguments.
 	 * @return Chery_Creator_Term
 	 */
 	public static function term( $title, $tax = 'category', $args = array() ) {
