@@ -81,7 +81,7 @@ class Cherry_Creator implements I_Module {
 	/**
 	 * New / Update post
 	 *
-	 * @param  array  $properties new or update post properties.
+	 * @param  array $properties new or update post properties.
 	 * @return post id or 0.
 	 */
 	public static function post( $properties = array(), $unique = false ) {

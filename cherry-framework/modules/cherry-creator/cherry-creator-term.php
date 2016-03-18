@@ -48,7 +48,7 @@ class Cherry_Creator_Term {
 	 *
 	 * @param [type] $title term title.
 	 * @param string $tax   taxonomy.
-	 * @param array  $args  arguments
+	 * @param array  $args  arguments.
 	 */
 	public function __construct( $title, $tax = 'category', $args = array() ) {
 		$this->title     = $title;
@@ -64,7 +64,7 @@ class Cherry_Creator_Term {
 	public function insert( $unique = false ) {
 		if ( ! is_array( $this->inserted ) ) {
 			if ( $unique ) {
-				if( ! term_exists( $this->get_term_slug(), $this->taxonomy ) ) {
+				if ( ! term_exists( $this->get_term_slug(), $this->taxonomy ) ) {
 					$this->_insert();
 				}
 			} else {
@@ -90,7 +90,8 @@ class Cherry_Creator_Term {
 
 	/**
 	 * Set parent by slug
-	 * @param [type] $parent_slug [description]
+	 *
+	 * @param [type] $parent_slug parent.
 	 */
 	public function set_parent_by_slug( $parent_slug = null ) {
 		if ( null !== $parent_slug ) {

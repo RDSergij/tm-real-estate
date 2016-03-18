@@ -314,7 +314,7 @@ class TM_Real_Estate {
 	 */
 	public function add_widgets() {
 		// Require real estate search form widget
-		if( ! class_exists( 'TM_Real_Estate_Search_Form_Widget' ) ) {
+		if ( ! class_exists( 'TM_Real_Estate_Search_Form_Widget' ) ) {
 			require_once( TM_REAL_ESTATE_DIR . '/widgets/tm-real-estate-search-form-widget.php' );
 			register_widget( 'TM_Real_Estate_Search_Form_Widget' );
 		}
