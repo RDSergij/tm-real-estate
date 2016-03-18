@@ -53,6 +53,7 @@ jQuery( document ).ready( function( $ ) {
 			for ( key in defaultOptions ) {
 				temp = defaultOptions[ key ];
 				for ( id in temp ) {
+					console.log( '#form-' + key + ' #' + id, temp[ id ] );
 					jQuery( '#form-' + key + ' #' + id ).val( temp[ id ] );
 				}
 			}
