@@ -277,7 +277,28 @@ class Model_Properties {
 			)
 		);
 	}
-
+	/**
+	 * Add new properties
+	 *
+	 * @param  [type] $attr attributes.
+	 * @return html code.
+	 */
+	public static function add_property( $attr ) {
+		if ( current_user_can( 'administrator' ) || current_user_can( 're_agent' ) ) {
+			$property_status = 'publish';
+		} else {
+			$property_status = 'pending';
+		}
+		$property = array(
+			'post_title'     => $attr['title'],
+			'post_author'    => get_current_user_id(),
+			'post_content'   => $attr['description'],
+			'post_status'    => $property_status,
+			'post_type'      => 'property',
+		);
+		$property = sanitize_post( $property, 'db' );
+		return wp_insert_post( $property );
+	}
 	/**
 	 * Shortcode property item
 	 *
@@ -583,4 +604,27 @@ class Model_Properties {
 	public static function get_total_pages( $atts = array(), $posts_per_page = 5 ) {
 		return ceil( self::get_total_count( $atts ) / $posts_per_page );
 	}
+
+	/**
+	 * Get Types of properties
+	 *
+	 * @param type integer $parent ID of parent types.
+	 * @return total pages.
+	 */
+	public function get_types( $parent = 0 ) {
+		$terms = get_terms( 'property-type', array( 'parent' => $parent, 'hide_empty' => false ) );
+		if ( count( $terms ) > 0 ) {
+			foreach ( $terms as $term ) {
+				$child = Model_Properties::get_types( $term->term_id );
+				$types[] = array(
+					'term_id' => $term->term_id,
+					'name' => $term->name,
+					'child' => $child,
+				);
+			}
+			return $types;
+		}
+		return false;
+	}
 }
+
