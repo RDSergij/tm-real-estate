@@ -46,9 +46,9 @@ class Cherry_Creator_Term {
 	/**
 	 * Cherry_Creator_Term
 	 *
-	 * @param [type] $title term title.
+	 * @param [type]   $title term title.
 	 * @param [string] $tax   taxonomy.
-	 * @param array $args  arguments.
+	 * @param array    $args  arguments.
 	 */
 	public function __construct( $title, $tax = 'category', $args = array() ) {
 		$this->title     = $title;
