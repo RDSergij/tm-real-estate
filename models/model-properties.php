@@ -112,11 +112,6 @@ class Model_Properties {
 			unset( $atts['id'] );
 		}
 
-		if ( is_array( $atts ) && ! empty( $atts['agent'] ) ) {
-			$atts['author'] = $atts['agent'];
-			unset( $atts['agent'] );
-		}
-
 		if ( is_array( $atts ) && ! empty( $atts['keyword'] ) ) {
 			$atts['s'] = $atts['keyword'];
 			unset( $atts['keyword'] );
@@ -220,6 +215,15 @@ class Model_Properties {
 				'compare' => '<=',
 			);
 			unset( $atts['max_area'] );
+		}
+
+		if ( is_array( $atts ) && ! empty( $atts['agent'] ) ) {
+			$atts['meta_query'][] = array(
+				'key' => 'agent',
+				'value' => (int) $atts['max_area'],
+				'compare' => '=',
+			);
+			unset( $atts['agent'] );
 		}
 
 		return $atts;
