@@ -257,17 +257,7 @@ class Model_Properties {
 	public static function shortcode_properties( $atts ) {
 
 		$atts = self::prepare_param_properties( $atts );
-		$properties_list = (array) self::get_properties( $atts );
-
-		$properties = array();
-		foreach ( $properties_list as $property ) {
-			$properties[] = Cherry_Core::render_view(
-				TM_REAL_ESTATE_DIR . 'views/property.php',
-				array(
-					'property'		=> $property,
-				)
-			);
-		}
+		$properties = (array) self::get_properties( $atts );
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/properties.php',
@@ -358,6 +348,55 @@ class Model_Properties {
 				'property_types'	=> self::get_all_property_types(),
 				'action_url'		=> $action_url,
 				'values'		=> $values,
+			)
+		);
+	}
+
+	/**
+	 * Agent contact form
+	 *
+	 * @return html code.
+	 */
+	public static function shortcode_agent_contact_form( $atts ) {
+
+		$contact_form_settings = self::get_contact_form_settings();
+
+		wp_enqueue_script(
+			'tm-real-state-contact-form',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/contact-form.min.js',
+			array( 'jquery' ),
+			'1.0.0',
+			true
+		);
+
+		wp_localize_script( 'tm-real-state-contact-form', 'TMREContactForm', array(
+			'ajaxUrl'				=> admin_url( 'admin-ajax.php' ),
+			'successMessage'		=> $contact_form_settings['success-message'],
+			'failedMessage'			=> $contact_form_settings['failed-message'],
+		) );
+
+		if ( ! empty( $atts['agent_id'] ) ) {
+			$agent_id = $atts['agent_id'];
+		} elseif ( ! empty( $atts['property_id'] ) ) {
+			$property_id = $_GET['id'];
+		} elseif ( ! empty( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
+			$property_id = $_GET['id'];
+		}
+
+		if ( empty( $agent_id ) ) {
+			if ( empty( $property_id ) ) {
+				return;
+			}
+
+			$agent_id = get_post_meta( $property_id, 'agent', true );
+		}
+
+		$user_data = get_userdata( $agent_id );
+
+		return Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/contact-form.php',
+			array(
+				'agent'			=> $user_data,
 			)
 		);
 	}

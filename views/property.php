@@ -30,9 +30,6 @@
 			<div class="property-content">
 				<div class="detail">
 					<?php echo wp_trim_words( $property->post_content, 55 ); ?>
-					<?php if ( empty( $__data['is_single'] ) ) : ?>
-					<a class="more-details" href="<?php echo $property->url ?>">More Details <i class="fa fa-caret-right"></i></a>
-					<?php endif; ?>
 				</div>
 			</div>
 

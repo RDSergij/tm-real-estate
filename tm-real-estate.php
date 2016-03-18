@@ -77,6 +77,9 @@ class TM_Real_Estate {
 		// Add tm-re-properties search result shortcode
 		add_shortcode( 'TMRE_SearchResult', array( 'Model_Properties', 'shortcode_search_result' ) );
 
+		// Add tm-re-properties search result shortcode
+		add_shortcode( 'TMRE_AgentContactForm', array( 'Model_Properties', 'shortcode_agent_contact_form' ) );
+
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 
