@@ -65,6 +65,9 @@ class TM_Real_Estate {
 		// Add tm-re-property item shortcode
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTY, array( 'Model_Properties', 'shortcode_property_single' ) );
 
+		// Add tm-re-property item shortcode
+		add_shortcode( Model_Main::SHORT_CODE_CONTACT_FORM, array( 'Model_Properties', 'shortcode_contact_form' ) );
+
 		// Add tm-re-properties shortcode
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTIES, array( 'Model_Properties', 'shortcode_properties' ) );
 
@@ -76,6 +79,9 @@ class TM_Real_Estate {
 
 		// Add tm-re-properties search result shortcode
 		add_shortcode( Model_main::SHORT_CODE_SEARCH_RESULT, array( 'Model_Properties', 'shortcode_search_result' ) );
+
+		// Add tm-re-properties search result shortcode
+		add_shortcode( 'TMRE_AgentContactForm', array( 'Model_Properties', 'shortcode_agent_contact_form' ) );
 
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
@@ -95,6 +101,9 @@ class TM_Real_Estate {
 		// Add ajax action
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
+
+		add_action( 'wp_ajax_tm_re_contact_form', array( $this, 'contact_form' ) );
+		add_action( 'wp_ajax_nopriv_tm_re_contact_form', array( $this, 'contact_form' ) );
 
 		add_action( 'wp_ajax_nopriv_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
 		add_action( 'wp_ajax_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
@@ -376,6 +385,35 @@ class TM_Real_Estate {
 	}
 
 	/**
+	 * Contact form
+	 */
+	public function contact_form() {
+		$data = $_POST;
+
+		$agent_data = get_userdata( $data['agent_id'] );
+
+		$property_data = get_post( $data['property_id'] );
+
+		$contact_form_settings = Model_Settings::get_contact_form_settings();
+
+		$headers = 'From: ' . $data['name'] . ' <' . $data['email'] . '>' . "\r\n";
+		$headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
+
+		$html = Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/mail.php',
+			array(
+				'message_data'	=> $data,
+				'agent_data'	=> $agent_data,
+				'property_data'	=> $property_data,
+			)
+		);
+
+		$send = wp_mail( $agent_data->user_email, $contact_form_settings['mail-subject'], $html, $headers );
+		wp_send_json( array( 'result' => $send ) );
+	}
+
+	/**
+	 * Add taxonomies to wp
 	 * Add some widgets
 	 */
 	public function add_widgets() {
