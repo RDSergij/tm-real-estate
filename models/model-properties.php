@@ -249,7 +249,6 @@ class Model_Properties {
 				unset( $atts['agent'] );
 			}
 		}
-		
 
 		return $atts;
 	}
@@ -324,6 +323,7 @@ class Model_Properties {
 		$property = sanitize_post( $property, 'db' );
 		return wp_insert_post( $property );
 	}
+
 	/**
 	 * Shortcode property item
 	 *
@@ -653,4 +653,3 @@ class Model_Properties {
 		return false;
 	}
 }
-
