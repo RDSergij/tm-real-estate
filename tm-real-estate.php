@@ -71,9 +71,6 @@ class TM_Real_Estate {
 		// Add tm-submit-form shortcode
 		add_shortcode( Model_Main::SHORT_CODE_SUBMISSION_FORM, array( 'Model_Submit_Form', 'shortcode_submit_form' ) );
 
-		// Add ajax action
-		add_action( 'after_setup_theme', array( 'Model_Submit_Form', 'register_ajax' ), 20 );
-
 		// Add tm-re-search-form shortcode
 		add_shortcode( Model_Main::SHORT_CODE_SEARCH_FORM, array( 'Model_Properties', 'shortcode_search_form' ) );
 
@@ -274,17 +271,6 @@ class TM_Real_Estate {
 									'name'       => 'status',
 									'value'      => 'rent',
 									'left_label' => __( 'Property status', 'tm-real-estate' ),
-									'options'    => array(
-										'rent' => __( 'Rent', 'tm-real-estate' ),
-										'sale' => __( 'Sale', 'tm-real-estate' ),
-									),
-								),
-								'type' => array(
-									'type'       => 'select',
-									'id'         => 'type',
-									'name'       => 'type',
-									'value'      => 'rent',
-									'left_label' => __( 'Property type', 'tm-real-estate' ),
 									'options'    => array(
 										'rent' => __( 'Rent', 'tm-real-estate' ),
 										'sale' => __( 'Sale', 'tm-real-estate' ),
