@@ -399,19 +399,9 @@ class Model_Properties {
 	}
 
 	/**
-	 * Agent contact form
-	 *
-	 * @return html code.
+	 * Contact form assets
 	 */
-	public static function agent_contact_form( $agent_id, $property_id ) {
-
-		if ( empty( $agent_id ) ) {
-			if ( empty( $property_id ) ) {
-				return;
-			}
-
-			$agent_id = get_post_meta( $property_id, 'agent', true );
-		}
+	public static function contact_form_assets() {
 
 		$contact_form_settings = Model_Settings::get_contact_form_settings();
 
@@ -428,6 +418,25 @@ class Model_Properties {
 			'successMessage'		=> $contact_form_settings['success-message'],
 			'failedMessage'			=> $contact_form_settings['failed-message'],
 		) );
+
+	}
+
+	/**
+	 * Agent contact form
+	 *
+	 * @return html code.
+	 */
+	public static function agent_contact_form( $agent_id, $property_id ) {
+
+		self::contact_form_assets();
+
+		if ( empty( $agent_id ) ) {
+			if ( empty( $property_id ) ) {
+				return;
+			}
+
+			$agent_id = get_post_meta( $property_id, 'agent', true );
+		}
 
 		$user_data = get_userdata( $agent_id );
 
