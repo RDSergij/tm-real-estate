@@ -65,6 +65,9 @@ class TM_Real_Estate {
 		// Add tm-re-property item shortcode
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTY, array( 'Model_Properties', 'shortcode_property_single' ) );
 
+		// Add tm-re-property item shortcode
+		add_shortcode( Model_Main::SHORT_CODE_CONTACT_FORM, array( 'Model_Properties', 'shortcode_contact_form' ) );
+
 		// Add tm-re-properties shortcode
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTIES, array( 'Model_Properties', 'shortcode_properties' ) );
 
@@ -391,7 +394,7 @@ class TM_Real_Estate {
 
 		$property_data = get_post( $data['property_id'] );
 
-		$contact_form_settings = Model_Properties::get_contact_form_settings();
+		$contact_form_settings = Model_Settings::get_contact_form_settings();
 
 		$headers = 'From: ' . $data['name'] . ' <' . $data['email'] . '>' . "\r\n";
 		$headers.= 'Content-Type: text/html; charset=UTF-8' . "\r\n";

@@ -30,6 +30,9 @@ class Model_Main {
 	// Submission form
 	const SHORT_CODE_SUBMISSION_FORM = 'tm-re-submission-form';
 
+	// Agent contact form
+	const SHORT_CODE_CONTACT_FORM = 'tm-re-contact-form';
+
 	/**
 	 * Get tags array
 	 *

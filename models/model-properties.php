@@ -373,6 +373,32 @@ class Model_Properties {
 	}
 
 	/**
+	 * Agent contact form shortcode
+	 *
+	 * @return html code.
+	 */
+	public static function shortcode_contact_form( $atts ) {
+		
+		if ( empty( $atts['agent_id'] ) && empty( $atts['property_id'] ) ) {
+			return;
+		}
+
+		$property_id = null;
+		if ( ! empty( $atts['property_id'] ) ) {
+			$property_id = $atts['property_id'];
+		}
+
+		$agent_id = null;
+		if ( ! empty( $atts['agent_id'] ) ) {
+			$agent_id = $atts['agent_id'];
+		} else {
+			$agent_id = get_post_meta( $property_id, 'agent', true );
+		}
+
+		return self::agent_contact_form( $agent_id, $property_id );
+	}
+
+	/**
 	 * Agent contact form
 	 *
 	 * @return html code.
@@ -387,7 +413,7 @@ class Model_Properties {
 			$agent_id = get_post_meta( $property_id, 'agent', true );
 		}
 
-		$contact_form_settings = self::get_contact_form_settings();
+		$contact_form_settings = Model_Settings::get_contact_form_settings();
 
 		wp_enqueue_script(
 			'tm-real-state-contact-form',
@@ -597,33 +623,6 @@ class Model_Properties {
 			'after_page_number'  => '',
 		);
 		return paginate_links( $args );
-	}
-
-	/**
-	 * Get main settings
-	 *
-	 * @return string property price.
-	 */
-	public static function get_main_settings() {
-		return get_option( 'tm-properties-main-settings' );
-	}
-
-	/**
-	 * Get settings for submission form
-	 *
-	 * @return integer id.
-	 */
-	public static function get_submission_form_settings() {
-		return get_option( 'tm-properties-submission-form' );
-	}
-
-	/**
-	 * Get settings for contact form
-	 *
-	 * @return string property price.
-	 */
-	public static function get_contact_form_settings() {
-		return get_option( 'tm-properties-contact-form' );
 	}
 
 	/**

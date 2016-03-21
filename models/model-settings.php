@@ -74,6 +74,33 @@ class Model_Settings {
 	}
 
 	/**
+	 * Get main settings
+	 *
+	 * @return string property price.
+	 */
+	public static function get_main_settings() {
+		return get_option( 'tm-properties-main-settings' );
+	}
+
+	/**
+	 * Get settings for submission form
+	 *
+	 * @return integer id.
+	 */
+	public static function get_submission_form_settings() {
+		return get_option( 'tm-properties-submission-form' );
+	}
+
+	/**
+	 * Get settings for contact form
+	 *
+	 * @return string property price.
+	 */
+	public static function get_contact_form_settings() {
+		return get_option( 'tm-properties-contact-form' );
+	}
+
+	/**
 	 * Get search result page
 	 *
 	 * @return string property price.
