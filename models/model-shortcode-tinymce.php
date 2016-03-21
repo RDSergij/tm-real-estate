@@ -30,24 +30,24 @@ class Shortcode_Tinymce {
 	}
 
 	public function tm_register_buttons($buttons) {
-		array_push ($buttons, 'separator', 'pushortcodes');
+		foreach ( Model_Main::get_shortcodes() as $key => $value ) {
+			array_push ($buttons, $value);
+		}
+		
 		return $buttons;
 	}
-
-	public function tm_get_shortcodes() {
-		global $shortcode_tags;
-
-		echo '<script type="text/javascript">
-			var shortcodes_button = new Array();';
-
-		$count = 0;
-
-		foreach ( $shortcode_tags as $tag => $code ) {
-			echo "shortcodes_button[{$count}] = '{$tag}';";
-			$count++;
+	
+	public function tm_shortcode_view(){
+		$shortcodes_view = array();
+		foreach ( Model_Main::get_shortcodes() as $key => $value ) {
+ 
+			//echo plugin_dir_url (__FILE__) . 'views/' . $value . '.html - '. file_exists ( plugin_dir_path(__FILE__) . 'views/' . $value . '.html' )  .'<br/>';
+			if ( file_exists ( plugin_dir_path (__FILE__) . 'views/' . $value . '.php' ) ) {
+				$shortcodes_view[] = plugin_dir_url (__FILE__) . 'views/' . $value . '.php';
+			} else {
+				$shortcodes_view[] = '';
+			}
 		}
-
-		echo '</script>';
+		return $shortcodes_view;
 	}
-
 }

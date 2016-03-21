@@ -5,23 +5,50 @@
  */
 
 (function() {
+    
+//    for( var i = 0; i < TMPageSettings.shortcodes.length; i++ ) {
+//        tinymce.PluginManager.add(
+//        );
+//    }
 
     tinymce.PluginManager.add('pushortcodes', function( editor )
     {
-        var shortcodeValues = [];
-        jQuery.each(shortcodes_button, function(i)
-        {
-            shortcodeValues.push({text: shortcodes_button[i], value:i});
-        });
-        editor.addButton('pushortcodes', {
-            type: 'listbox',
-            text: 'Shortcodes',
-            onselect: function(e) {
-                var v = e.control.value()
 
-                tinyMCE.activeEditor.selection.setContent( '[' + v + '][/' + v + ']' );
-            },
-            values: shortcodeValues
+        jQuery.each(TMPageSettings.shortcodes, function(i)
+        {
+         console.log(TMPageSettings.shortcodes[i]);
+            editor.addButton(TMPageSettings.shortcodes[i], {
+                text: TMPageSettings.shortcodes[i],
+                onclick: function(e) {
+                    //tinyMCE.activeEditor.selection.setContent( '[' + TMPageSettings.shortcodes[i] + ']' );
+                    if( TMPageSettings.shortcodes_views[i] ) {
+                                editor.windowManager.open({
+                                    id: TMPageSettings.shortcodes[i],
+                                    title: 'TinyMCE site',
+                                    url: TMPageSettings.shortcodes_views[i],
+                                    width: 800,
+                                    height: 600,
+                                    buttons: [{
+                                        text: 'Submit',
+                                        onclick: 'submit'
+                                     },{
+                                        text: 'Cancel',
+                                        onclick: 'close'
+                                     }],
+                                    onsubmit: function(e) {
+                                        //find the popup, get the iframe contents and find the HTML form in the iFrame
+                                        form = jQuery('#' + TMPageSettings.shortcodes[i] + ' iframe').contents().find('input').val();
+                                        console.log(form);
+                                        //once you have the form, you can do whatever you like with the data from here
+                                     }
+                                });
+                    } else {
+                        tinyMCE.activeEditor.selection.setContent( '[' + TMPageSettings.shortcodes[i] + ']' );
+                    }
+                },
+
+            });
         });
+        
     });
 })();

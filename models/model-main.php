@@ -83,4 +83,17 @@ class Model_Main {
 
 		return $result;
 	}
+	
+	 static function get_shortcodes() {
+		$oClass = new ReflectionClass(__CLASS__);
+		$const_array = $oClass->getConstants();
+		$tm_shortcodes = array();
+		foreach ($const_array as $key => $value ) {
+			if ( 0 == strpos( $key, 'SHORT_CODE_' ) ) {
+					$tm_shortcodes[] = $value;
+			}
+		}
+
+		return $tm_shortcodes;
+	}
 }
