@@ -132,7 +132,7 @@ class Model_Settings {
 			array(
 				'ID'            => $defaults['tm-properties-main-settings']['properties-list-page'],
 				'post_title'	=> __( 'Properties list', 'tm-real-estate' ),
-				'post_content'	=> Model_Main::SHORT_CODE_PROPERTIES,
+				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_PROPERTIES ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)
@@ -143,7 +143,7 @@ class Model_Settings {
 			array(
 				'ID'            => $defaults['tm-properties-main-settings']['property-item-page'],
 				'post_title'	=> __( 'Property item', 'tm-real-estate' ),
-				'post_content'	=> Model_Main::SHORT_CODE_PROPERTY,
+				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_PROPERTY ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)
@@ -154,18 +154,18 @@ class Model_Settings {
 			array(
 				'ID'            => $defaults['tm-properties-main-settings']['properties-search-result-page'],
 				'post_title'	=> __( 'Search result', 'tm-real-estate' ),
-				'post_content'	=> Model_Main::SHORT_CODE_SEARCH_RESULT,
+				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_SEARCH_RESULT ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)
 		);
 
 		// Search result page
-		$defaults['tm-properties-main-settings']['properties-search-result-page'] = Cherry_Creator::post(
+		$defaults['tm-properties-main-settings']['properties-submission-page'] = Cherry_Creator::post(
 			array(
-				'ID'            => $defaults['tm-properties-main-settings']['properties-search-result-page'],
+				'ID'            => $defaults['tm-properties-main-settings']['properties-submission-page'],
 				'post_title'	=> __( 'Submission form', 'tm-real-estate' ),
-				'post_content'	=> Model_Main::SHORT_CODE_SUBMISSION_FORM,
+				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_SUBMISSION_FORM ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)

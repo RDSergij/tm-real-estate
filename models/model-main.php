@@ -83,4 +83,14 @@ class Model_Main {
 
 		return $result;
 	}
+
+	/**
+	 * Wrap short code to bracets
+	 *
+	 * @param  [type] $shortcode_name name.
+	 * @return [string] [name].
+	 */
+	public static function wrap_shortcode( $shortcode_name ) {
+		return sprintf( '[%s]', $shortcode_name );
+	}
 }

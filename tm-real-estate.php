@@ -336,15 +336,6 @@ class TM_Real_Estate {
 									'left_label'  => __( 'Tag', 'tm-real-estate' ),
 									'options'     => Model_Main::get_tags(),
 								),
-								'categories' => array(
-									'type'        => 'select',
-									'id'          => 'categories',
-									'name'        => 'categories',
-									'multiple'	  => false,
-									'value'       => '',
-									'left_label'  => __( 'Categories', 'tm-real-estate' ),
-									'options'     => Model_Main::get_categories(),
-								),
 								'agent' => array(
 									'type'        => 'select',
 									'id'          => 'agent',
