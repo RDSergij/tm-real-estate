@@ -297,6 +297,13 @@ class TM_Real_Estate {
 									'value'   => 0,
 									'left_label' => __( 'Area', 'tm-real-estate' ),
 								),
+								'parking_places' => array(
+									'type'       => 'number',
+									'id'         => 'parking_places',
+									'name'       => 'parking_places',
+									'value'      => 0,
+									'left_label' => __( 'Parking places', 'tm-real-estate' ),
+								),
 								'gallery' => array(
 									'type'	  => 'collection',
 									'id'      => 'gallery',
