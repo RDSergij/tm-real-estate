@@ -378,7 +378,7 @@ class Model_Properties {
 	 * @return html code.
 	 */
 	public static function shortcode_contact_form( $atts ) {
-		
+
 		if ( empty( $atts['agent_id'] ) && empty( $atts['property_id'] ) ) {
 			return;
 		}

@@ -1,6 +1,6 @@
 jQuery( document ).ready( function( $ ) {
 
-	var TMREContactForm= function() {
+	var TMREContactForm = function() {
 
 		var tmrec = this;
 
@@ -13,7 +13,7 @@ jQuery( document ).ready( function( $ ) {
 				var _form = $( this );
 				var _message = _form.children( '.message' );
 				$.ajax({
-					type: "POST",
+					type: 'POST',
 					url: window.TMREContactForm.ajaxUrl,
 					data: _form.serialize(),
 					success: function( response ) {
@@ -27,7 +27,7 @@ jQuery( document ).ready( function( $ ) {
 						tmrec.message( _message, 'failed' );
 					}
 				});
-				
+
 				e.preventDefault();
 			});
 		};
@@ -35,7 +35,7 @@ jQuery( document ).ready( function( $ ) {
 		tmrec.message = function( selector, status ) {
 			var message = '';
 			message = window.TMREContactForm[ status + 'Message' ];
-			selector.removeClass('success failed');
+			selector.removeClass( 'success failed' );
 			selector.addClass( status );
 			selector.html( message );
 			selector.show();

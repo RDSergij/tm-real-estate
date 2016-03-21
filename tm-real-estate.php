@@ -385,7 +385,7 @@ class TM_Real_Estate {
 	}
 
 	/**
-	 * Contact form 
+	 * Contact form
 	 */
 	public function contact_form() {
 		$data = $_POST;
@@ -397,7 +397,7 @@ class TM_Real_Estate {
 		$contact_form_settings = Model_Settings::get_contact_form_settings();
 
 		$headers = 'From: ' . $data['name'] . ' <' . $data['email'] . '>' . "\r\n";
-		$headers.= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
+		$headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
 
 		$html = Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/mail.php',

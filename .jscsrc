@@ -51,5 +51,6 @@
         "assets/js/uploader/jquery.iframe-transport.js",
         "assets/js/uploader/cors/jquery.xdr-transport.js",
         "assets/js/uploader/cors/jquery.postmessage-transport.js",
+        "assets/js/contact-form.min.js",
   ]
 }
