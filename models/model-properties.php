@@ -40,7 +40,11 @@ class Model_Properties {
 		);
 		$args = array_merge( $args, $atts );
 
-		$single_page = self::get_search_single_page();
+		if ( $args['offset'] <= 0 ) {
+			$args['offset'] = max( 0, get_query_var( 'paged' ) );
+		}
+
+		$single_page = Model_Settings::get_search_single_page();
 
 		$properties = (array) get_posts( $args );
 		if ( count( $properties ) ) {
@@ -100,130 +104,150 @@ class Model_Properties {
 	 * @return html code.
 	 */
 	public static function prepare_param_properties( $atts ) {
-		if ( is_array( $atts ) && ! empty( $atts['limit'] ) ) {
-			$atts['posts_per_page'] = $atts['limit'];
-			unset( $atts['limit'] );
-		} else {
-			$atts['posts_per_page'] = 5;
-		}
+		if ( is_array( $atts ) ) {
+			if ( ! empty( $atts['limit'] ) ) {
+				$atts['posts_per_page'] = $atts['limit'];
+				unset( $atts['limit'] );
+			} else {
+				$atts['posts_per_page'] = 5;
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['id'] ) ) {
-			$atts['include'] = explode( ',', $atts['id'] );
-			unset( $atts['id'] );
-		}
+			if ( ! empty( $atts['id'] ) ) {
+				$atts['include'] = explode( ',', $atts['id'] );
+				unset( $atts['id'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['keyword'] ) ) {
-			$atts['s'] = $atts['keyword'];
-			unset( $atts['keyword'] );
-		}
+			if ( ! empty( $atts['keyword'] ) ) {
+				$atts['s'] = $atts['keyword'];
+				unset( $atts['keyword'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['property_type'] ) ) {
-			$atts['tax_query'][] = array(
-				'taxonomy' => 'property-type',
-				'field' => 'term_id',
-				'terms' => (int) $atts['property_type'],
-			);
-			unset( $atts['type'] );
-		}
+			if ( ! empty( $atts['property_type'] ) ) {
+				$atts['tax_query'][] = array(
+					'taxonomy' => 'property-type',
+					'field' => 'term_id',
+					'terms' => (int) $atts['property_type'],
+				);
+				unset( $atts['type'] );
+			}
 
-		$atts['meta_query']['relation'] = 'AND';
+			$atts['meta_query']['relation'] = 'AND';
 
-		if ( is_array( $atts ) && ! empty( $atts['property_status'] )  ) {
-			$atts['meta_query'][] = array(
-				'key' => 'status',
-				'value' => (string) $atts['property_status'],
-				'compare' => '=',
-			);
-			unset( $atts['property_status'] );
-		}
+			if ( ! empty( $atts['type'] ) ) {
+				$atts['tax_query'][] = array(
+					'taxonomy' => 'property-type',
+					'field' => 'slug',
+					'terms' => (array) $atts['type'],
+				);
+				unset( $atts['type'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['min_price'] ) ) {
-			$atts['meta_query'][] = array(
-				'key' => 'price',
-				'value' => (int) $atts['min_price'],
-				'type' => 'numeric',
-				'compare' => '>=',
-			);
-			unset( $atts['min_price'] );
-		}
+			if ( ! empty( $atts['property_status'] )  ) {
+				$atts['meta_query'][] = array(
+					'key' => 'status',
+					'value' => (string) $atts['property_status'],
+					'compare' => '=',
+				);
+				unset( $atts['property_status'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['max_price'] ) ) {
-			$atts['meta_query'][] = array(
-				'key' => 'price',
-				'value' => (int) $atts['max_price'],
-				'type' => 'numeric',
-				'compare' => '<=',
-			);
-			unset( $atts['min_price'] );
-		}
+			if ( ! empty( $atts['min_price'] ) ) {
+				$atts['meta_query'][] = array(
+					'key' => 'price',
+					'value' => (int) $atts['min_price'],
+					'type' => 'numeric',
+					'compare' => '>=',
+				);
+				unset( $atts['min_price'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['min_bathrooms'] ) ) {
-			$atts['meta_query'][] = array(
-				'key' => 'bathrooms',
-				'value' => (int) $atts['min_bathrooms'],
-				'type' => 'numeric',
-				'compare' => '>=',
-			);
-			unset( $atts['min_bathrooms'] );
-		}
+			if ( ! empty( $atts['max_price'] ) ) {
+				$atts['meta_query'][] = array(
+					'key' => 'price',
+					'value' => (int) $atts['max_price'],
+					'type' => 'numeric',
+					'compare' => '<=',
+				);
+				unset( $atts['min_price'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['max_bathrooms'] ) ) {
-			$atts['meta_query'][] = array(
-				'key' => 'bathrooms',
-				'value' => (int) $atts['max_bathrooms'],
-				'type' => 'numeric',
-				'compare' => ' <=',
-			);
-			unset( $atts['max_bathrooms'] );
-		}
+			if ( ! empty( $atts['min_bathrooms'] ) ) {
+				$atts['meta_query'][] = array(
+					'key' => 'bathrooms',
+					'value' => (int) $atts['min_bathrooms'],
+					'type' => 'numeric',
+					'compare' => '>=',
+				);
+				unset( $atts['min_bathrooms'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['min_bedrooms'] ) ) {
-			$atts['meta_query'][] = array(
-				'key' => 'bedrooms',
-				'value' => (int) $atts['min_bedrooms'],
-				'type' => 'numeric',
-				'compare' => '>=',
-			);
-			unset( $atts['min_bedrooms'] );
-		}
+			if ( ! empty( $atts['status'] ) ) {
+				$atts['meta_query'][] = array(
+					'key'     => 'status',
+					'value'   => esc_attr( $atts['status'] ),
+					'compare' => '=',
+				);
+				unset( $atts['status'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['max_bedrooms'] ) ) {
-			$atts['meta_query'][] = array(
-				'key' => 'bedrooms',
-				'value' => (int) $atts['max_bedrooms'],
-				'type' => 'numeric',
-				'compare' => '<=',
-			);
-			unset( $atts['max_bedrooms'] );
-		}
+			if ( ! empty( $atts['max_bathrooms'] ) ) {
+				$atts['meta_query'][] = array(
+					'key' => 'bathrooms',
+					'value' => (int) $atts['max_bathrooms'],
+					'type' => 'numeric',
+					'compare' => ' <=',
+				);
+				unset( $atts['max_bathrooms'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['min_area'] ) ) {
-			$atts['meta_query'][] = array(
-				'key' => 'area',
-				'value' => (int) $atts['min_area'],
-				'type' => 'numeric',
-				'compare' => '>=',
-			);
-			unset( $atts['min_area'] );
-		}
+			if ( ! empty( $atts['min_bedrooms'] ) ) {
+				$atts['meta_query'][] = array(
+					'key' => 'bedrooms',
+					'value' => (int) $atts['min_bedrooms'],
+					'type' => 'numeric',
+					'compare' => '>=',
+				);
+				unset( $atts['min_bedrooms'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['max_area'] ) ) {
-			$atts['meta_query'][] = array(
-				'key' => 'area',
-				'value' => (int) $atts['max_area'],
-				'type' => 'numeric',
-				'compare' => '<=',
-			);
-			unset( $atts['max_area'] );
-		}
+			if ( ! empty( $atts['max_bedrooms'] ) ) {
+				$atts['meta_query'][] = array(
+					'key' => 'bedrooms',
+					'value' => (int) $atts['max_bedrooms'],
+					'type' => 'numeric',
+					'compare' => '<=',
+				);
+				unset( $atts['max_bedrooms'] );
+			}
 
-		if ( is_array( $atts ) && ! empty( $atts['agent'] ) ) {
-			$atts['meta_query'][] = array(
-				'key' => 'agent',
-				'value' => (int) $atts['max_area'],
-				'compare' => '=',
-			);
-			unset( $atts['agent'] );
+			if ( ! empty( $atts['min_area'] ) ) {
+				$atts['meta_query'][] = array(
+					'key' => 'area',
+					'value' => (int) $atts['min_area'],
+					'type' => 'numeric',
+					'compare' => '>=',
+				);
+				unset( $atts['min_area'] );
+			}
+
+			if ( ! empty( $atts['max_area'] ) ) {
+				$atts['meta_query'][] = array(
+					'key' => 'area',
+					'value' => (int) $atts['max_area'],
+					'type' => 'numeric',
+					'compare' => '<=',
+				);
+				unset( $atts['max_area'] );
+			}
+
+			if ( ! empty( $atts['agent'] ) ) {
+				$atts['meta_query'][] = array(
+					'key'     => 'agent',
+					'value'   => (int) $atts['agent'],
+					'compare' => '=',
+				);
+				unset( $atts['agent'] );
+			}
 		}
 
 		return $atts;
@@ -267,6 +291,28 @@ class Model_Properties {
 			)
 		);
 	}
+	/**
+	 * Add new properties
+	 *
+	 * @param  [type] $attr attributes.
+	 * @return html code.
+	 */
+	public static function add_property( $attr ) {
+		if ( current_user_can( 'administrator' ) || current_user_can( 're_agent' ) ) {
+			$property_status = 'publish';
+		} else {
+			$property_status = 'pending';
+		}
+		$property = array(
+			'post_title'     => $attr['title'],
+			'post_author'    => get_current_user_id(),
+			'post_content'   => $attr['description'],
+			'post_status'    => $property_status,
+			'post_type'      => 'property',
+		);
+		$property = sanitize_post( $property, 'db' );
+		return wp_insert_post( $property );
+	}
 
 	/**
 	 * Shortcode property item
@@ -274,7 +320,7 @@ class Model_Properties {
 	 * @return html code.
 	 */
 	public static function shortcode_property_single() {
-		if ( is_numeric( $_GET['id'] ) ) {
+		if ( ! empty( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
 			$id = $_GET['id'];
 			$properties	= (array) self::get_properties( array( 'include' => $id, 'limit' => 1 ) );
 			$property	= $properties[0];
@@ -289,34 +335,6 @@ class Model_Properties {
 				)
 			);
 		}
-	}
-
-	/**
-	 * Get search result page
-	 *
-	 * @return string property price.
-	 */
-	public static function get_search_result_page() {
-		$main_settings	= get_option( 'tm-properties-main-settings' );
-		$page_id		= $main_settings['properties-search-result-page'];
-
-		$permalink = str_replace( home_url(), './', get_permalink( $page_id ) );
-
-		return $permalink;
-	}
-
-	/**
-	 * Get single page link
-	 *
-	 * @return string property price.
-	 */
-	public static function get_search_single_page() {
-		$main_settings	= get_option( 'tm-properties-main-settings' );
-		$page_id		= $main_settings['property-item-page'];
-
-		$permalink = get_permalink( $page_id );
-
-		return $permalink;
 	}
 
 	/**
@@ -341,7 +359,7 @@ class Model_Properties {
 		);
 		$values = array_merge( $default_value, $_GET );
 
-		$action_url = self::get_search_result_page();
+		$action_url = Model_Settings::get_search_result_page();
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/search-form.php',
@@ -560,13 +578,14 @@ class Model_Properties {
 	 * @return array pagination.
 	 */
 	public static function get_pagination( $atts = array(), $posts_per_page = 5 ) {
+		$big  = 99999;
 		$args = array(
-			'base'               => '%_%',
+			'base'               => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 			'format'             => '?page=%#%',
 			'total'              => self::get_total_pages( $atts, $posts_per_page ),
-			'current'            => max( 1, get_query_var( 'page' ) ),
+			'current'            => max( 1, get_query_var( 'paged' ) ),
 			'show_all'           => false,
-			'end_size'           => 1,
+			'end_size'           => 0,
 			'mid_size'           => 2,
 			'prev_next'          => true,
 			'prev_text'          => __( '« Previous' ),
@@ -616,5 +635,27 @@ class Model_Properties {
 	 */
 	public static function get_total_pages( $atts = array(), $posts_per_page = 5 ) {
 		return ceil( self::get_total_count( $atts ) / $posts_per_page );
+	}
+
+	/**
+	 * Get Types of properties
+	 *
+	 * @param type integer $parent ID of parent types.
+	 * @return total pages.
+	 */
+	public function get_types( $parent = 0 ) {
+		$terms = get_terms( 'property-type', array( 'parent' => $parent, 'hide_empty' => false ) );
+		if ( count( $terms ) > 0 ) {
+			foreach ( $terms as $term ) {
+				$child = Model_Properties::get_types( $term->term_id );
+				$types[] = array(
+					'term_id' => $term->term_id,
+					'name' => $term->name,
+					'child' => $child,
+				);
+			}
+			return $types;
+		}
+		return false;
 	}
 }

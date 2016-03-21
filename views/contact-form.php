@@ -19,11 +19,11 @@
 		<input type="hidden" name="agent_id" value="<?php echo $__data['agent']->ID ?>"/>
 		<input type="hidden" name="property_id" value="<?php echo $__data['property_id'] ?>"/>
 		<?php echo __( 'Name', 'tm-real-estate' ) ?>
-		<input type="text" id="name" name="name" value=""/>
+		<input type="text" id="name" name="name" value="" required>
 		<?php echo __( 'Email', 'tm-real-estate' ) ?>
-		<input type="email"id="email" name="email" value=""/>
+		<input type="email"id="email" name="email" value=""/ required>
 		<?php echo __( 'Message', 'tm-real-estate' ) ?>
-		<textarea id="message" name="message" ></textarea>
+		<textarea id="message" name="message" required></textarea>
 		<input type="submit"id="submit" value="<?php echo __( 'Send Message', 'tm-real-estate' ) ?>"/>
 	</form>
 </div>

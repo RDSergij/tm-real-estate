@@ -15,6 +15,21 @@
  */
 class Model_Main {
 
+	// Properties
+	const SHORT_CODE_PROPERTIES = 'tm-re-properties';
+
+	// Property
+	const SHORT_CODE_PROPERTY = 'tm-re-property';
+
+	// Search form
+	const SHORT_CODE_SEARCH_FORM = 'tm-re-search-form';
+
+	// Search result
+	const SHORT_CODE_SEARCH_RESULT = 'tm-re-search-result';
+
+	// Submission form
+	const SHORT_CODE_SUBMISSION_FORM = 'tm-re-submission-form';
+
 	/**
 	 * Get tags array
 	 *
@@ -67,5 +82,15 @@ class Model_Main {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Wrap short code to bracets
+	 *
+	 * @param  [type] $shortcode_name name.
+	 * @return [string] [name].
+	 */
+	public static function wrap_shortcode( $shortcode_name ) {
+		return sprintf( '[%s]', $shortcode_name );
 	}
 }
