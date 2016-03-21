@@ -40,8 +40,6 @@ class Shortcode_Tinymce {
 	public function tm_shortcode_view(){
 		$shortcodes_view = array();
 		foreach ( Model_Main::get_shortcodes() as $key => $value ) {
- 
-			//echo plugin_dir_url (__FILE__) . 'views/' . $value . '.html - '. file_exists ( plugin_dir_path(__FILE__) . 'views/' . $value . '.html' )  .'<br/>';
 			if ( file_exists ( plugin_dir_path (__FILE__) . 'views/' . $value . '.php' ) ) {
 				$shortcodes_view[] = plugin_dir_url (__FILE__) . 'views/' . $value . '.php';
 			} else {

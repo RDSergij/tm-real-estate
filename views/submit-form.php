@@ -65,11 +65,11 @@
 	</div>
 <div>
 	<label class="label-block" id="property_parking_label" for="property_parking_input"> Parking places </label>
-	<input type="number" id="property_parking_input" name="property[meta][parking]" min="0" value="">
+	<input type="number" id="property_parking_input" name="property[meta][parking_places]" min="0" value="">
 	</div>
 <div>
 	<label class="label-block" id="property_map_label" for="property_map_input"> Google map link </label>
-	<input type="url" id="property_map_input" name="property[meta][map]" value="">
+	<input type="url" id="property_map_input" name="property[meta][google_map_link]" value="">
 	</div>
 <div>
 	<label class="label-block" id="label_14" for="input_14"> Gallery </label>
@@ -180,7 +180,13 @@
 			dataType: "html",
 			data: formData,
 			success: function(data){
+				responce =  JSON.parse(data);
 				jQuery('.tm-form-preloader').css('display','none');
+				if(responce['success']){
+					jQuery('#property_submit_format').replaceWith("<div>" + responce['data'] + "</div>" );
+				}else{
+					jQuery('#property_submit_format').replaceWith("<div>" + responce['data'] + "</div>" );
+				}
 			},
 			beforeSend: function() {
 				jQuery('.tm-form-preloader').css('display','block');
