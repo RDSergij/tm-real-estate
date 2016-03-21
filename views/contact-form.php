@@ -12,15 +12,18 @@
 
 ?>
 <div class="tm-re-contact-form">
-	<h4><?php $__data['agent']->data->display_name ?></h4>
+	<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name ?></h4>
 	<form>
-		<input type="hidden" name="action" value="tm-re-contact-form"/>
+		<span class="message"></span>
+		<input type="hidden" name="action" value="tm_re_contact_form"/>
+		<input type="hidden" name="agent_id" value="<?php echo $__data['agent']->ID ?>"/>
+		<input type="hidden" name="property_id" value="<?php echo $__data['property_id'] ?>"/>
+		<?php echo __( 'Name', 'tm-real-estate' ) ?>
 		<input type="text" id="name" name="name" value=""/>
-		<input type="text"id="email" name="email" value=""/>
+		<?php echo __( 'Email', 'tm-real-estate' ) ?>
+		<input type="email"id="email" name="email" value=""/>
+		<?php echo __( 'Message', 'tm-real-estate' ) ?>
 		<textarea id="message" name="message" ></textarea>
-		<span class="captcha">
-
-		</span>
 		<input type="submit"id="submit" value="<?php echo __( 'Send Message', 'tm-real-estate' ) ?>"/>
 	</form>
 </div>

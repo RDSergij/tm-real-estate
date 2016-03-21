@@ -71,9 +71,6 @@ class TM_Real_Estate {
 		// Add tm-re-properties shortcode
 		add_shortcode( 'tm-re-properties', array( 'Model_Properties', 'shortcode_properties' ) );
 
-		// Add tm-re-search-form shortcode
-		add_shortcode( 'tm-re-search-form', array( 'Model_Properties', 'shortcode_search_form' ) );
-
 		// Add tm-re-properties search result shortcode
 		add_shortcode( 'TMRE_SearchResult', array( 'Model_Properties', 'shortcode_search_result' ) );
 
@@ -92,6 +89,10 @@ class TM_Real_Estate {
 		// Add ajax action
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
+
+		// Add action contact form
+		add_action( 'wp_ajax_tm_re_contact_form', array( $this, 'contact_form' ) );
+		add_action( 'wp_ajax_nopriv_tm_re_contact_form', array( $this, 'contact_form' ) );
 	}
 
 	/**
@@ -303,6 +304,34 @@ class TM_Real_Estate {
 		$this->add_post_type();
 		$this->add_user_role();
 		$this->add_taxonomies();
+	}
+
+	/**
+	 * Contact form 
+	 */
+	public function contact_form() {
+		$data = $_POST;
+
+		$agent_data = get_userdata( $data['agent_id'] );
+
+		$property_data = get_post( $data['property_id'] );
+
+		$contact_form_settings = Model_Properties::get_contact_form_settings();
+
+		$headers = 'From: ' . $data['name'] . ' <' . $data['email'] . '>' . "\r\n";
+		$headers.= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
+
+		$html = Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/mail.php',
+			array(
+				'message_data'	=> $data,
+				'agent_data'	=> $agent_data,
+				'property_data'	=> $property_data,
+			)
+		);
+
+		$send = wp_mail( $agent_data->user_email, $contact_form_settings['mail-subject'], $html, $headers );
+		wp_send_json( array( 'result' => $send ) );
 	}
 
 	/**

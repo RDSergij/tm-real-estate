@@ -279,11 +279,13 @@ class Model_Properties {
 			$properties	= (array) self::get_properties( array( 'include' => $id, 'limit' => 1 ) );
 			$property	= $properties[0];
 
+			$contact_form = self::agent_contact_form( null, $id );
+
 			return Cherry_Core::render_view(
 				TM_REAL_ESTATE_DIR . 'views/property.php',
 				array(
 					'property'		=> $property,
-					'is_single'		=> true,
+					'contact_form'		=> $contact_form,
 				)
 			);
 		}
@@ -347,7 +349,7 @@ class Model_Properties {
 				'property_statuses'	=> self::get_allowed_property_statuses(),
 				'property_types'	=> self::get_all_property_types(),
 				'action_url'		=> $action_url,
-				'values'		=> $values,
+				'values'			=> $values,
 			)
 		);
 	}
@@ -357,7 +359,15 @@ class Model_Properties {
 	 *
 	 * @return html code.
 	 */
-	public static function shortcode_agent_contact_form( $atts ) {
+	public static function agent_contact_form( $agent_id, $property_id ) {
+
+		if ( empty( $agent_id ) ) {
+			if ( empty( $property_id ) ) {
+				return;
+			}
+
+			$agent_id = get_post_meta( $property_id, 'agent', true );
+		}
 
 		$contact_form_settings = self::get_contact_form_settings();
 
@@ -375,28 +385,13 @@ class Model_Properties {
 			'failedMessage'			=> $contact_form_settings['failed-message'],
 		) );
 
-		if ( ! empty( $atts['agent_id'] ) ) {
-			$agent_id = $atts['agent_id'];
-		} elseif ( ! empty( $atts['property_id'] ) ) {
-			$property_id = $_GET['id'];
-		} elseif ( ! empty( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
-			$property_id = $_GET['id'];
-		}
-
-		if ( empty( $agent_id ) ) {
-			if ( empty( $property_id ) ) {
-				return;
-			}
-
-			$agent_id = get_post_meta( $property_id, 'agent', true );
-		}
-
 		$user_data = get_userdata( $agent_id );
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/contact-form.php',
 			array(
-				'agent'			=> $user_data,
+				'agent'			=> $user_data->data,
+				'property_id'	=> $property_id,
 			)
 		);
 	}

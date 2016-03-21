@@ -77,6 +77,8 @@
 			</footer>
 
 		</article>
+
+		<?php echo $__data['contact_form'] ?>
 	</div>
 
 <?php endif; ?>
