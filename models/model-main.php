@@ -73,7 +73,7 @@ class Model_Main {
 	 * @return array all agents.
 	 */
 	public static function get_agents() {
-		$result = array();
+		$result[''] = __( 'Select agent', 'tm-real-estate' );
 		$agents = get_users(
 			array( 'role__in' => array( 'administrator', 're_agent' ) )
 		);
