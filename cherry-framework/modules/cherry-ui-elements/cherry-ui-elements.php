@@ -168,3 +168,5 @@ if ( ! class_exists( 'Cherry_UI_Elements' ) ) {
 			return new self( $core, $args );
 		}
 	}
+}
+
