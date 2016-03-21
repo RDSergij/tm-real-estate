@@ -30,6 +30,9 @@ class Model_Main {
 	// Submission form
 	const SHORT_CODE_SUBMISSION_FORM = 'tm-re-submission-form';
 
+	// Agent contact form
+	const SHORT_CODE_CONTACT_FORM = 'tm-re-contact-form';
+
 	/**
 	 * Get tags array
 	 *
@@ -83,6 +86,7 @@ class Model_Main {
 
 		return $result;
 	}
+
 	
 	 static function get_shortcodes() {
 		$oClass = new ReflectionClass(__CLASS__);
@@ -95,5 +99,15 @@ class Model_Main {
 		}
 
 		return $tm_shortcodes;
+	 }
+	/**
+	 * Wrap short code to bracets
+	 *
+	 * @param  [type] $shortcode_name name.
+	 * @return [string] [name].
+	 */
+	public static function wrap_shortcode( $shortcode_name ) {
+		return sprintf( '[%s]', $shortcode_name );
+
 	}
 }

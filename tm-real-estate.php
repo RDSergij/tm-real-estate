@@ -65,17 +65,23 @@ class TM_Real_Estate {
 		// Add tm-re-property item shortcode
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTY, array( 'Model_Properties', 'shortcode_property_single' ) );
 
+		// Add tm-re-property item shortcode
+		add_shortcode( Model_Main::SHORT_CODE_CONTACT_FORM, array( 'Model_Properties', 'shortcode_contact_form' ) );
+
 		// Add tm-re-properties shortcode
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTIES, array( 'Model_Properties', 'shortcode_properties' ) );
 
 		// Add tm-submit-form shortcode
-		add_shortcode( 'tm-submit-form', array( 'Model_Submit_Form', 'shortcode_submit_form' ) );
+		add_shortcode( Model_Main::SHORT_CODE_SUBMISSION_FORM, array( 'Model_Submit_Form', 'shortcode_submit_form' ) );
 
 		// Add tm-re-search-form shortcode
 		add_shortcode( Model_Main::SHORT_CODE_SEARCH_FORM, array( 'Model_Properties', 'shortcode_search_form' ) );
 
 		// Add tm-re-properties search result shortcode
 		add_shortcode( Model_main::SHORT_CODE_SEARCH_RESULT, array( 'Model_Properties', 'shortcode_search_result' ) );
+
+		// Add tm-re-properties search result shortcode
+		add_shortcode( 'TMRE_AgentContactForm', array( 'Model_Properties', 'shortcode_agent_contact_form' ) );
 
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
@@ -96,7 +102,12 @@ class TM_Real_Estate {
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 
+
 		add_action ('admin_init', array( 'Shortcode_Tinymce', 'tm_shortcode_button' ));
+
+		add_action( 'wp_ajax_tm_re_contact_form', array( $this, 'contact_form' ) );
+		add_action( 'wp_ajax_nopriv_tm_re_contact_form', array( $this, 'contact_form' ) );
+
 
 		add_action( 'wp_ajax_nopriv_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
 		add_action( 'wp_ajax_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
@@ -281,17 +292,6 @@ class TM_Real_Estate {
 										'sale' => __( 'Sale', 'tm-real-estate' ),
 									),
 								),
-								'type' => array(
-									'type'       => 'select',
-									'id'         => 'type',
-									'name'       => 'type',
-									'value'      => 'rent',
-									'left_label' => __( 'Property type', 'tm-real-estate' ),
-									'options'    => array(
-										'rent' => __( 'Rent', 'tm-real-estate' ),
-										'sale' => __( 'Sale', 'tm-real-estate' ),
-									),
-								),
 								'bathrooms' => array(
 									'type'    => 'number',
 									'id'      => 'bathrooms',
@@ -312,6 +312,13 @@ class TM_Real_Estate {
 									'name'    => 'area',
 									'value'   => 0,
 									'left_label' => __( 'Area', 'tm-real-estate' ),
+								),
+								'parking_places' => array(
+									'type'       => 'number',
+									'id'         => 'parking_places',
+									'name'       => 'parking_places',
+									'value'      => 0,
+									'left_label' => __( 'Parking places', 'tm-real-estate' ),
 								),
 								'gallery' => array(
 									'type'	  => 'collection',
@@ -345,15 +352,6 @@ class TM_Real_Estate {
 									'left_label'  => __( 'Tag', 'tm-real-estate' ),
 									'options'     => Model_Main::get_tags(),
 								),
-								'categories' => array(
-									'type'        => 'select',
-									'id'          => 'categories',
-									'name'        => 'categories',
-									'multiple'	  => false,
-									'value'       => '',
-									'left_label'  => __( 'Categories', 'tm-real-estate' ),
-									'options'     => Model_Main::get_categories(),
-								),
 								'agent' => array(
 									'type'        => 'select',
 									'id'          => 'agent',
@@ -362,6 +360,13 @@ class TM_Real_Estate {
 									'value'       => '',
 									'left_label'  => __( 'Agent', 'tm-real-estate' ),
 									'options'     => Model_Main::get_agents(),
+								),
+								'google_map_link' => array(
+									'type'       => 'text',
+									'id'         => 'google_map_link',
+									'name'       => 'google_map_link',
+									'value'      => '',
+									'left_label' => __( 'Google map link', 'tm-real-estate' ),
 								),
 							),
 						),
@@ -394,6 +399,35 @@ class TM_Real_Estate {
 	}
 
 	/**
+	 * Contact form
+	 */
+	public function contact_form() {
+		$data = $_POST;
+
+		$agent_data = get_userdata( $data['agent_id'] );
+
+		$property_data = get_post( $data['property_id'] );
+
+		$contact_form_settings = Model_Settings::get_contact_form_settings();
+
+		$headers = 'From: ' . $data['name'] . ' <' . $data['email'] . '>' . "\r\n";
+		$headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
+
+		$html = Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/mail.php',
+			array(
+				'message_data'	=> $data,
+				'agent_data'	=> $agent_data,
+				'property_data'	=> $property_data,
+			)
+		);
+
+		$send = wp_mail( $agent_data->user_email, $contact_form_settings['mail-subject'], $html, $headers );
+		wp_send_json( array( 'result' => $send ) );
+	}
+
+	/**
+	 * Add taxonomies to wp
 	 * Add some widgets
 	 */
 	public function add_widgets() {
@@ -596,7 +630,7 @@ class TM_Real_Estate {
 			),
 		);
 
-		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Property Settings', null )->set(
+		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Property Settings', 'edit.php?post_type=property' )->set(
 			array(
 				'capability'	=> 'manage_options',
 				'position'		=> 22,

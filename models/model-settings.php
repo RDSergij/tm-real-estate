@@ -74,6 +74,61 @@ class Model_Settings {
 	}
 
 	/**
+	 * Get main settings
+	 *
+	 * @return string property price.
+	 */
+	public static function get_main_settings() {
+		return get_option( 'tm-properties-main-settings' );
+	}
+
+	/**
+	 * Get settings for submission form
+	 *
+	 * @return integer id.
+	 */
+	public static function get_submission_form_settings() {
+		return get_option( 'tm-properties-submission-form' );
+	}
+
+	/**
+	 * Get settings for contact form
+	 *
+	 * @return string property price.
+	 */
+	public static function get_contact_form_settings() {
+		return get_option( 'tm-properties-contact-form' );
+	}
+
+	/**
+	 * Get search result page
+	 *
+	 * @return string property price.
+	 */
+	public static function get_search_result_page() {
+		$main_settings	= get_option( 'tm-properties-main-settings' );
+		$page_id		= $main_settings['properties-search-result-page'];
+
+		$permalink = str_replace( home_url(), './', get_permalink( $page_id ) );
+
+		return $permalink;
+	}
+
+	/**
+	 * Get single page link
+	 *
+	 * @return string property price.
+	 */
+	public static function get_search_single_page() {
+		$main_settings	= get_option( 'tm-properties-main-settings' );
+		$page_id		= $main_settings['property-item-page'];
+
+		$permalink = get_permalink( $page_id );
+
+		return $permalink;
+	}
+
+	/**
 	 * Get pages list
 	 *
 	 * @since 1.0
@@ -132,7 +187,7 @@ class Model_Settings {
 			array(
 				'ID'            => $defaults['tm-properties-main-settings']['properties-list-page'],
 				'post_title'	=> __( 'Properties list', 'tm-real-estate' ),
-				'post_content'	=> Model_Main::SHORT_CODE_PROPERTIES,
+				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_PROPERTIES ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)
@@ -143,7 +198,7 @@ class Model_Settings {
 			array(
 				'ID'            => $defaults['tm-properties-main-settings']['property-item-page'],
 				'post_title'	=> __( 'Property item', 'tm-real-estate' ),
-				'post_content'	=> Model_Main::SHORT_CODE_PROPERTY,
+				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_PROPERTY ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)
@@ -154,18 +209,18 @@ class Model_Settings {
 			array(
 				'ID'            => $defaults['tm-properties-main-settings']['properties-search-result-page'],
 				'post_title'	=> __( 'Search result', 'tm-real-estate' ),
-				'post_content'	=> Model_Main::SHORT_CODE_SEARCH_RESULT,
+				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_SEARCH_RESULT ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)
 		);
 
 		// Search result page
-		$defaults['tm-properties-main-settings']['properties-search-result-page'] = Cherry_Creator::post(
+		$defaults['tm-properties-main-settings']['properties-submission-page'] = Cherry_Creator::post(
 			array(
-				'ID'            => $defaults['tm-properties-main-settings']['properties-search-result-page'],
+				'ID'            => $defaults['tm-properties-main-settings']['properties-submission-page'],
 				'post_title'	=> __( 'Submission form', 'tm-real-estate' ),
-				'post_content'	=> Model_Main::SHORT_CODE_SUBMISSION_FORM,
+				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_SUBMISSION_FORM ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)
