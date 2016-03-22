@@ -54,27 +54,26 @@ class Model_Submit_Form {
 			wp_die();
 		}
 		if ( ! empty ( $_POST['property']['type'] ) ) {
-			wp_set_post_terms( $post_id, $term_id, 'property-type' );
+			wp_set_post_terms( $post_id, sanitize_key($_POST['property']['type']), 'property-type' );
 		}
 
 		if ( ! empty ( $_FILES['thumb'] ) ) {
 			$attachment_id = Model_Submit_Form::insert_attacment( $_FILES['thumb'], $post_id );
+			if ( ! $attachment_id ) {
+				wp_send_json_error( $messages['failed-message'] );
+				wp_die();
+			} 
+			set_post_thumbnail( $post_id, $attachment_id );
 		}
-		
-		if ( ! $attachment_id ) {
-			wp_send_json_error( $messages['failed-message'] );
-			wp_die();
-		} 
-		set_post_thumbnail( $post_id, $attachment_id );
 
 		if ( ! empty ( $_FILES['gallery'] ) ) {
-			$files = array();
-			if ( is_array ( $_FILES['gallery'] ) ) {
+			if ( is_array ( $_FILES['gallery']['name'] ) ) {
 				$files = Model_Submit_Form::re_array_files( $_FILES['gallery'] );
+				foreach ( $files as $key => $file ) {
+					$property_meta['gallery']['image'][ $key ] = Model_Submit_Form::insert_attacment( $file, $post_id );
+				}
 			} else {
-				$files = $_FILES['gallery'];
-			}
-			foreach ( $files as $key => $file ) {
+				$file = $_FILES['gallery'];
 				$property_meta['gallery']['image'][ $key ] = Model_Submit_Form::insert_attacment( $file, $post_id );
 			}
 		}
@@ -84,7 +83,7 @@ class Model_Submit_Form {
 		}
 
 		foreach ( $property_meta as $key => $value ) {
-			update_post_meta( $post_id, $key, $value );
+			update_post_meta( $post_id, sanitize_text_field($key), $value );
 		}
 
 		wp_send_json_success( $messages['success-message'] );

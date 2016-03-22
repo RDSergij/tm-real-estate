@@ -128,7 +128,7 @@ class Model_Properties {
 					'field' => 'term_id',
 					'terms' => (int) $atts['property_type'],
 				);
-				unset( $atts['type'] );
+				unset( $atts['property_type'] );
 			}
 
 			$atts['meta_query']['relation'] = 'AND';

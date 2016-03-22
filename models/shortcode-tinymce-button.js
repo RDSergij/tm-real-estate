@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 (function() {
     
 //    for( var i = 0; i < TMPageSettings.shortcodes.length; i++ ) {
@@ -21,11 +20,11 @@
                 text: TMPageSettings.shortcodes[i],
                 onclick: function(e) {
                     //tinyMCE.activeEditor.selection.setContent( '[' + TMPageSettings.shortcodes[i] + ']' );
-                    if( TMPageSettings.shortcodes_views[i] ) {
                                 editor.windowManager.open({
                                     id: TMPageSettings.shortcodes[i],
                                     title: 'TinyMCE site',
-                                    url: TMPageSettings.shortcodes_views[i],
+                                    //url: TMPageSettings.shortcodes_views[i],
+                                    body: JSON.parse(TMPageSettings.shortcodes_views['tm-re-properties']),
                                     width: 800,
                                     height: 600,
                                     buttons: [{
@@ -42,9 +41,8 @@
                                         //once you have the form, you can do whatever you like with the data from here
                                      }
                                 });
-                    } else {
-                        tinyMCE.activeEditor.selection.setContent( '[' + TMPageSettings.shortcodes[i] + ']' );
-                    }
+
+
                 },
 
             });
