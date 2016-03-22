@@ -19,7 +19,7 @@ class Shortcode_Tinymce {
 	 * Add filters
 	 */
 	public function tm_shortcode_button() {
-		if ( current_user_can ( 'edit_posts' ) && current_user_can ( 'edit_pages' ) ) {
+		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
 			add_filter( 'mce_external_plugins', array( 'Shortcode_Tinymce', 'tm_add_buttons' ) );
 			add_filter( 'mce_buttons', array( 'Shortcode_Tinymce', 'tm_register_buttons' ) );
 		}
@@ -34,7 +34,7 @@ class Shortcode_Tinymce {
 	 * @return [type] $plugin_array.
 	 */
 	public function tm_add_buttons( $plugin_array ) {
-		$plugin_array['tm_shortcodes'] = plugin_dir_url( __FILE__ ) . 'assets/shortcode/shortcode-tinymce-button.js';
+		$plugin_array['tm_shortcodes'] = TM_REAL_ESTATE_URI . 'assets/shortcode/shortcode-tinymce-button.js';
 
 		return $plugin_array;
 	}
@@ -49,7 +49,7 @@ class Shortcode_Tinymce {
 	 */
 	public function tm_register_buttons( $buttons ) {
 		foreach ( Model_Main::get_shortcodes() as $key => $value ) {
-			array_push (  $buttons, $value );
+			array_push( $buttons, $value );
 		}
 
 		return $buttons;
@@ -57,7 +57,6 @@ class Shortcode_Tinymce {
 
 	/**
 	 * Prepare return all view settings
-	 *
 	 *
 	 * @author mif32.
 	 * @return [type] $view_settings.
