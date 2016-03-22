@@ -435,18 +435,18 @@ class TM_Real_Estate {
 	public function add_taxonomies() {
 		$this->core->modules['cherry-taxonomies']
 				->create(
-					'Property Type',
+					'Type',
 					'property',
-					'Propertie Types'
+					'Types'
 				)
 				->set_slug( 'property-type' )
 				->init();
 
 		$this->core->modules['cherry-taxonomies']
 				->create(
-					'Property Tag',
+					'Tag',
 					'property',
-					'Propertie Tags'
+					'Tags'
 				)
 				->set_arguments( array( 'hierarchical' => false ) )
 				->set_slug( 'property-tag' )
@@ -638,7 +638,7 @@ class TM_Real_Estate {
 			),
 		);
 
-		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Property Settings', 'edit.php?post_type=property' )->set(
+		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Settings', 'edit.php?post_type=property' )->set(
 			array(
 				'capability'	=> 'manage_options',
 				'position'		=> 22,
@@ -704,8 +704,8 @@ class TM_Real_Estate {
 	public function add_post_type() {
 		$this->core->modules['cherry-post-types']->create(
 			'property',
-			'Property',
 			'Properties',
+			'Property',
 			array(
 				'supports' => array(
 					'title',
