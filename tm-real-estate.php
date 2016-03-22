@@ -102,12 +102,13 @@ class TM_Real_Estate {
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 
+		add_action( 'admin_init', array( 'Shortcode_Tinymce', 'tm_shortcode_button' ) );
+
 		add_action( 'wp_ajax_tm_re_contact_form', array( $this, 'contact_form' ) );
 		add_action( 'wp_ajax_nopriv_tm_re_contact_form', array( $this, 'contact_form' ) );
 
 		add_action( 'wp_ajax_nopriv_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
 		add_action( 'wp_ajax_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
-
 	}
 
 	/**
@@ -181,6 +182,7 @@ class TM_Real_Estate {
 				'url' => admin_url( 'admin-ajax.php' ),
 			)
 		);
+
 	}
 
 	/**
@@ -192,6 +194,7 @@ class TM_Real_Estate {
 			'Model_Properties',
 			'Model_Settings',
 			'Model_Submit_Form',
+			'Model_Shortcode_Tinymce',
 		);
 
 		foreach ( $models as $model ) {
@@ -343,7 +346,7 @@ class TM_Real_Estate {
 									'multiple'	  => false,
 									'value'       => '',
 									'left_label'  => __( 'Agent', 'tm-real-estate' ),
-									'options'     => Model_Main::get_agents(),
+									'options'     => array_merge( array( __( 'Select agent', 'tm-real-estate' ) ), Model_Main::get_agents() ),
 								),
 								'google_map_link' => array(
 									'type'       => 'text',
@@ -435,18 +438,18 @@ class TM_Real_Estate {
 	public function add_taxonomies() {
 		$this->core->modules['cherry-taxonomies']
 				->create(
-					'Property Type',
+					'Type',
 					'property',
-					'Propertie Types'
+					'Types'
 				)
 				->set_slug( 'property-type' )
 				->init();
 
 		$this->core->modules['cherry-taxonomies']
 				->create(
-					'Property Tag',
+					'Tag',
 					'property',
-					'Propertie Tags'
+					'Tags'
 				)
 				->set_arguments( array( 'hierarchical' => false ) )
 				->set_slug( 'property-tag' )
@@ -638,7 +641,7 @@ class TM_Real_Estate {
 			),
 		);
 
-		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Property Settings', 'edit.php?post_type=property' )->set(
+		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Settings', 'edit.php?post_type=property' )->set(
 			array(
 				'capability'	=> 'manage_options',
 				'position'		=> 22,
@@ -684,6 +687,8 @@ class TM_Real_Estate {
 
 		wp_localize_script( 'tm-real-state-settings-page', 'TMPageSettings', array(
 			'ajaxurl'				=> admin_url( 'admin-ajax.php' ),
+			'shortcodes'			=> Model_Main::get_shortcodes(),
+			'shortcodes_views'		=> Shortcode_Tinymce::tm_shortcode_view(),
 			'resetMessage'			=> __( 'Settings have been reseted' ),
 			'errorMessage'			=> __( 'Something is wrong!' ),
 			'confirmResetMessage'	=> __( 'Are you sure?' ),
@@ -704,8 +709,8 @@ class TM_Real_Estate {
 	public function add_post_type() {
 		$this->core->modules['cherry-post-types']->create(
 			'property',
-			'Property',
 			'Properties',
+			'Property',
 			array(
 				'supports' => array(
 					'title',

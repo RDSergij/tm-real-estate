@@ -73,7 +73,6 @@ class Model_Main {
 	 * @return array all agents.
 	 */
 	public static function get_agents() {
-		$result[''] = __( 'Select agent', 'tm-real-estate' );
 		$agents = get_users(
 			array( 'role__in' => array( 'administrator', 're_agent' ) )
 		);
@@ -88,6 +87,23 @@ class Model_Main {
 	}
 
 	/**
+	 * Get all shortcodes
+	 *
+	 * @return array all shortcodes.
+	 */
+	 static function get_shortcodes() {
+		$o_class = new ReflectionClass( __CLASS__ );
+		$const_array = $o_class->getConstants();
+		$tm_shortcodes = array();
+		foreach ( $const_array as $key => $value ) {
+			if ( 0 == strpos( $key, 'SHORT_CODE_' ) ) {
+					$tm_shortcodes[] = $value;
+			}
+		}
+
+		return $tm_shortcodes;
+	 }
+	/**
 	 * Wrap short code to bracets
 	 *
 	 * @param  [type] $shortcode_name name.
@@ -95,5 +111,6 @@ class Model_Main {
 	 */
 	public static function wrap_shortcode( $shortcode_name ) {
 		return sprintf( '[%s]', $shortcode_name );
+
 	}
 }

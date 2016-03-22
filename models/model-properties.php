@@ -127,7 +127,7 @@ class Model_Properties {
 					'field' => 'term_id',
 					'terms' => (int) $atts['type'],
 				);
-				unset( $atts['type'] );
+				unset( $atts['property_type'] );
 			}
 
 			if ( ! empty( $atts['tag'] ) ) {
