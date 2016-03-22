@@ -396,7 +396,7 @@ class TM_Real_Estate {
 	 */
 	public function contact_form() {
 
-		foreach( $_POST as $key => $value ) {
+		foreach ( $_POST as $key => $value ) {
 			$data[ $key ] = sanitize_text_field( $value );
 		}
 
