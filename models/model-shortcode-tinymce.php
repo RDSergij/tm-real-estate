@@ -15,7 +15,10 @@
  * Model Shortcode_Tinymce
  */
 class Shortcode_Tinymce {
-	public $view_settings;
+
+	/**
+	 * Add filters
+	 */
 	public function tm_shortcode_button() {
 		if ( current_user_can ('edit_posts') && current_user_can ('edit_pages') ) {
 			add_filter ('mce_external_plugins', array( 'Shortcode_Tinymce', 'tm_add_buttons' ));
@@ -23,21 +26,43 @@ class Shortcode_Tinymce {
 		}
 	}
 
+	/**
+	 * Add js file to plugins array
+	 *
+	 * @param  [type] $plugin_array array of plugins.
+	 *
+	 * @author mif32 
+	 * @return [type] $plugin_array.
+	 */
 	public function tm_add_buttons($plugin_array) {
-		$plugin_array['pushortcodes'] = plugin_dir_url (__FILE__) . 'shortcode-tinymce-button.js';
+		$plugin_array['tm_shortcodes'] = plugin_dir_url (__FILE__) . 'assets/shortcode/shortcode-tinymce-button.js';
 
 		return $plugin_array;
 	}
 
+	/**
+	 * Add buttons to buttons array
+	 *
+	 * @param  [type] $buttons array of buttons.
+	 *
+	 * @author mif32 
+	 * @return [type] $buttons.
+	 */
 	public function tm_register_buttons($buttons) {
-		//array_push ($buttons,'separator', 'pushortcodes');
 		foreach ( Model_Main::get_shortcodes() as $key => $value ) {
 			array_push ($buttons, $value);
 		}
 
 		return $buttons;
 	}
-	
+
+	/**
+	 * Prepare return all view settings
+	 *
+	 *
+	 * @author mif32 
+	 * @return [type] $view_settings.
+	 */
 	public function tm_shortcode_view(){
 		$view_settings[Model_Main::SHORT_CODE_PROPERTIES] = 
 				array(
@@ -100,12 +125,21 @@ class Shortcode_Tinymce {
 				);
 		return $view_settings;
 	}
-	public function tm_prepare_options ( $options ){
+
+	/**
+	 * Prepare option for js modal window
+	 *
+	 * @param  [type] $options array of options.
+	 *
+	 * @author mif32 
+	 * @return [type] $js_options.
+	 */
+	public function tm_prepare_options( $options ){
 		$js_options = array();
-		$js_options[] = array( 'text' => '', 'value' => '', );
+		$js_options[] = array( 'text' => '', 'value' => '' );
 		if ( is_array( $options ) ) {
 			foreach ( $options as $key => $value ) {
-					$js_options[] = array( 'text' => $value, 'value' => $key, );
+					$js_options[] = array( 'text' => $value, 'value' => $key );
 			}
 			return $js_options;
 		}

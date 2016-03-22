@@ -86,12 +86,16 @@ class Model_Main {
 		return $result;
 	}
 
-	
+	/**
+	 * Get all shortcodes
+	 *
+	 * @return array all shortcodes.
+	 */
 	 static function get_shortcodes() {
-		$oClass = new ReflectionClass(__CLASS__);
-		$const_array = $oClass->getConstants();
+		$o_class = new ReflectionClass( __CLASS__ );
+		$const_array = $o_class->getConstants();
 		$tm_shortcodes = array();
-		foreach ($const_array as $key => $value ) {
+		foreach ( $const_array as $key => $value ) {
 			if ( 0 == strpos( $key, 'SHORT_CODE_' ) ) {
 					$tm_shortcodes[] = $value;
 			}

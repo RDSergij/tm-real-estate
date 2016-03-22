@@ -52,5 +52,6 @@
         "assets/js/uploader/cors/jquery.xdr-transport.js",
         "assets/js/uploader/cors/jquery.postmessage-transport.js",
         "assets/js/contact-form.min.js",
+        "assets/shortcode/shortcode-tinymce-button.js",
   ]
 }
