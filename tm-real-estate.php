@@ -343,15 +343,6 @@ class TM_Real_Estate {
 										),
 									),
 								),
-								'tag' => array(
-									'type'        => 'select',
-									'id'          => 'tag',
-									'name'        => 'tag',
-									'multiple'	  => true,
-									'value'       => '',
-									'left_label'  => __( 'Tag', 'tm-real-estate' ),
-									'options'     => Model_Main::get_tags(),
-								),
 								'agent' => array(
 									'type'        => 'select',
 									'id'          => 'agent',
@@ -402,7 +393,14 @@ class TM_Real_Estate {
 	 * Contact form
 	 */
 	public function contact_form() {
-		$data = $_POST;
+
+		foreach ( $_POST as $key => $value ) {
+			$data[ $key ] = sanitize_text_field( $value );
+		}
+
+		$data['email']			= sanitize_email( $data['email'] );
+		$data['agent_id']		= (int) $data['agent_id'];
+		$data['property_id']	= (int) $data['property_id'];
 
 		$agent_data = get_userdata( $data['agent_id'] );
 
@@ -442,7 +440,24 @@ class TM_Real_Estate {
 	 * Add taxonomies to wp
 	 */
 	public function add_taxonomies() {
-		$this->core->modules['cherry-taxonomies']->create( 'Property', 'property', 'Properties' )->set_slug( 'property-type' )->init();
+		$this->core->modules['cherry-taxonomies']
+				->create(
+					'Type',
+					'property',
+					'Types'
+				)
+				->set_slug( 'property-type' )
+				->init();
+
+		$this->core->modules['cherry-taxonomies']
+				->create(
+					'Tag',
+					'property',
+					'Tags'
+				)
+				->set_arguments( array( 'hierarchical' => false ) )
+				->set_slug( 'property-tag' )
+				->init();
 	}
 
 	/**
@@ -630,7 +645,7 @@ class TM_Real_Estate {
 			),
 		);
 
-		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Property Settings', 'edit.php?post_type=property' )->set(
+		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Settings', 'edit.php?post_type=property' )->set(
 			array(
 				'capability'	=> 'manage_options',
 				'position'		=> 22,
@@ -698,8 +713,8 @@ class TM_Real_Estate {
 	public function add_post_type() {
 		$this->core->modules['cherry-post-types']->create(
 			'property',
-			'Property',
 			'Properties',
+			'Property',
 			array(
 				'supports' => array(
 					'title',
