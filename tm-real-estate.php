@@ -336,15 +336,6 @@ class TM_Real_Estate {
 										),
 									),
 								),
-								'tag' => array(
-									'type'        => 'select',
-									'id'          => 'tag',
-									'name'        => 'tag',
-									'multiple'	  => true,
-									'value'       => '',
-									'left_label'  => __( 'Tag', 'tm-real-estate' ),
-									'options'     => Model_Main::get_tags(),
-								),
 								'agent' => array(
 									'type'        => 'select',
 									'id'          => 'agent',
@@ -443,12 +434,21 @@ class TM_Real_Estate {
 	 */
 	public function add_taxonomies() {
 		$this->core->modules['cherry-taxonomies']
-				->create( 'Property', 'property', 'Properties' )
+				->create(
+					'Property Type',
+					'property',
+					'Propertie Types'
+				)
 				->set_slug( 'property-type' )
 				->init();
 
 		$this->core->modules['cherry-taxonomies']
-				->create( 'Property tag', 'property', 'Properties Tags', array( 'hierarchical' => false ) )
+				->create(
+					'Property Tag',
+					'property',
+					'Propertie Tags'
+				)
+				->set_arguments( array( 'hierarchical' => false ) )
 				->set_slug( 'property-tag' )
 				->init();
 	}

@@ -40,7 +40,7 @@ class Model_Main {
 	 */
 	public static function get_tags() {
 		$result     = array();
-		$tags_array = get_tags();
+		$tags_array = get_categories( array( 'taxonomy' => 'property-tag' ) );
 
 		if ( count( $tags_array ) ) {
 			foreach ( $tags_array as $tag ) {
@@ -57,7 +57,7 @@ class Model_Main {
 	 */
 	public static function get_categories() {
 		$result     = array();
-		$categories = get_categories();
+		$categories = get_categories( array( 'taxonomy' => 'property-type' ) );
 
 		if ( count( $categories ) ) {
 			foreach ( $categories as $cat ) {
