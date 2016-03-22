@@ -102,12 +102,13 @@ class TM_Real_Estate {
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 
+		add_action( 'admin_init', array( 'Shortcode_Tinymce', 'tm_shortcode_button' ) );
+
 		add_action( 'wp_ajax_tm_re_contact_form', array( $this, 'contact_form' ) );
 		add_action( 'wp_ajax_nopriv_tm_re_contact_form', array( $this, 'contact_form' ) );
 
 		add_action( 'wp_ajax_nopriv_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
 		add_action( 'wp_ajax_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
-
 	}
 
 	/**
@@ -181,6 +182,7 @@ class TM_Real_Estate {
 				'url' => admin_url( 'admin-ajax.php' ),
 			)
 		);
+
 	}
 
 	/**
@@ -192,6 +194,7 @@ class TM_Real_Estate {
 			'Model_Properties',
 			'Model_Settings',
 			'Model_Submit_Form',
+			'Model_Shortcode_Tinymce',
 		);
 
 		foreach ( $models as $model ) {
@@ -684,6 +687,8 @@ class TM_Real_Estate {
 
 		wp_localize_script( 'tm-real-state-settings-page', 'TMPageSettings', array(
 			'ajaxurl'				=> admin_url( 'admin-ajax.php' ),
+			'shortcodes'			=> Model_Main::get_shortcodes(),
+			'shortcodes_views'		=> Shortcode_Tinymce::tm_shortcode_view(),
 			'resetMessage'			=> __( 'Settings have been reseted' ),
 			'errorMessage'			=> __( 'Something is wrong!' ),
 			'confirmResetMessage'	=> __( 'Are you sure?' ),
