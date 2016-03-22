@@ -354,6 +354,13 @@ class TM_Real_Estate {
 									'left_label'  => __( 'Agent', 'tm-real-estate' ),
 									'options'     => Model_Main::get_agents(),
 								),
+								'google_map_link' => array(
+									'type'       => 'text',
+									'id'         => 'google_map_link',
+									'name'       => 'google_map_link',
+									'value'      => '',
+									'left_label' => __( 'Google map link', 'tm-real-estate' ),
+								),
 							),
 						),
 					),
@@ -620,7 +627,7 @@ class TM_Real_Estate {
 			),
 		);
 
-		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Property Settings', null )->set(
+		$this->core->modules['cherry-page-builder']->make( 'cherry-property-settings', 'Property Settings', 'edit.php?post_type=property' )->set(
 			array(
 				'capability'	=> 'manage_options',
 				'position'		=> 22,

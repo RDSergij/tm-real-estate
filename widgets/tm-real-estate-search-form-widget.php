@@ -11,7 +11,7 @@
  */
 
 /**
- * Adds Youtube_Subscribe_Widget widget.
+ * Add TM_Real_Estate_Search_Form_Widget widget.
  */
 class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 
