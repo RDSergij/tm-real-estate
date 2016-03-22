@@ -77,8 +77,6 @@ class Model_Properties {
 			'posts_per_page'   => -1,
 			'offset'           => 0,
 			'fields'           => 'ids',
-			'category'         => '',
-			'category_name'    => '',
 			'orderby'          => 'date',
 			'order'            => 'DESC',
 			'include'          => '',
@@ -104,6 +102,7 @@ class Model_Properties {
 	 * @return html code.
 	 */
 	public static function prepare_param_properties( $atts ) {
+
 		if ( is_array( $atts ) ) {
 			if ( ! empty( $atts['limit'] ) ) {
 				$atts['posts_per_page'] = $atts['limit'];
@@ -122,25 +121,25 @@ class Model_Properties {
 				unset( $atts['keyword'] );
 			}
 
-			if ( ! empty( $atts['property_type'] ) ) {
+			if ( ! empty( $atts['type'] ) ) {
 				$atts['tax_query'][] = array(
 					'taxonomy' => 'property-type',
 					'field' => 'term_id',
-					'terms' => (int) $atts['property_type'],
+					'terms' => (int) $atts['type'],
 				);
 				unset( $atts['property_type'] );
 			}
 
-			$atts['meta_query']['relation'] = 'AND';
-
-			if ( ! empty( $atts['type'] ) ) {
+			if ( ! empty( $atts['tag'] ) ) {
 				$atts['tax_query'][] = array(
-					'taxonomy' => 'property-type',
-					'field' => 'slug',
-					'terms' => (array) $atts['type'],
+					'taxonomy' => 'property-tag',
+					'field' => 'term_id',
+					'terms' => (int) $atts['tag'],
 				);
-				unset( $atts['type'] );
+				unset( $atts['tag'] );
 			}
+
+			$atts['meta_query']['relation'] = 'AND';
 
 			if ( ! empty( $atts['property_status'] )  ) {
 				$atts['meta_query'][] = array(
@@ -248,6 +247,10 @@ class Model_Properties {
 				);
 				unset( $atts['agent'] );
 			}
+		} else {
+			$atts = array(
+				'posts_per_page'	=> 5,
+			);
 		}
 
 		return $atts;
