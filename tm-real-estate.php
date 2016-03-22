@@ -395,7 +395,14 @@ class TM_Real_Estate {
 	 * Contact form
 	 */
 	public function contact_form() {
-		$data = $_POST;
+
+		foreach( $_POST as $key => $value ) {
+			$data[ $key ] = sanitize_text_field( $value );
+		}
+
+		$data['email']			= sanitize_email( $data['email'] );
+		$data['agent_id']		= (int) $data['agent_id'];
+		$data['property_id']	= (int) $data['property_id'];
 
 		$agent_data = get_userdata( $data['agent_id'] );
 
