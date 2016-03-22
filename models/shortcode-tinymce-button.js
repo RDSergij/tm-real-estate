@@ -19,28 +19,40 @@
             editor.addButton(TMPageSettings.shortcodes[i], {
                 text: TMPageSettings.shortcodes[i],
                 onclick: function(e) {
-                    //tinyMCE.activeEditor.selection.setContent( '[' + TMPageSettings.shortcodes[i] + ']' );
-                                editor.windowManager.open({
-                                    id: TMPageSettings.shortcodes[i],
-                                    title: 'TinyMCE site',
-                                    //url: TMPageSettings.shortcodes_views[i],
-                                    body: JSON.parse(TMPageSettings.shortcodes_views['tm-re-properties']),
-                                    width: 800,
-                                    height: 600,
-                                    buttons: [{
-                                        text: 'Submit',
-                                        onclick: 'submit'
-                                     },{
-                                        text: 'Cancel',
-                                        onclick: 'close'
-                                     }],
-                                    onsubmit: function(e) {
-                                        //find the popup, get the iframe contents and find the HTML form in the iFrame
-                                        form = jQuery('#' + TMPageSettings.shortcodes[i] + ' iframe').contents().find('input').val();
-                                        console.log(form);
-                                        //once you have the form, you can do whatever you like with the data from here
-                                     }
-                                });
+                    if(TMPageSettings.shortcodes_views[TMPageSettings.shortcodes[i]]) {
+                        shortcodeView = TMPageSettings.shortcodes_views['tm-re-properties'];
+                        editor.windowManager.open({
+                            id: TMPageSettings.shortcodes[i],
+                            title: shortcodeView['title'],
+                            image: shortcodeView['image'],
+                            body: shortcodeView['body'],
+                            width: shortcodeView['width'],
+                            height: shortcodeView['height'],
+                            buttons: [{
+                                text: 'Submit',
+                                onclick: 'submit'
+                             },{
+                                text: 'Cancel',
+                                onclick: 'close'
+                             }],
+                            onsubmit: function(e) {
+                                attr = e.data
+                                shortcode = '[' + TMPageSettings.shortcodes[i];
+                                for (var prop in attr) {
+                                    console.log("obj." + prop + " = " + attr[prop]);
+                                    if ( attr[prop] ) {
+                                        shortcode += ' ' + prop +'="'+ attr[prop] + '"';
+                                    }
+                                }
+                                shortcode += ']';
+                                 console.log(shortcode);
+                                tinyMCE.activeEditor.selection.setContent( shortcode );
+                                
+                             }
+                        });
+                   } else {
+                        tinyMCE.activeEditor.selection.setContent( '[' + TMPageSettings.shortcodes[i] + ']' );
+                   }
 
 
                 },

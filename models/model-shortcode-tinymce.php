@@ -39,54 +39,75 @@ class Shortcode_Tinymce {
 	}
 	
 	public function tm_shortcode_view(){
-		$view_settings[Model_Main::SHORT_CODE_PROPERTIES] = json_encode(
-					array(
-							array(
-								'type'       => 'textbox',
-								'name'       => 'property_id',
-								'value'      => 0,
-								'label' => __( 'property id', 'tm-real-estate' ),
+		$view_settings[Model_Main::SHORT_CODE_PROPERTIES] = 
+				array(
+					'title'  => __( 'Property id', 'tm-real-estate' ),
+					'image'  => '',
+					'width'  => 600,
+					'height' => 310,
+					'body'	 =>array(
+						array(
+							'type'       => 'textbox',
+							'name'       => 'property_id',
+							'value'      => 0,
+							'label'		 => __( 'Property id', 'tm-real-estate' ),
+						),
+						array(
+							'type'       => 'listbox',
+							'name'       => 'status',
+							'label'		 => __( 'Property status', 'tm-real-estate' ),
+							'values'    => array(
+								array( 'text' => '', 'value' => '' ),
+								array( 'text' => __( 'Rent', 'tm-real-estate' ), 'value' => 'rent' ),
+								array( 'text' => __( 'Sale', 'tm-real-estate' ), 'value' => 'sale' ),
 							),
-							array(
-								'type'       => 'listbox',
-								'name'       => 'status',
-								'label' => __( 'Property status', 'tm-real-estate' ),
-								'values'    => array(
-									array( 'text' => __( 'Rent', 'tm-real-estate' ), 'value' => 'rent' ),
-									array( 'text' => __( 'Sale', 'tm-real-estate' ), 'value' => 'sale' ),
-								),
-							),
-//							array(
-//								'type'        => 'listbox',
-//								'name'        => 'tag',
-//								'multiple'	  => true,
-//								'value'       => '',
-//								'label'  => __( 'Property type', 'tm-real-estate' ),
-//								'values'     => Shortcode_Tinymce::tm_prepare_options(Model_Main::get_tags())
-//							),
-							array(
-								'type'        => 'listbox',
-								'name'        => 'agent',
-								'value'       => '',
-								'label'  => __( 'Agent', 'tm-real-estate' ),
-								'values'     => Shortcode_Tinymce::tm_prepare_options(Model_Main::get_agents())
-							),
-							array(
-								'type'        => 'listbox',
-								'name'        => 'type',
-								'value'       => '',
-								'label'  => __( 'Property type', 'tm-real-estate' ),
-								'values'     => Shortcode_Tinymce::tm_prepare_options(Model_Main::get_categories())
-							),
-			)
-			);
+						),
+						array(
+							'type'        => 'listbox',
+							'name'        => 'tag',
+							'multiple'	  => true,
+							'value'       => '',
+							'label'		  => __( 'Property tag', 'tm-real-estate' ),
+							'values'     => Shortcode_Tinymce::tm_prepare_options(Model_Main::get_tags())
+						),
+						array(
+							'type'        => 'listbox',
+							'name'        => 'agent',
+							'value'       => '',
+							'label'  => __( 'Agent', 'tm-real-estate' ),
+							'values'     => Shortcode_Tinymce::tm_prepare_options(Model_Main::get_agents())
+						),
+						array(
+							'type'        => 'listbox',
+							'name'        => 'type',
+							'value'       => '',
+							'label'  => __( 'Property type', 'tm-real-estate' ),
+							'values'     => Shortcode_Tinymce::tm_prepare_options(Model_Main::get_categories())
+						),
+						array(
+							'type'       => 'textbox',
+							'name'       => 'limit',
+							'value'      => 0,
+							'label' => __( 'Limit', 'tm-real-estate' ),
+						),
+						array(
+							'type'       => 'textbox',
+							'name'       => 'offset',
+							'value'      => 0,
+							'label' => __( 'Offset', 'tm-real-estate' ),
+						),
+					)
+				);
 		return $view_settings;
 	}
 	public function tm_prepare_options ( $options ){
 		$js_options = array();
-		foreach ( $options as $key => $value ) {
-				$js_options[] = array( 'text' => $value, 'value' => $key, );
+		$js_options[] = array( 'text' => '', 'value' => '', );
+		if ( is_array( $options ) ) {
+			foreach ( $options as $key => $value ) {
+					$js_options[] = array( 'text' => $value, 'value' => $key, );
+			}
+			return $js_options;
 		}
-		return $js_options;
 	}
 }
