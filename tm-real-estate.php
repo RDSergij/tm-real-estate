@@ -102,7 +102,7 @@ class TM_Real_Estate {
 		add_action( 'wp_ajax_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 		add_action( 'wp_ajax_nopriv_tm_property_settings_reset', array( $this, 'settings_reset' ) );
 
-		add_action ('admin_init', array( 'Shortcode_Tinymce', 'tm_shortcode_button' ) );
+		add_action( 'admin_init', array( 'Shortcode_Tinymce', 'tm_shortcode_button' ) );
 
 		add_action( 'wp_ajax_tm_re_contact_form', array( $this, 'contact_form' ) );
 		add_action( 'wp_ajax_nopriv_tm_re_contact_form', array( $this, 'contact_form' ) );

@@ -57,7 +57,7 @@ class Model_Submit_Form {
 			wp_set_post_terms( $post_id, sanitize_key( $_POST['property']['type'] ), 'property-type' );
 		}
 
-		if ( !empty ( $_FILES['thumb'] ) ) {
+		if ( ! empty( $_FILES['thumb'] ) ) {
 			$attachment_id = Model_Submit_Form::insert_attacment( $_FILES['thumb'], $post_id );
 			if ( ! $attachment_id ) {
 				wp_send_json_error( $messages['failed-message'] );
