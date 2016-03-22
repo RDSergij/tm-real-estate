@@ -429,6 +429,10 @@ class TM_Real_Estate {
 	 */
 	public function add_taxonomies() {
 		$this->core->modules['cherry-taxonomies']->create( 'Property', 'property', 'Properties' )->set_slug( 'property-type' )->init();
+		$this->core->modules['cherry-taxonomies']
+				->create( 'Property tag', 'property tag', 'Properties Tags', array( 'hierarchical' => false ) )
+				->set_slug( 'property-tag' )
+				->init();
 	}
 
 	/**
