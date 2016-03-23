@@ -654,7 +654,7 @@ class Model_Properties {
 	 * @param type integer $parent ID of parent types.
 	 * @return total pages.
 	 */
-	public function get_types( $parent = 0 ) {
+	public static function get_types( $parent = 0 ) {
 		$terms = get_terms( 'property-type', array( 'parent' => $parent, 'hide_empty' => false ) );
 		if ( count( $terms ) > 0 ) {
 			foreach ( $terms as $term ) {
