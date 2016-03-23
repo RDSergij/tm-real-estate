@@ -88,7 +88,7 @@ class Shortcode_Tinymce {
 									array(
 										'type'        => 'listbox',
 										'name'        => 'tag',
-										'multiple'	  => true,
+										'multiple'	  => false,
 										'value'       => '',
 										'label'		  => __( 'Property tag', 'tm-real-estate' ),
 										'values'     => Shortcode_Tinymce::tm_prepare_options( Model_Main::get_tags() ),

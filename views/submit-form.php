@@ -32,9 +32,9 @@
 	</div>
 	<div>
 	<label class="label-block" id="property_status_label" > Status </label>
-	<input type="radio" class="form-radio" id="property_status_input_1" checked name="property[meta][status]" value="1">
+	<input type="radio" class="form-radio" id="property_status_input_1" checked name="property[meta][status]" value="rent">
 	<label id="property_status_label_1" for="property_status_input_1" >rent</label>
-	<input type="radio" class="form-radio" id="property_status_input_2" name="property[meta][status]" value="2">
+	<input type="radio" class="form-radio" id="property_status_input_2" name="property[meta][status]" value="sale">
 	<label id="property_status_label_2" for="property_status_input_2">sale</label>
 	</div>
 <div>
