@@ -46,6 +46,7 @@
                     } else {
                         tinyMCE.activeEditor.selection.setContent('[' + TMPageSettings.shortcodes[i] + ']');
                     }
+                     jQuery('[type="number"]').attr('min', '0');
                 },
             });
         });
