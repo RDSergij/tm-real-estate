@@ -56,9 +56,8 @@ class Model_Submit_Form {
 
 		if ( ! empty( $_POST['property']['type'] ) ) {
 			$term_id = sanitize_key( $_POST['property']['type'] );
-			//wp_set_post_terms( $post_id, $term_id, 'property-type' );
 			$term = get_term($term_id);
-			if($term->parent){
+			if ( $term->parent ) {
 				wp_set_post_terms( $post_id, array( $term->parent, $term_id ), 'property-type' );
 			}
 		}
