@@ -366,7 +366,7 @@ class TM_Real_Estate {
 									'multiple'	  => false,
 									'value'       => '',
 									'left_label'  => __( 'Agent', 'tm-real-estate' ),
-									'options'     => array_merge( array( __( 'Select agent', 'tm-real-estate' ) ), Model_Main::get_agents() ),
+									'options'     => Model_Main::get_agents_options(),
 								),
 								'google_map_link' => array(
 									'type'       => 'text',
