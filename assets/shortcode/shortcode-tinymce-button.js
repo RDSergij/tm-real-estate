@@ -15,7 +15,6 @@
                 image: (typeof shortcodeView !== 'undefined') ? shortcodeView['image'] : '',
                 onclick: function (e) {
                     if (TMPageSettings.shortcodes_views[TMPageSettings.shortcodes[i]]) {
-
                         editor.windowManager.open({
                             id: TMPageSettings.shortcodes[i],
                             title: shortcodeView['title'],
@@ -30,6 +29,7 @@
                                     onclick: 'close'
                                 }],
                             onsubmit: function (e) {
+                                console.log( e );
                                 attr = e.data
                                 shortcode = '[' + TMPageSettings.shortcodes[i];
                                 for (var prop in attr) {
