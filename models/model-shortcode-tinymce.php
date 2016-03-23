@@ -20,7 +20,7 @@ class Shortcode_Tinymce {
 	 */
 	public static function tm_shortcode_button() {
 
-		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' )) {
+		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
 			add_filter( 'mce_external_plugins', array( 'Shortcode_Tinymce', 'tm_add_buttons' ) );
 			add_filter( 'mce_buttons', array( 'Shortcode_Tinymce', 'tm_register_buttons' ) );
 		}
