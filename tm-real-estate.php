@@ -117,7 +117,7 @@ class TM_Real_Estate {
 	/**
 	 * Fix "view" link in property post type
 	 *
-	 * @param  [array] $actions list.
+	 * @param  [array]  $actions list.
 	 * @param  [object] $post   Object.
 	 * @return [array] actions list.
 	 */
