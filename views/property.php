@@ -16,13 +16,11 @@
 	<div class="properties">
 		<article class="property-item">
 			<header class="property-content">
-				<h4><a href="<?php echo $property->url ?>"><?php echo $property->post_title; ?></a></h4>
+				<h4<?php echo $property->post_title; ?></h4>
 			</header>
 
 			<figure>
-				<a href="<?php echo $property->url ?>">
-					<img src="<?php echo $property->image; ?>" class="attachment-property-thumb-image" alt="<?php echo esc_attr( $property->post_title ); ?>">
-				</a>
+				<img src="<?php echo $property->image; ?>" class="attachment-property-thumb-image" alt="<?php echo esc_attr( $property->post_title ); ?>">
 
 				<figcaption class="for-<?php echo esc_attr( $property->status ); ?>">For <?php echo ucwords( esc_attr( $property->status ) ); ?></figcaption>
 			</figure>
