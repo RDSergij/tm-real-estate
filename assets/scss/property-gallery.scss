@@ -1,0 +1,34 @@
+.properties {
+	.swiper-container {
+		&.gallery-top {
+			width: 100%;
+			height: 300px;
+			margin-left: auto;
+			margin-right: auto;
+
+			.swiper-slide {
+				background-size: cover;
+				background-position: center;
+				height: 300px;
+			}
+		}
+	}
+
+	.gallery-thumbs {
+		width: 100%;
+		height: 75px;
+		box-sizing: border-box;
+		padding: 10px 0;
+
+		.swiper-slide {
+			width: 150px;
+			height: 75px;
+			background-size: contain;
+			opacity: 0.4;
+		}
+
+		.swiper-slide-active {
+			opacity: 1;
+		}
+	}
+}
