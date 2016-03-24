@@ -86,9 +86,6 @@ class TM_Real_Estate {
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 
-		// After activated plugin
-		register_activation_hook( __FILE__, array( $this, 'plugin_activated' ) );
-
 		// Launch our plugin.
 		add_action( 'after_setup_theme', array( $this, 'launch' ), 10 );
 
