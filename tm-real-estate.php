@@ -365,12 +365,12 @@ class TM_Real_Estate {
 									'left_label'  => __( 'Agent', 'tm-real-estate' ),
 									'options'     => Model_Main::get_agents_options(),
 								),
-								'google_map_link' => array(
+								'address' => array(
 									'type'       => 'text',
-									'id'         => 'google_map_link',
-									'name'       => 'google_map_link',
+									'id'         => 'address',
+									'name'       => 'address',
 									'value'      => '',
-									'left_label' => __( 'Google map link', 'tm-real-estate' ),
+									'left_label' => __( 'Address', 'tm-real-estate' ),
 								),
 							),
 						),
@@ -589,6 +589,17 @@ class TM_Real_Estate {
 				'id'			=> 'сurrency-sign',
 				'value'			=> '$',
 				'placeholder'	=> '$',
+			),
+		);
+
+		$settings['tm-properties-main-settings'][] = array(
+			'slug'	=> 'google-api-key',
+			'title'	=> __( 'Google API key', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'google-api-key',
+				'value'			=> 'AIzaSyDF7dD2E-ix64gegMxS1DFXLpUKKotyNz8',
+				'placeholder'	=> '',
 			),
 		);
 

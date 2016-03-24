@@ -43,6 +43,11 @@
 				</div>
 			</div>
 
+			<div class="property-location">
+				<h6><?php echo __( 'Location:', 'tm-real-estate' ) ?></h6>
+				<iframe src="<?php echo $property->map ?>"></iframe>
+			</div>
+
 			<footer>
 				<ul class="property-meta">
 					<li class="price">

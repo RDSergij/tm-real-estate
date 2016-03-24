@@ -61,6 +61,7 @@ class Model_Properties {
 				$property->area      = self::get_area( $property->ID );
 				$property->tags      = self::get_property_tags( $property->ID );
 				$property->types     = self::get_property_types( $property->ID );
+				$property->map       = self::get_property_map( $property->ID );
 				$property->url		 = $single_page . '?id=' . $property->ID;
 			}
 		}
@@ -559,6 +560,20 @@ class Model_Properties {
 		}
 		return end( $allowed );
 	}
+
+	/**
+	 * Get property map link
+	 *
+	 * @param  [type] $post_id id.
+	 * @return string property status.
+	 */
+	public static function get_property_map( $post_id ) {
+		$key = Model_Settings::get_google_map_key();
+		$address = (string) get_post_meta( $post_id, 'address', true );
+		$url = 'https://www.google.com/maps/embed/v1/search?q=' . $address . '&key=' . $key;
+		return $url;
+	}
+
 
 	/**
 	 * Get allowed property statuses
