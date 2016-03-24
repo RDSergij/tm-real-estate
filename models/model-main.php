@@ -61,7 +61,7 @@ class Model_Main {
 
 		if ( count( $categories ) ) {
 			foreach ( $categories as $cat ) {
-				$result[ $cat->term_id ] = $cat->name;
+				$result[ (string) $cat->term_id ] = $cat->name;
 			}
 		}
 		return $result;
@@ -84,6 +84,15 @@ class Model_Main {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Get agents for select options
+	 *
+	 * @return [array] options.
+	 */
+	public static function get_agents_options() {
+		return array( 0 => __( 'Select agent', 'tm-real-estate' ) ) + (array) self::get_agents();
 	}
 
 	/**

@@ -18,7 +18,8 @@ class Shortcode_Tinymce {
 	/**
 	 * Add filters
 	 */
-	public function tm_shortcode_button() {
+	public static function tm_shortcode_button() {
+
 		if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
 			add_filter( 'mce_external_plugins', array( 'Shortcode_Tinymce', 'tm_add_buttons' ) );
 			add_filter( 'mce_buttons', array( 'Shortcode_Tinymce', 'tm_register_buttons' ) );
@@ -33,7 +34,7 @@ class Shortcode_Tinymce {
 	 * @author mif32.
 	 * @return [type] $plugin_array.
 	 */
-	public function tm_add_buttons( $plugin_array ) {
+	public static function tm_add_buttons( $plugin_array ) {
 		$plugin_array['tm_shortcodes'] = TM_REAL_ESTATE_URI . 'assets/shortcode/shortcode-tinymce-button.js';
 
 		return $plugin_array;
@@ -47,7 +48,7 @@ class Shortcode_Tinymce {
 	 * @author mif32.
 	 * @return [type] $buttons.
 	 */
-	public function tm_register_buttons( $buttons ) {
+	public static function tm_register_buttons( $buttons ) {
 		foreach ( Model_Main::get_shortcodes() as $key => $value ) {
 			array_push( $buttons, $value );
 		}
@@ -61,7 +62,7 @@ class Shortcode_Tinymce {
 	 * @author mif32.
 	 * @return [type] $view_settings.
 	 */
-	public function tm_shortcode_view() {
+	public static function tm_shortcode_view() {
 		$view_settings[ Model_Main::SHORT_CODE_PROPERTIES ] = array(
 								'title'  => __( 'Property id', 'tm-real-estate' ),
 								'image'  => '',
@@ -87,7 +88,7 @@ class Shortcode_Tinymce {
 									array(
 										'type'        => 'listbox',
 										'name'        => 'tag',
-										'multiple'	  => true,
+										'multiple'	  => false,
 										'value'       => '',
 										'label'		  => __( 'Property tag', 'tm-real-estate' ),
 										'values'     => Shortcode_Tinymce::tm_prepare_options( Model_Main::get_tags() ),
@@ -109,11 +110,13 @@ class Shortcode_Tinymce {
 									array(
 										'type'       => 'textbox',
 										'name'       => 'limit',
+										'subtype'	 => 'number',
 										'value'      => 0,
 										'label' => __( 'Limit', 'tm-real-estate' ),
 									),
 									array(
 										'type'       => 'textbox',
+										'subtype'	 => 'number',
 										'name'       => 'offset',
 										'value'      => 0,
 										'label' => __( 'Offset', 'tm-real-estate' ),
@@ -131,7 +134,7 @@ class Shortcode_Tinymce {
 	 * @author mif32.
 	 * @return [type] $js_options.
 	 */
-	public function tm_prepare_options( $options ) {
+	public static function tm_prepare_options( $options ) {
 		$js_options = array();
 		$js_options[] = array( 'text' => '', 'value' => '' );
 		if ( is_array( $options ) ) {

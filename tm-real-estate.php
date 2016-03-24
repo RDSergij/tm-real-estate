@@ -109,6 +109,26 @@ class TM_Real_Estate {
 
 		add_action( 'wp_ajax_nopriv_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
 		add_action( 'wp_ajax_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
+
+		// Fix "View" link in row actions ( custom post type ) on table
+		add_filter( 'post_row_actions', array( &$this, 'override_view' ), 10, 2 );
+	}
+
+	/**
+	 * Fix "view" link in property post type
+	 *
+	 * @param  [array]  $actions list.
+	 * @param  [object] $post   Object.
+	 * @return [array] actions list.
+	 */
+	public function override_view( $actions, $post ) {
+		$actions['view'] = sprintf(
+			'<a href="%s?id=%s" title="View “%s”" rel="permalink">View</a>',
+			Model_Settings::get_search_single_page(),
+			$post->ID,
+			esc_attr( $post->post_title )
+		);
+		return $actions;
 	}
 
 	/**
@@ -346,7 +366,7 @@ class TM_Real_Estate {
 									'multiple'	  => false,
 									'value'       => '',
 									'left_label'  => __( 'Agent', 'tm-real-estate' ),
-									'options'     => array_merge( array( __( 'Select agent', 'tm-real-estate' ) ), Model_Main::get_agents() ),
+									'options'     => Model_Main::get_agents_options(),
 								),
 								'google_map_link' => array(
 									'type'       => 'text',

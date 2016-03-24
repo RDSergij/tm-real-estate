@@ -20,7 +20,7 @@ class Model_Submit_Form {
 	 *
 	 * @return html code.
 	 */
-	public function shortcode_submit_form() {
+	public static function shortcode_submit_form() {
 		$terms = Model_Properties::get_types();
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . '/views/submit-form.php',
@@ -31,7 +31,7 @@ class Model_Submit_Form {
 	/**
 	 * Callback of shortcode submit form
 	 */
-	public function submit_form_callback() {
+	public static function submit_form_callback() {
 		$messages = Model_Settings::get_submission_form_settings();
 		$tm_json_request = array();
 		if ( empty( $_POST ) ) {
@@ -53,8 +53,13 @@ class Model_Submit_Form {
 			wp_send_json_error( $messages['failed-message'] );
 			wp_die();
 		}
+
 		if ( ! empty( $_POST['property']['type'] ) ) {
-			wp_set_post_terms( $post_id, sanitize_key( $_POST['property']['type'] ), 'property-type' );
+			$term_id = sanitize_key( $_POST['property']['type'] );
+			$term = get_term( $term_id );
+			if ( $term->parent ) {
+				wp_set_post_terms( $post_id, array( $term->parent, $term_id ), 'property-type' );
+			}
 		}
 
 		if ( ! empty( $_FILES['thumb'] ) ) {
@@ -98,7 +103,7 @@ class Model_Submit_Form {
 	 *
 	 * @return [type] code.
 	 */
-	public function insert_attacment( $file, $post_id ) {
+	public static function insert_attacment( $file, $post_id ) {
 
 		require_once( ABSPATH . 'wp-admin/includes/admin.php' );
 		$file_return = wp_handle_upload( $file, array( 'test_form' => false ) );
@@ -131,7 +136,7 @@ class Model_Submit_Form {
 	 *
 	 * @return mixed file_array.
 	 */
-	public function re_array_files( &$file_post ) {
+	public static function re_array_files( &$file_post ) {
 		$file_array = array();
 		$file_count = count( $file_post['name'] );
 		$file_keys  = array_keys( $file_post );
