@@ -627,7 +627,7 @@ class Model_Properties {
 		$types = wp_get_post_terms( $post_id, 'property-type' );
 		$list = array();
 		if ( ! empty( $types ) && is_array( $types ) ) {
-			foreach( $types as $type ) {
+			foreach ( $types as $type ) {
 				$list[] = $type->name;
 			}
 		}
@@ -644,7 +644,7 @@ class Model_Properties {
 		$tags = wp_get_post_terms( $post_id, 'property-tag' );
 		$list = array();
 		if ( ! empty( $tags ) && is_array( $tags ) ) {
-			foreach( $tags as $tag ) {
+			foreach ( $tags as $tag ) {
 				$list[] = $tag->name;
 			}
 		}
