@@ -16,21 +16,36 @@
 	<div class="properties">
 		<article class="property-item">
 			<header class="property-content">
-				<h4><a href="<?php echo $property->url ?>"><?php echo $property->post_title; ?></a></h4>
+				<h4><?php echo $property->post_title; ?></h4>
 			</header>
 
-			<figure>
-				<a href="<?php echo $property->url ?>">
-					<img src="<?php echo $property->image; ?>" class="attachment-property-thumb-image" alt="<?php echo esc_attr( $property->post_title ); ?>">
-				</a>
-
-				<figcaption class="for-<?php echo esc_attr( $property->status ); ?>">For <?php echo ucwords( esc_attr( $property->status ) ); ?></figcaption>
-			</figure>
+			<div class="swiper-container gallery-top">
+				<div class="swiper-wrapper">
+					<?php foreach ( $property->gallery['image'] as $image ) : ?>
+					<div class="swiper-slide" style="background-image:url(<?php echo $image['medium_large'][0] ?>"></div>
+					<?php endforeach; ?>
+				</div>
+				<!-- Add Arrows -->
+				<div class="swiper-button-next swiper-button-white"></div>
+				<div class="swiper-button-prev swiper-button-white"></div>
+			</div>
+			<div class="swiper-container gallery-thumbs">
+				<div class="swiper-wrapper">
+					<?php foreach ( $property->gallery['image'] as $image ) : ?>
+					<div class="swiper-slide" style="background-image:url(<?php echo $image['thumbnail'][0] ?>"></div>
+					<?php endforeach; ?>
+				</div>
+			</div>
 
 			<div class="property-content">
 				<div class="detail">
 					<?php echo wp_trim_words( $property->post_content, 55 ); ?>
 				</div>
+			</div>
+
+			<div class="property-location">
+				<h6><?php echo __( 'Location:', 'tm-real-estate' ) ?></h6>
+				<iframe src="<?php echo $property->map ?>"></iframe>
 			</div>
 
 			<footer>
@@ -73,6 +88,12 @@
 						</span>
 						<?php echo $property->area; ?>
 					</li>
+					<?php foreach ( $property->types as $type ) : ?>
+					<li class="type"><?php echo $type ?></li>
+					<?php endforeach; ?>
+					<?php foreach ( $property->tags as $tag ) : ?>
+					<li class="tag"><?php echo $tag ?></li>
+					<?php endforeach; ?>
 				</ul>
 			</footer>
 
