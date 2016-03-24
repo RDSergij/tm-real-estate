@@ -65,6 +65,7 @@ if ( ! class_exists( 'Cherry_Utility' ) ) {
 				'media',
 				'attributes',
 				'meta-data',
+				'array',
 			),
 			'meta_key'	=> array(
 				'term_thumb'	=> 'cherry_thumb',
@@ -111,10 +112,11 @@ if ( ! class_exists( 'Cherry_Utility' ) ) {
 				foreach ( $utility as $utilit ) {
 					require_once( $this->module_directory . '/inc/cherry-' . $utilit . '-utilit.php' );
 
-					$utilit     = str_replace( '-', ' ', $utilit );
+					$utilit = str_replace( '-', ' ', $utilit );
 					$class_name = ucwords( $utilit );
 					$class_name = str_replace( ' ', '_', $class_name );
-					$utilit     = str_replace( ' ', '_', $utilit );
+					$utilit = str_replace( ' ', '_', $utilit );
+
 					$class_name = 'Cherry_' . $class_name . '_Utilit';
 
 					$this->utility->$utilit = new $class_name( $this );
