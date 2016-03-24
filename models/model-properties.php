@@ -59,6 +59,8 @@ class Model_Properties {
 				$property->bathrooms = self::get_bathrooms( $property->ID );
 				$property->bedrooms  = self::get_bedrooms( $property->ID );
 				$property->area      = self::get_area( $property->ID );
+				$property->tags      = self::get_property_tags( $property->ID );
+				$property->types     = self::get_property_types( $property->ID );
 				$property->url		 = $single_page . '?id=' . $property->ID;
 			}
 		}
@@ -318,12 +320,53 @@ class Model_Properties {
 	}
 
 	/**
+	 * Contact form assets
+	 */
+	public static function property_single_assets() {
+
+		wp_enqueue_script(
+			'swipe',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/swiper.min.js',
+			array( 'jquery' ),
+			'1.0.0',
+			true
+		);
+
+		wp_enqueue_script(
+			'tm-re-property-gallery',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/property-gallery.min.js',
+			array( 'jquery' ),
+			'1.0.0',
+			true
+		);
+
+		wp_enqueue_style(
+			'swiper',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/swiper.min.css',
+			array(),
+			'3.3.0',
+			'all'
+		);
+
+		wp_enqueue_style(
+			'tm-re-property-gallery',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/property-gallery.min.css',
+			array(),
+			'1.0.0',
+			'all'
+		);
+
+	}
+
+	/**
 	 * Shortcode property item
 	 *
 	 * @return html code.
 	 */
 	public static function shortcode_property_single() {
 		if ( ! empty( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
+			self::property_single_assets();
+
 			$id = $_GET['id'];
 			$properties	= (array) self::get_properties( array( 'include' => $id, 'limit' => 1 ) );
 			$property	= $properties[0];
@@ -572,6 +615,40 @@ class Model_Properties {
 			return $images['medium'][0];
 		}
 		return TM_REAL_ESTATE_URI.'assets/images/placehold.png';
+	}
+
+	/**
+	 * Get type list of property
+	 *
+	 * @param  [type] $post_id property id.
+	 * @return array list
+	 */
+	public static function get_property_types( $post_id ) {
+		$types = wp_get_post_terms( $post_id, 'property-type' );
+		$list = array();
+		if ( ! empty( $types ) && is_array( $types ) ) {
+			foreach( $types as $type ) {
+				$list[] = $type->name;
+			}
+		}
+		return $list;
+	}
+
+	/**
+	 * Get tags list of property
+	 *
+	 * @param  [type] $post_id property id.
+	 * @return array list
+	 */
+	public static function get_property_tags( $post_id ) {
+		$tags = wp_get_post_terms( $post_id, 'property-tag' );
+		$list = array();
+		if ( ! empty( $tags ) && is_array( $tags ) ) {
+			foreach( $tags as $tag ) {
+				$list[] = $tag->name;
+			}
+		}
+		return $list;
 	}
 
 	/**

@@ -715,7 +715,7 @@ class TM_Real_Estate {
 			'tm-real-state-settings-page',
 			plugins_url( 'tm-real-estate' ) . '/assets/css/page-settings.min.css',
 			array(),
-			'1.0.0',
+			'3.3.0',
 			'all'
 		);
 	}
