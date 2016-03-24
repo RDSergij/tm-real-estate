@@ -86,9 +86,6 @@ class TM_Real_Estate {
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 
-		// After activated plugin
-		register_activation_hook( __FILE__, array( $this, 'plugin_activated' ) );
-
 		// Launch our plugin.
 		add_action( 'after_setup_theme', array( $this, 'launch' ), 10 );
 
@@ -266,6 +263,10 @@ class TM_Real_Estate {
 						'priority'	=> 999,
 						'autoload'	=> true,
 					),
+					'cherry-utility'	=> array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+					),
 					'cherry-page-builder'	=> array(
 						'priority'	=> 999,
 						'autoload'	=> true,
@@ -309,30 +310,34 @@ class TM_Real_Estate {
 									),
 								),
 								'bathrooms' => array(
-									'type'    => 'number',
-									'id'      => 'bathrooms',
-									'name'    => 'bathrooms',
-									'value'   => 0,
+									'type'       => 'number',
+									'id'         => 'bathrooms',
+									'name'       => 'bathrooms',
+									'min_value'  => 0,
+									'value'      => 0,
 									'left_label' => __( 'Bathrooms', 'tm-real-estate' ),
 								),
 								'bedrooms' => array(
-									'type'    => 'number',
-									'id'      => 'bedrooms',
-									'name'    => 'bedrooms',
-									'value'   => 0,
+									'type'       => 'number',
+									'id'         => 'bedrooms',
+									'name'       => 'bedrooms',
+									'min_value'  => 0,
+									'value'      => 0,
 									'left_label' => __( 'Bedrooms', 'tm-real-estate' ),
 								),
 								'area' => array(
-									'type'    => 'number',
-									'id'      => 'area',
-									'name'    => 'area',
-									'value'   => 0,
+									'type'       => 'number',
+									'id'         => 'area',
+									'name'       => 'area',
+									'min_value'  => 0,
+									'value'      => 0,
 									'left_label' => __( 'Area', 'tm-real-estate' ),
 								),
 								'parking_places' => array(
 									'type'       => 'number',
 									'id'         => 'parking_places',
 									'name'       => 'parking_places',
+									'min_value'  => 0,
 									'value'      => 0,
 									'left_label' => __( 'Parking places', 'tm-real-estate' ),
 								),
