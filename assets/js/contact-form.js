@@ -12,11 +12,10 @@ jQuery( document ).ready( function( $ ) {
 		
 		tmrec.captchaInit = function() {
 			onloadCallback = function() {
-				tmrec.captchaArea = window.grecaptcha.render('tm-re-contact-form-captcha', {
-					'sitekey' : window.TMREContactForm.captchaKey,
-					'theme' : 'light'
+				tmrec.captchaArea = window.grecaptcha.render( 'tm-re-contact-form-captcha', {
+					'sitekey': window.TMREContactForm.captchaKey,
+					'theme': 'light'
 				});
-				console.log(tmrec.captchaArea);
 			};
 		};
 
@@ -37,9 +36,11 @@ jQuery( document ).ready( function( $ ) {
 
 		tmrec.eventSubmit = function() {
 			$( '.tm-re-contact-form form' ).submit( function( e ) {
-				e.preventDefault();
 				var _form = $( this );
 				var _message = _form.children( '.message' );
+
+				e.preventDefault();e.preventDefault();
+
 				if ( ! tmrec.checkCaptcha() ) {
 					$( '#tm-re-contact-form-captcha' ).addClass( 'captcha-warning' );
 					return false;
