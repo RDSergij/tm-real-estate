@@ -3,15 +3,15 @@ jQuery( document ).ready( function( $ ) {
 	var TMREContactForm = function() {
 
 		var tmrec = this;
-		tmrec.captchaArea = null;;
+		tmrec.captchaArea = null;
 
 		tmrec.init = function() {
 			tmrec.captchaInit();
 			tmrec.eventSubmit();
 		};
-		
+
 		tmrec.captchaInit = function() {
-			onloadCallback = function() {
+			window.onloadCallback = function() {
 				tmrec.captchaArea = window.grecaptcha.render( 'tm-re-contact-form-captcha', {
 					'sitekey': window.TMREContactForm.captchaKey,
 					'theme': 'light'
@@ -21,14 +21,14 @@ jQuery( document ).ready( function( $ ) {
 
 		tmrec.checkCaptcha = function() {
 			if ( null != tmrec.captchaArea ) {
-				return grecaptcha.getResponse( tmrec.captchaArea );
+				return window.grecaptcha.getResponse( tmrec.captchaArea );
 			}
 			return true;
 		};
 
 		tmrec.resetCaptcha = function() {
 			if ( null != tmrec.captchaArea ) {
-				grecaptcha.reset(
+				window.grecaptcha.reset(
 					tmrec.captchaArea
 				);
 			}
