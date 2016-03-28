@@ -203,6 +203,13 @@ class TM_Real_Estate {
 			'1.0.0',
 			false
 		);
+		wp_enqueue_script(
+			'page-submit',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/page-submit.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
 		wp_enqueue_style(
 			'tm-submit-form',
 			plugins_url( 'tm-real-estate' ) . '/assets/css/tm-submit-form.css',
@@ -663,6 +670,7 @@ class TM_Real_Estate {
 			),
 		);
 
+
 		$settings['tm-properties-submission-form'][] = array(
 			'slug'	=> 'mail-subject',
 			'title'	=> __( 'Subject of email', 'tm-real-estate' ),
@@ -693,6 +701,28 @@ class TM_Real_Estate {
 				'id'			=> 'failed-message',
 				'value'			=> '',
 				'placeholder'	=> 'failed',
+			),
+		);
+
+		$settings['tm-properties-submission-form'][] = array(
+			'slug'	=> 'confirmation-subject',
+			'title'	=> __( 'Confirmation subject', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'confirmation-subject',
+				'value'			=> '',
+				'placeholder'	=> '',
+			),
+		);
+
+		$settings['tm-properties-submission-form'][] = array(
+			'slug'	=> 'confirmation-message',
+			'title'	=> __( 'Confirmation message', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'confirmation-message',
+				'value'			=> '',
+				'placeholder'	=> '',
 			),
 		);
 
