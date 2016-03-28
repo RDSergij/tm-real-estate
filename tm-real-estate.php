@@ -109,6 +109,9 @@ class TM_Real_Estate {
 
 		// Fix "View" link in row actions ( custom post type ) on table
 		add_filter( 'post_row_actions', array( &$this, 'override_view' ), 10, 2 );
+
+		// Fix "Preview" link in post edit page
+		add_filter( 'preview_post_link', array( &$this, 'override_preview' ), 10, 2 );
 	}
 
 	/**
@@ -119,13 +122,29 @@ class TM_Real_Estate {
 	 * @return [array] actions list.
 	 */
 	public function override_view( $actions, $post ) {
-		$actions['view'] = sprintf(
-			'<a href="%s?id=%s" title="View “%s”" rel="permalink">View</a>',
-			Model_Settings::get_search_single_page(),
-			$post->ID,
-			esc_attr( $post->post_title )
-		);
+		if ( 'property' == $post->post_type ) {
+			$actions['view'] = sprintf(
+				'<a href="%s?id=%s" title="View “%s”" rel="permalink">View</a>',
+				Model_Settings::get_search_single_page(),
+				$post->ID,
+				esc_attr( $post->post_title )
+			);
+		}
 		return $actions;
+	}
+
+	/**
+	 * Fix "preview" link in page edit
+	 *
+	 * @param  [type] $preview_link url.
+	 * @param  [type] $post         object.
+	 * @return [string] fixes url.
+	 */
+	public function override_preview( $preview_link, $post ) {
+		if ( 'property' == $post->post_type ) {
+			$preview_link = sprintf( '%s?id=%s', Model_Settings::get_search_single_page(), $post->ID );
+		}
+		return $preview_link;
 	}
 
 	/**
@@ -180,6 +199,13 @@ class TM_Real_Estate {
 		wp_enqueue_script(
 			'fileupload_image',
 			plugins_url( 'tm-real-estate' ) . '/assets/js/uploader/jquery.fileupload-image.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'page-submit',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/page-submit.js',
 			array( 'jquery' ),
 			'1.0.0',
 			false
@@ -696,6 +722,28 @@ class TM_Real_Estate {
 				'id'			=> 'failed-message',
 				'value'			=> '',
 				'placeholder'	=> 'failed',
+			),
+		);
+
+		$settings['tm-properties-submission-form'][] = array(
+			'slug'	=> 'confirmation-subject',
+			'title'	=> __( 'Confirmation subject', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'confirmation-subject',
+				'value'			=> '',
+				'placeholder'	=> '',
+			),
+		);
+
+		$settings['tm-properties-submission-form'][] = array(
+			'slug'	=> 'confirmation-message',
+			'title'	=> __( 'Confirmation message', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'confirmation-message',
+				'value'			=> '',
+				'placeholder'	=> '',
 			),
 		);
 
