@@ -611,6 +611,28 @@ class TM_Real_Estate {
 			),
 		);
 
+		$settings['tm-properties-main-settings'][] = array(
+			'slug'	=> 'google-api-key',
+			'title'	=> __( 'Google API key', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'google-api-key',
+				'value'			=> 'AIzaSyDF7dD2E-ix64gegMxS1DFXLpUKKotyNz8',
+				'placeholder'	=> '',
+			),
+		);
+
+		$settings['tm-properties-contact-form'][] = array(
+			'slug'	=> 'google-captcha-key',
+			'title'	=> __( 'Google captcha key', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'google-captcha-key',
+				'value'			=> '',
+				'placeholder'	=> '',
+			),
+		);
+
 		$settings['tm-properties-contact-form'][] = array(
 			'slug'	=> 'mail-subject',
 			'title'	=> __( 'Subject of email', 'tm-real-estate' ),
