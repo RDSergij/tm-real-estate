@@ -670,7 +670,6 @@ class TM_Real_Estate {
 			),
 		);
 
-
 		$settings['tm-properties-submission-form'][] = array(
 			'slug'	=> 'mail-subject',
 			'title'	=> __( 'Subject of email', 'tm-real-estate' ),
