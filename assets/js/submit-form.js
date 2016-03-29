@@ -72,16 +72,16 @@ jQuery( document ).ready( function( ) {
             url: form_url.url + '?action=submit_form',
             processData: false,
             contentType: false,
-            method: "POST",
-            dataType: "html",
+            method: 'POST',
+            dataType: 'html',
             data: formData,
             success: function( data ) {
                 responce = JSON.parse( data );
                 jQuery( '.tm-form-preloader' ).css( 'display', 'none' );
                 if ( responce['success'] ) {
-                    jQuery( '#property_submit_format' ).replaceWith( "<div>" + responce['data'] + "</div>" );
+                    jQuery( '#property_submit_format' ).replaceWith( '<div>' + responce['data'] + '</div>' );
                 } else {
-                    jQuery( '#property_submit_format' ).replaceWith( "<div>" + responce['data'] + "</div>" );
+                    jQuery( '#property_submit_format' ).replaceWith( '<div>' + responce['data'] + '</div>' );
                 }
             },
             beforeSend: function() {
