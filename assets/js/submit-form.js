@@ -1,8 +1,9 @@
 jQuery( document ).ready( function( ) {
 
-    var filesData = [];
-    var filesCount = 0;
-    var formData,i;
+    var filesData = [],
+        filesCount = 0, 
+        formData, i;
+
     jQuery( function( $ ) {
         'use strict';
         $( '#galery' ).fileupload({
