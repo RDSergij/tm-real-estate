@@ -203,13 +203,6 @@ class TM_Real_Estate {
 			'1.0.0',
 			false
 		);
-		wp_enqueue_script(
-			'page-submit',
-			plugins_url( 'tm-real-estate' ) . '/assets/js/page-submit.js',
-			array( 'jquery' ),
-			'1.0.0',
-			false
-		);
 		wp_enqueue_style(
 			'tm-submit-form',
 			plugins_url( 'tm-real-estate' ) . '/assets/css/tm-submit-form.css',
@@ -514,6 +507,25 @@ class TM_Real_Estate {
 	 * @return void
 	 */
 	public function set_defaults() {
+		// Register new post type for hidden posts
+		register_post_status(
+			'hidden',
+			array(
+				'label'                     => _x( 'Hidden', 'post' ),
+				'public'                    => true,
+				'exclude_from_search'       => true,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				'label_count'               => _n_noop( 'Unread <span class="count">(%s)</span>', 'Unread <span class="count">(%s)</span>' ),
+			)
+		);
+
+		// Publish hidden properties from confirm email
+		if ( array_key_exists( 'publish_hidden', $_GET ) ) {
+			Model_Properties::publish_hidden( (int) $_GET['publish_hidden'] );
+			wp_redirect( get_bloginfo( 'url' ) );
+		}
+
 		if ( Model_Settings::is_created() ) {
 			return;
 		}
