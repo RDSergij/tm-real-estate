@@ -5,7 +5,6 @@ jQuery( function( $ ) {
         filesCount = 0,
         formData, i;
 
-
         'use strict';
         $( '#galery' ).fileupload({
             filesCount: 0,
@@ -84,4 +83,4 @@ jQuery( function( $ ) {
         });
     });
 });
-}( jQuery ) );
+}( jQuery ));
