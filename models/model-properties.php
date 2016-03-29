@@ -453,6 +453,14 @@ class Model_Properties {
 		$contact_form_settings = Model_Settings::get_contact_form_settings();
 
 		wp_enqueue_script(
+			'google-captcha',
+			'https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit',
+			null,
+			'1.0.0',
+			false
+		);
+
+		wp_enqueue_script(
 			'tm-real-state-contact-form',
 			plugins_url( 'tm-real-estate' ) . '/assets/js/contact-form.min.js',
 			array( 'jquery' ),
@@ -461,10 +469,19 @@ class Model_Properties {
 		);
 
 		wp_localize_script( 'tm-real-state-contact-form', 'TMREContactForm', array(
-			'ajaxUrl'				=> admin_url( 'admin-ajax.php' ),
-			'successMessage'		=> $contact_form_settings['success-message'],
-			'failedMessage'			=> $contact_form_settings['failed-message'],
+			'ajaxUrl'			=> admin_url( 'admin-ajax.php' ),
+			'successMessage'	=> $contact_form_settings['success-message'],
+			'failedMessage'		=> $contact_form_settings['failed-message'],
+			'captchaKey'		=> $contact_form_settings['google-captcha-key'],
 		) );
+
+		wp_enqueue_style(
+			'tm-real-contact-form',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/contact-form.min.css',
+			array(),
+			'1.0.0',
+			'all'
+		);
 
 	}
 
