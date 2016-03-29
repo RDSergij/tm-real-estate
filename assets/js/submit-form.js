@@ -1,10 +1,11 @@
-jQuery( document ).ready( function( ) {
+jQuery( function( $ ) {
+ $( document ).ready( function( ) {
 
     var filesData = [],
-        filesCount = 0, 
+        filesCount = 0,
         formData, i;
 
-    jQuery( function( $ ) {
+
         'use strict';
         $( '#galery' ).fileupload({
             filesCount: 0,
@@ -50,13 +51,11 @@ jQuery( document ).ready( function( ) {
                         .prop( 'disabled', ! data.files.error );
             }
         });
-
-    }( jQuery ) );
-    jQuery( document ).on( 'click', 'span.close', function( ) {
-        filesData.splice( jQuery( this ).data( 'index' ), 1 );
-        jQuery( this ).parent().parent().remove();
+    $( document ).on( 'click', 'span.close', function( ) {
+        filesData.splice( $( this ).data( 'index' ), 1 );
+        $( this ).parent().parent().remove();
     });
-    jQuery( '#property_submit_format' ).on( 'submit', function( event ) {
+    $( '#property_submit_format' ).on( 'submit', function( event ) {
         formData = new FormData( this );
         if ( filesCount ) {
             for ( i = 0; i < filesCount; i++ ) {
@@ -64,24 +63,25 @@ jQuery( document ).ready( function( ) {
             }
         }
         event.preventDefault( );
-        jQuery.ajax({
-            url: formUrl.url + '?action=submit_form',
+        $.ajax({
+            url: window.formUrl.url + '?action=submit_form',
             processData: false,
             contentType: false,
             method: 'POST',
             dataType: 'json',
             data: formData,
             success: function( responce ) {
-                jQuery( '.tm-form-preloader' ).css( 'display', 'none' );
+                $( '.tm-form-preloader' ).css( 'display', 'none' );
                 if ( responce.success ) {
-                    jQuery( '#property_submit_format' ).replaceWith( '<div>' + responce.data + '</div>' );
+                    $( '#property_submit_format' ).replaceWith( '<div>' + responce.data + '</div>' );
                 } else {
-                    jQuery( '#property_submit_format' ).replaceWith( '<div>' + responce.data + '</div>' );
+                    $( '#property_submit_format' ).replaceWith( '<div>' + responce.data + '</div>' );
                 }
             },
             beforeSend: function() {
-                jQuery( '.tm-form-preloader' ).css( 'display', 'block' );
+                $( '.tm-form-preloader' ).css( 'display', 'block' );
             }
         });
     });
 });
+}( jQuery ) );
