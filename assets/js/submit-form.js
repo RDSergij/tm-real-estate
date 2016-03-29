@@ -1,11 +1,6 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 jQuery( document ).ready( function( ) {
 
-    var progressBar = jQuery( "#progress" );
+    var progressBar = jQuery( '#progress' );
     var filesData = [];
     var filesCount = 0;
     jQuery( function( $ ) {
@@ -34,7 +29,7 @@ jQuery( document ).ready( function( ) {
                 }
                 node.appendTo( data.context );
             });
-        }).on( 'fileuploadprocessalways', function ( e, data ) {
+        }).on( 'fileuploadprocessalways', function( e, data ) {
             var index = data.index,
                     file = data.files[ index ],
                     node = $( data.context.children()[ index ] );
@@ -51,7 +46,7 @@ jQuery( document ).ready( function( ) {
             if ( index + 1 === data.files.length ) {
                 data.context.find( 'button' )
                         .text( 'Upload' )
-                        .prop( 'disabled', !data.files.error );
+                        .prop( 'disabled', ! data.files.error );
             }
         });
 
@@ -60,7 +55,7 @@ jQuery( document ).ready( function( ) {
         filesData.splice( jQuery( this ).data( 'index' ), 1 );
         jQuery( this ).parent().parent().remove();
     });
-    jQuery( '#property_submit_format' ).on( 'submit', function ( event ) {
+    jQuery( '#property_submit_format' ).on( 'submit', function( event ) {
         formData = new FormData( this );
         if ( filesCount ) {
             for ( i = 0; i < filesCount; i++ ) {
@@ -73,15 +68,14 @@ jQuery( document ).ready( function( ) {
             processData: false,
             contentType: false,
             method: 'POST',
-            dataType: 'html',
+            dataType: 'json',
             data: formData,
-            success: function( data ) {
-                responce = JSON.parse( data );
+            success: function( responce ) {
                 jQuery( '.tm-form-preloader' ).css( 'display', 'none' );
-                if ( responce['success'] ) {
-                    jQuery( '#property_submit_format' ).replaceWith( '<div>' + responce['data'] + '</div>' );
+                if ( responce.success ) {
+                    jQuery( '#property_submit_format' ).replaceWith( '<div>' + responce.data + '</div>' );
                 } else {
-                    jQuery( '#property_submit_format' ).replaceWith( '<div>' + responce['data'] + '</div>' );
+                    jQuery( '#property_submit_format' ).replaceWith( '<div>' + responce.data + '</div>' );
                 }
             },
             beforeSend: function() {
