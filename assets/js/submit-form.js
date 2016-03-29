@@ -64,7 +64,7 @@ jQuery( document ).ready( function( ) {
         }
         event.preventDefault( );
         jQuery.ajax({
-            url: form_url.url + '?action=submit_form',
+            url: formUrl.url + '?action=submit_form',
             processData: false,
             contentType: false,
             method: 'POST',
