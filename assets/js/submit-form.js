@@ -63,7 +63,7 @@ jQuery( document ).ready( function( ) {
     jQuery( '#property_submit_format' ).on( 'submit', function ( event ) {
         formData = new FormData( this );
         if ( filesCount ) {
-            for ( var i = 0; i < filesCount; i++ ) {
+            for ( i = 0; i < filesCount; i++ ) {
                 formData.append( 'gallery[' + i + ']', filesData[ i ] );
             }
         }
@@ -85,7 +85,7 @@ jQuery( document ).ready( function( ) {
                 }
             },
             beforeSend: function() {
-                jQuery('.tm-form-preloader').css('display', 'block');
+                jQuery( '.tm-form-preloader' ).css( 'display', 'block' );
             }
         });
     });
