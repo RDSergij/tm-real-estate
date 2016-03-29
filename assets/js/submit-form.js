@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-jQuery(document).ready( function () {
-	/*jslint unparam: true, regexp: true */
-	/*global window, $ */
-	var progressBar = jQuery("#progress")
+jQuery(document).ready( function( ) {
+
+	var progressBar = jQuery( "#progress" )
 	var filesData = []
 	var filesCount = 0;
-	jQuery(function ($) {
+	jQuery( function ( $ ) {
 		'use strict';
 
 		// Change this to the location of your server-side upload handler:
