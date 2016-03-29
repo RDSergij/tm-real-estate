@@ -1,8 +1,8 @@
 jQuery( document ).ready( function( ) {
 
-    var progressBar = jQuery( '#progress' );
     var filesData = [];
     var filesCount = 0;
+    var formData,i;
     jQuery( function( $ ) {
         'use strict';
         $( '#galery' ).fileupload({
