@@ -21,6 +21,7 @@ class Model_Submit_Form {
 	 * @return html code.
 	 */
 	public static function shortcode_submit_form() {
+		wp_enqueue_script('submit-form',plugins_url( 'tm-real-estate' ) . '/assets/js/submit-form.js',array( 'jquery' ),'1.0.0',true);
 		$terms = Model_Properties::get_types();
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . '/views/submit-form.php',
