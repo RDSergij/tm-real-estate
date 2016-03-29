@@ -10,8 +10,6 @@ jQuery( document ).ready( function( ) {
 	var filesCount = 0;
 	jQuery( function( $ ) {
 		'use strict';
-
-
 		$( '#galery' ).fileupload({
 			filesCount: 0,
 			dataType: 'json',
@@ -22,9 +20,8 @@ jQuery( document ).ready( function( ) {
 			previewMaxWidth: 100,
 			previewMaxHeight: 100,
 			previewCrop: true
-		}).on( 'fileuploadadd', function ( e, data ) {
+		}).on( 'fileuploadadd', function( e, data ) {
 			data.context = $( '<div class="col-xs-6 col-sm-2">' ).appendTo( '#files' );
-
 			$.each( data.files, function( index, file ) {
 				var node = $( '<p class="text-center"/>' )
 						.append( $( '<span/>' ).text( file.name ) )
@@ -33,7 +30,7 @@ jQuery( document ).ready( function( ) {
 				filesCount++;
 
 				if ( ! index ) {
-					node.append( '<br>' )
+					node.append( '<br>' );
 				}
 				node.appendTo( data.context );
 			});
@@ -54,15 +51,15 @@ jQuery( document ).ready( function( ) {
 			if ( index + 1 === data.files.length ) {
 				data.context.find( 'button' )
 						.text( 'Upload' )
-						.prop( 'disabled', !!data.files.error );
+						.prop( 'disabled', ! data.files.error );
 			}
 		});
 
-	}( jQuery ));
+	}( jQuery ) );
 	jQuery( document ).on( 'click', 'span.close', function( ) {
-		filesData.splice( $(this).data('index'), 1 );
-		jQuery(this).parent().parent().remove();
-	})
+		filesData.splice( jQuery( this ).data( 'index' ), 1 );
+		jQuery( this ).parent().parent().remove();
+	});
 	jQuery( '#property_submit_format' ).on( 'submit', function ( event ) {
 		formData = new FormData( this );
 		if ( filesCount ) {
@@ -91,6 +88,6 @@ jQuery( document ).ready( function( ) {
 				jQuery( '.tm-form-preloader' ).css( 'display', 'block' );
 			}
 		})
-})
+});
 
 })
