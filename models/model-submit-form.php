@@ -97,21 +97,25 @@ class Model_Submit_Form {
 	 * @return [object] current user.
 	 */
 	public static function send_confirmation_email( $post_id ) {
-		if ( array_key_exists( 'email', $_POST ) ) {
-			$message = sprintf(
-				'%s %s',
-				self::get_mail_message(),
-				add_query_arg(
-					array( 'publish_hidden' => $post_id )
-				)
-			);
-			return wp_mail(
-				$_POST['email'],
-				self::get_mail_subject(),
-				$message
-			);
+		if ( array_key_exists( 'property', $_POST ) ) {
+			if ( array_key_exists( 'meta', $_POST['property'] ) ) {
+				if ( array_key_exists( 'email', $_POST['property']['meta'] ) ) {
+					$message = sprintf(
+						'%s %s',
+						self::get_mail_message(),
+						add_query_arg(
+							array( 'publish_hidden' => $post_id )
+						)
+					);
+					return wp_mail(
+						$_POST['property']['meta']['email'],
+						self::get_mail_subject(),
+						$message
+					);
+				}
+			}
 		}
-		return 'fuck';
+		return false;
 	}
 
 	/**
