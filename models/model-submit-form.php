@@ -110,7 +110,9 @@ class Model_Submit_Form {
 						'%s %s',
 						self::get_mail_message(),
 						add_query_arg(
-							array( 'publish_hidden' => $post_id )
+							'publish_hidden',
+							$post_id,
+							get_bloginfo( 'url' )
 						)
 					);
 					return wp_mail(
