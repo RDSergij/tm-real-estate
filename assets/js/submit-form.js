@@ -1,4 +1,4 @@
-jQuery( function( $ ) {
+( function( $ ) {
  $( document ).ready( function( ) {
 
     var filesData = [],
@@ -83,4 +83,4 @@ jQuery( function( $ ) {
         });
     });
 });
-}(jQuery) );
+}( jQuery ) );
