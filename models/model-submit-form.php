@@ -97,7 +97,7 @@ class Model_Submit_Form {
 	 * @return [object] current user.
 	 */
 	public static function send_confirmation_email( $post_id ) {
-		if( array_key_exists( 'email', $_POST ) ) {
+		if ( array_key_exists( 'email', $_POST ) ) {
 			$message = sprintf(
 				'%s %s',
 				self::get_mail_message(),

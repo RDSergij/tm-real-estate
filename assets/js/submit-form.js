@@ -1,14 +1,10 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-jQuery( document ).ready( function( ) {
+( function( $ ) {
+ $( document ).ready( function( ) {
 
-    var progressBar = jQuery( "#progress" );
-    var filesData = [];
-    var filesCount = 0;
-    jQuery( function( $ ) {
+    var filesData = [],
+        filesCount = 0,
+        formData, i;
+
         'use strict';
         $( '#galery' ).fileupload({
             filesCount: 0,
@@ -34,7 +30,7 @@ jQuery( document ).ready( function( ) {
                 }
                 node.appendTo( data.context );
             });
-        }).on( 'fileuploadprocessalways', function ( e, data ) {
+        }).on( 'fileuploadprocessalways', function( e, data ) {
             var index = data.index,
                     file = data.files[ index ],
                     node = $( data.context.children()[ index ] );
@@ -51,16 +47,14 @@ jQuery( document ).ready( function( ) {
             if ( index + 1 === data.files.length ) {
                 data.context.find( 'button' )
                         .text( 'Upload' )
-                        .prop( 'disabled', !data.files.error );
+                        .prop( 'disabled', ! data.files.error );
             }
         });
-
-    }( jQuery ) );
-    jQuery( document ).on( 'click', 'span.close', function( ) {
-        filesData.splice( jQuery( this ).data( 'index' ), 1 );
-        jQuery( this ).parent().parent().remove();
+    $( document ).on( 'click', 'span.close', function( ) {
+        filesData.splice( $( this ).data( 'index' ), 1 );
+        $( this ).parent().parent().remove();
     });
-    jQuery( '#property_submit_format' ).on( 'submit', function ( event ) {
+    $( '#property_submit_format' ).on( 'submit', function( event ) {
         formData = new FormData( this );
         if ( filesCount ) {
             for ( i = 0; i < filesCount; i++ ) {
@@ -68,25 +62,25 @@ jQuery( document ).ready( function( ) {
             }
         }
         event.preventDefault( );
-        jQuery.ajax({
-            url: form_url.url + '?action=submit_form',
+        $.ajax({
+            url: window.formUrl.url + '?action=submit_form',
             processData: false,
             contentType: false,
-            method: "POST",
-            dataType: "html",
+            method: 'POST',
+            dataType: 'json',
             data: formData,
-            success: function( data ) {
-                responce = JSON.parse( data );
-                jQuery( '.tm-form-preloader' ).css( 'display', 'none' );
-                if ( responce['success'] ) {
-                    jQuery( '#property_submit_format' ).replaceWith( "<div>" + responce['data'] + "</div>" );
+            success: function( responce ) {
+                $( '.tm-form-preloader' ).css( 'display', 'none' );
+                if ( responce.success ) {
+                    $( '#property_submit_format' ).replaceWith( '<div>' + responce.data + '</div>' );
                 } else {
-                    jQuery( '#property_submit_format' ).replaceWith( "<div>" + responce['data'] + "</div>" );
+                    $( '#property_submit_format' ).replaceWith( '<div>' + responce.data + '</div>' );
                 }
             },
             beforeSend: function() {
-                jQuery( '.tm-form-preloader' ).css( 'display', 'block' );
+                $( '.tm-form-preloader' ).css( 'display', 'block' );
             }
         });
     });
 });
+}( jQuery ) );
