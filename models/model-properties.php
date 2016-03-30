@@ -297,6 +297,21 @@ class Model_Properties {
 			)
 		);
 	}
+
+	/**
+	 * Publish hidden
+	 *
+	 * @param  [int] $id post.
+	 */
+	public static function publish_hidden( $id ) {
+		$id   = (int) $id;
+		$post = get_post( $id );
+		if ( $post ) {
+			$post->post_status = 'publish';
+			wp_update_post( $post );
+		}
+	}
+
 	/**
 	 * Add new properties
 	 *
@@ -307,7 +322,7 @@ class Model_Properties {
 		if ( current_user_can( 'administrator' ) || current_user_can( 're_agent' ) ) {
 			$property_status = 'publish';
 		} else {
-			$property_status = 'pending';
+			$property_status = 'hidden';
 		}
 		$property = array(
 			'post_title'     => $attr['title'],
