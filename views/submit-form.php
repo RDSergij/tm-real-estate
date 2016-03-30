@@ -71,7 +71,7 @@
 		<label class="label-block" id="property_map_label" for="property_map_input"><?php _e( 'Google map link', 'tm-real-estate' ) ?></label>
 		<input type="url" id="property_map_input" name="property[meta][google_map_link]" value="">
 	</div>
-	<?php if ( ! is_user_logged_in () ) : ?>
+	<?php if ( ! is_user_logged_in() ) : ?>
 		<div>
 			<label class="label-block" id="property_map_label" for="property_email"><?php _e( 'Your email', 'tm-real-estate' ) ?></label>
 			<input type="email" id="property_email" name="property[meta][email]" value="">
