@@ -68,8 +68,8 @@
 		<input type="number" id="property_parking_input" name="property[meta][parking_places]" min="0" value="">
 	</div>
 	<div>
-		<label class="label-block" id="property_map_label" for="property_map_input"><?php _e( 'Google map link', 'tm-real-estate' ) ?></label>
-		<input type="url" id="property_map_input" name="property[meta][google_map_link]" value="">
+		<label class="label-block" id="property_map_label" for="property_map_input"><?php _e( 'Adress', 'tm-real-estate' ) ?></label>
+		<input type="text" id="property_map_input" name="property[meta][address]" value="">
 	</div>
 	<?php if ( ! is_user_logged_in() ) : ?>
 		<div>
