@@ -18,6 +18,7 @@
 	</div>
 
 	<div>
+
 		<label class="label-block" id="property_price_label" for="property_price_input"><?php _e( 'Price', 'tm-real-estate' ); ?></label>
 		<input type="number" class="form-textbox" id="property_price_input" name="property[meta][price]" step="any" min="0" value="">
 	</div>

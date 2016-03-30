@@ -213,7 +213,7 @@ class TM_Real_Estate {
 
 		wp_localize_script(
 			'cherry-js-core',
-			'form_url',
+			'formUrl',
 			array(
 				'url' => admin_url( 'admin-ajax.php' ),
 			)
