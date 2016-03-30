@@ -322,7 +322,7 @@ class Model_Properties {
 		if ( current_user_can( 'administrator' ) || current_user_can( 're_agent' ) ) {
 			$property_status = 'publish';
 		} else {
-			$property_status = 'hidden';
+			$property_status = 'draft';
 		}
 		$property = array(
 			'post_title'     => $attr['title'],
