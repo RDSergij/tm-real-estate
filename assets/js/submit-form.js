@@ -72,9 +72,9 @@
             success: function( responce ) {
                 $( '.tm-form-preloader' ).css( 'display', 'none' );
                 if ( responce.success ) {
-                    $( '#property_submit_format' ).replaceWith( '<div>' + responce.data + '</div>' );
+                    $( '#property_submit_format' ).replaceWith( '<div>' + responce.data.messages['success-message'] + '</div>' );
                 } else {
-                    $( '#property_submit_format' ).replaceWith( '<div>' + responce.data + '</div>' );
+                    $( '#property_submit_format' ).replaceWith( '<div>' + responce.data.messages['failed-message'] + '</div>' );
                 }
             },
             beforeSend: function() {
