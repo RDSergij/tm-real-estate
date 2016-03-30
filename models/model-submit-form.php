@@ -37,11 +37,9 @@ class Model_Submit_Form {
 		$tm_json_request = array();
 		if ( empty( $_POST ) ) {
 			wp_send_json_error( $messages['failed-message'] );
-			wp_die();
 		}
 		if ( empty( $_POST['property']['title'] ) ) {
 			wp_send_json_error( $messages['failed-message'] );
-			wp_die();
 		}
 
 		$property['title']       = $_POST['property']['title'];
@@ -52,7 +50,6 @@ class Model_Submit_Form {
 
 		if ( ! $post_id ) {
 			wp_send_json_error( $messages['failed-message'] );
-			wp_die();
 		}
 
 		if ( ! empty( $_POST['property']['type'] ) ) {
@@ -67,7 +64,6 @@ class Model_Submit_Form {
 			$attachment_id = Model_Submit_Form::insert_attacment( $_FILES['thumb'], $post_id );
 			if ( ! $attachment_id ) {
 				wp_send_json_error( $messages['failed-message'] );
-				wp_die();
 			}
 			set_post_thumbnail( $post_id, $attachment_id );
 		}
@@ -92,8 +88,73 @@ class Model_Submit_Form {
 			update_post_meta( $post_id, sanitize_text_field( $key ), $value );
 		}
 
-		wp_send_json_success( $messages['success-message'] );
-		wp_die();
+		wp_send_json_success( $messages['success-message'].' POSTID'.self::send_confirmation_email( $post_id ) );
+	}
+
+	/**
+	 * Send the confirmation email
+	 *
+	 * @return [object] current user.
+	 */
+	public static function send_confirmation_email( $post_id ) {
+		if( array_key_exists( 'email', $_POST ) ) {
+			$message = sprintf(
+				'%s %s',
+				self::get_mail_message(),
+				add_query_arg(
+					array( 'publish_hidden' => $post_id )
+				)
+			);
+			return wp_mail(
+				$_POST['email'],
+				self::get_mail_subject(),
+				$message
+			);
+		}
+		return 'fuck';
+	}
+
+	/**
+	 * Get mail subject
+	 *
+	 * @return [string] subject.
+	 */
+	public static function get_mail_subject() {
+		return self::array_get(
+			(array) get_option( 'tm-properties-submission-form' ),
+			'confirmation-subject'
+		);
+	}
+
+	/**
+	 * Get mail message
+	 *
+	 * @return [string] msg.
+	 */
+	public static function get_mail_message() {
+		return self::array_get(
+			(array) get_option( 'tm-properties-submission-form' ),
+			'confirmation-message'
+		);
+	}
+
+	/**
+	 * Try get value by key from array
+	 *
+	 * @param  array $array values list.
+	 * @param  type  $key value key.
+	 * @param  type  $default default value.
+	 * @return mixed value by key
+	 */
+	public static function array_get( $array, $key, $default = '' ) {
+		$array = (array) $array;
+		if ( is_null( $key ) ) {
+			return $array;
+		}
+		if ( array_key_exists( $key, $array ) ) {
+			return $array[ $key ];
+		}
+		return $default;
 	}
 
 	/**

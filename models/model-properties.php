@@ -59,6 +59,9 @@ class Model_Properties {
 				$property->bathrooms = self::get_bathrooms( $property->ID );
 				$property->bedrooms  = self::get_bedrooms( $property->ID );
 				$property->area      = self::get_area( $property->ID );
+				$property->tags      = self::get_property_tags( $property->ID );
+				$property->types     = self::get_property_types( $property->ID );
+				$property->map       = self::get_property_map( $property->ID );
 				$property->url		 = $single_page . '?id=' . $property->ID;
 			}
 		}
@@ -294,6 +297,21 @@ class Model_Properties {
 			)
 		);
 	}
+
+	/**
+	 * Publish hidden
+	 *
+	 * @param  [int] $id post.
+	 */
+	public static function publish_hidden( $id ) {
+		$id   = (int) $id;
+		$post = get_post( $id );
+		if ( $post ) {
+			$post->post_status = 'publish';
+			wp_update_post( $post );
+		}
+	}
+
 	/**
 	 * Add new properties
 	 *
@@ -304,7 +322,7 @@ class Model_Properties {
 		if ( current_user_can( 'administrator' ) || current_user_can( 're_agent' ) ) {
 			$property_status = 'publish';
 		} else {
-			$property_status = 'pending';
+			$property_status = 'hidden';
 		}
 		$property = array(
 			'post_title'     => $attr['title'],
@@ -318,12 +336,53 @@ class Model_Properties {
 	}
 
 	/**
+	 * Contact form assets
+	 */
+	public static function property_single_assets() {
+
+		wp_enqueue_script(
+			'swipe',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/swiper.min.js',
+			array( 'jquery' ),
+			'1.0.0',
+			true
+		);
+
+		wp_enqueue_script(
+			'tm-re-property-gallery',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/property-gallery.min.js',
+			array( 'jquery' ),
+			'1.0.0',
+			true
+		);
+
+		wp_enqueue_style(
+			'swiper',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/swiper.min.css',
+			array(),
+			'3.3.0',
+			'all'
+		);
+
+		wp_enqueue_style(
+			'tm-re-property-gallery',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/property-gallery.min.css',
+			array(),
+			'1.0.0',
+			'all'
+		);
+
+	}
+
+	/**
 	 * Shortcode property item
 	 *
 	 * @return html code.
 	 */
 	public static function shortcode_property_single() {
 		if ( ! empty( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
+			self::property_single_assets();
+
 			$id = $_GET['id'];
 			$properties	= (array) self::get_properties( array( 'include' => $id, 'limit' => 1 ) );
 			$property	= $properties[0];
@@ -409,6 +468,14 @@ class Model_Properties {
 		$contact_form_settings = Model_Settings::get_contact_form_settings();
 
 		wp_enqueue_script(
+			'google-captcha',
+			'https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit',
+			null,
+			'1.0.0',
+			false
+		);
+
+		wp_enqueue_script(
 			'tm-real-state-contact-form',
 			plugins_url( 'tm-real-estate' ) . '/assets/js/contact-form.min.js',
 			array( 'jquery' ),
@@ -417,10 +484,19 @@ class Model_Properties {
 		);
 
 		wp_localize_script( 'tm-real-state-contact-form', 'TMREContactForm', array(
-			'ajaxUrl'				=> admin_url( 'admin-ajax.php' ),
-			'successMessage'		=> $contact_form_settings['success-message'],
-			'failedMessage'			=> $contact_form_settings['failed-message'],
+			'ajaxUrl'			=> admin_url( 'admin-ajax.php' ),
+			'successMessage'	=> $contact_form_settings['success-message'],
+			'failedMessage'		=> $contact_form_settings['failed-message'],
+			'captchaKey'		=> $contact_form_settings['google-captcha-key'],
 		) );
+
+		wp_enqueue_style(
+			'tm-real-contact-form',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/contact-form.min.css',
+			array(),
+			'1.0.0',
+			'all'
+		);
 
 	}
 
@@ -518,6 +594,20 @@ class Model_Properties {
 	}
 
 	/**
+	 * Get property map link
+	 *
+	 * @param  [type] $post_id id.
+	 * @return string property status.
+	 */
+	public static function get_property_map( $post_id ) {
+		$key = Model_Settings::get_google_map_key();
+		$address = (string) get_post_meta( $post_id, 'address', true );
+		$url = 'https://www.google.com/maps/embed/v1/search?q=' . $address . '&key=' . $key;
+		return $url;
+	}
+
+
+	/**
 	 * Get allowed property statuses
 	 *
 	 * @return array property statuses.
@@ -572,6 +662,40 @@ class Model_Properties {
 			return $images['medium'][0];
 		}
 		return TM_REAL_ESTATE_URI.'assets/images/placehold.png';
+	}
+
+	/**
+	 * Get type list of property
+	 *
+	 * @param  [type] $post_id property id.
+	 * @return array list
+	 */
+	public static function get_property_types( $post_id ) {
+		$types = wp_get_post_terms( $post_id, 'property-type' );
+		$list = array();
+		if ( ! empty( $types ) && is_array( $types ) ) {
+			foreach ( $types as $type ) {
+				$list[] = $type->name;
+			}
+		}
+		return $list;
+	}
+
+	/**
+	 * Get tags list of property
+	 *
+	 * @param  [type] $post_id property id.
+	 * @return array list
+	 */
+	public static function get_property_tags( $post_id ) {
+		$tags = wp_get_post_terms( $post_id, 'property-tag' );
+		$list = array();
+		if ( ! empty( $tags ) && is_array( $tags ) ) {
+			foreach ( $tags as $tag ) {
+				$list[] = $tag->name;
+			}
+		}
+		return $list;
 	}
 
 	/**

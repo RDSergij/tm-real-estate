@@ -115,6 +115,19 @@ class Model_Settings {
 	}
 
 	/**
+	 * Get google map API key
+	 *
+	 * @return string property price.
+	 */
+	public static function get_google_map_key() {
+		$main_settings	= get_option( 'tm-properties-main-settings' );
+		if ( empty( $main_settings ) ) {
+			$main_settings = 'AIzaSyDF7dD2E-ix64gegMxS1DFXLpUKKotyNz8';
+		}
+		return (string) $main_settings['google-api-key'];
+	}
+
+	/**
 	 * Get single page link
 	 *
 	 * @return string property price.

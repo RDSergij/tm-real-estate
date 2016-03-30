@@ -86,9 +86,6 @@ class TM_Real_Estate {
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 
-		// After activated plugin
-		register_activation_hook( __FILE__, array( $this, 'plugin_activated' ) );
-
 		// Launch our plugin.
 		add_action( 'after_setup_theme', array( $this, 'launch' ), 10 );
 
@@ -109,6 +106,45 @@ class TM_Real_Estate {
 
 		add_action( 'wp_ajax_nopriv_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
 		add_action( 'wp_ajax_submit_form', array( 'Model_Submit_Form', 'submit_form_callback' ) );
+
+		// Fix "View" link in row actions ( custom post type ) on table
+		add_filter( 'post_row_actions', array( &$this, 'override_view' ), 10, 2 );
+
+		// Fix "Preview" link in post edit page
+		add_filter( 'preview_post_link', array( &$this, 'override_preview' ), 10, 2 );
+	}
+
+	/**
+	 * Fix "view" link in property post type
+	 *
+	 * @param  [array]  $actions list.
+	 * @param  [object] $post   Object.
+	 * @return [array] actions list.
+	 */
+	public function override_view( $actions, $post ) {
+		if ( 'property' == $post->post_type ) {
+			$actions['view'] = sprintf(
+				'<a href="%s?id=%s" title="View “%s”" rel="permalink">View</a>',
+				Model_Settings::get_search_single_page(),
+				$post->ID,
+				esc_attr( $post->post_title )
+			);
+		}
+		return $actions;
+	}
+
+	/**
+	 * Fix "preview" link in page edit
+	 *
+	 * @param  [type] $preview_link url.
+	 * @param  [type] $post         object.
+	 * @return [string] fixes url.
+	 */
+	public function override_preview( $preview_link, $post ) {
+		if ( 'property' == $post->post_type ) {
+			$preview_link = sprintf( '%s?id=%s', Model_Settings::get_search_single_page(), $post->ID );
+		}
+		return $preview_link;
 	}
 
 	/**
@@ -246,6 +282,10 @@ class TM_Real_Estate {
 						'priority'	=> 999,
 						'autoload'	=> true,
 					),
+					'cherry-utility'	=> array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+					),
 					'cherry-page-builder'	=> array(
 						'priority'	=> 999,
 						'autoload'	=> true,
@@ -289,30 +329,34 @@ class TM_Real_Estate {
 									),
 								),
 								'bathrooms' => array(
-									'type'    => 'number',
-									'id'      => 'bathrooms',
-									'name'    => 'bathrooms',
-									'value'   => 0,
+									'type'       => 'number',
+									'id'         => 'bathrooms',
+									'name'       => 'bathrooms',
+									'min_value'  => 0,
+									'value'      => 0,
 									'left_label' => __( 'Bathrooms', 'tm-real-estate' ),
 								),
 								'bedrooms' => array(
-									'type'    => 'number',
-									'id'      => 'bedrooms',
-									'name'    => 'bedrooms',
-									'value'   => 0,
+									'type'       => 'number',
+									'id'         => 'bedrooms',
+									'name'       => 'bedrooms',
+									'min_value'  => 0,
+									'value'      => 0,
 									'left_label' => __( 'Bedrooms', 'tm-real-estate' ),
 								),
 								'area' => array(
-									'type'    => 'number',
-									'id'      => 'area',
-									'name'    => 'area',
-									'value'   => 0,
+									'type'       => 'number',
+									'id'         => 'area',
+									'name'       => 'area',
+									'min_value'  => 0,
+									'value'      => 0,
 									'left_label' => __( 'Area', 'tm-real-estate' ),
 								),
 								'parking_places' => array(
 									'type'       => 'number',
 									'id'         => 'parking_places',
 									'name'       => 'parking_places',
+									'min_value'  => 0,
 									'value'      => 0,
 									'left_label' => __( 'Parking places', 'tm-real-estate' ),
 								),
@@ -346,14 +390,14 @@ class TM_Real_Estate {
 									'multiple'	  => false,
 									'value'       => '',
 									'left_label'  => __( 'Agent', 'tm-real-estate' ),
-									'options'     => array_merge( array( __( 'Select agent', 'tm-real-estate' ) ), Model_Main::get_agents() ),
+									'options'     => Model_Main::get_agents_options(),
 								),
-								'google_map_link' => array(
+								'address' => array(
 									'type'       => 'text',
-									'id'         => 'google_map_link',
-									'name'       => 'google_map_link',
+									'id'         => 'address',
+									'name'       => 'address',
 									'value'      => '',
-									'left_label' => __( 'Google map link', 'tm-real-estate' ),
+									'left_label' => __( 'Address', 'tm-real-estate' ),
 								),
 							),
 						),
@@ -463,6 +507,25 @@ class TM_Real_Estate {
 	 * @return void
 	 */
 	public function set_defaults() {
+		// Register new post type for hidden posts
+		register_post_status(
+			'hidden',
+			array(
+				'label'                     => _x( 'Hidden', 'post' ),
+				'public'                    => true,
+				'exclude_from_search'       => true,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				'label_count'               => _n_noop( 'Unread <span class="count">(%s)</span>', 'Unread <span class="count">(%s)</span>' ),
+			)
+		);
+
+		// Publish hidden properties from confirm email
+		if ( array_key_exists( 'publish_hidden', $_GET ) ) {
+			Model_Properties::publish_hidden( (int) $_GET['publish_hidden'] );
+			wp_redirect( get_bloginfo( 'url' ) );
+		}
+
 		if ( Model_Settings::is_created() ) {
 			return;
 		}
@@ -575,6 +638,39 @@ class TM_Real_Estate {
 			),
 		);
 
+		$settings['tm-properties-main-settings'][] = array(
+			'slug'	=> 'google-api-key',
+			'title'	=> __( 'Google API key', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'google-api-key',
+				'value'			=> 'AIzaSyDF7dD2E-ix64gegMxS1DFXLpUKKotyNz8',
+				'placeholder'	=> '',
+			),
+		);
+
+		$settings['tm-properties-main-settings'][] = array(
+			'slug'	=> 'google-api-key',
+			'title'	=> __( 'Google API key', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'google-api-key',
+				'value'			=> 'AIzaSyDF7dD2E-ix64gegMxS1DFXLpUKKotyNz8',
+				'placeholder'	=> '',
+			),
+		);
+
+		$settings['tm-properties-contact-form'][] = array(
+			'slug'	=> 'google-captcha-key',
+			'title'	=> __( 'Google captcha key', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'google-captcha-key',
+				'value'			=> '',
+				'placeholder'	=> '',
+			),
+		);
+
 		$settings['tm-properties-contact-form'][] = array(
 			'slug'	=> 'mail-subject',
 			'title'	=> __( 'Subject of email', 'tm-real-estate' ),
@@ -638,6 +734,28 @@ class TM_Real_Estate {
 				'id'			=> 'failed-message',
 				'value'			=> '',
 				'placeholder'	=> 'failed',
+			),
+		);
+
+		$settings['tm-properties-submission-form'][] = array(
+			'slug'	=> 'confirmation-subject',
+			'title'	=> __( 'Confirmation subject', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'confirmation-subject',
+				'value'			=> '',
+				'placeholder'	=> '',
+			),
+		);
+
+		$settings['tm-properties-submission-form'][] = array(
+			'slug'	=> 'confirmation-message',
+			'title'	=> __( 'Confirmation message', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'confirmation-message',
+				'value'			=> '',
+				'placeholder'	=> '',
 			),
 		);
 
@@ -698,7 +816,7 @@ class TM_Real_Estate {
 			'tm-real-state-settings-page',
 			plugins_url( 'tm-real-estate' ) . '/assets/css/page-settings.min.css',
 			array(),
-			'1.0.0',
+			'3.3.0',
 			'all'
 		);
 	}
