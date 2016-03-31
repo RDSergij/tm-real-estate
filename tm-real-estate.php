@@ -153,6 +153,17 @@ class TM_Real_Estate {
 	public function scripts_and_styles() {
 		// Styles
 		wp_enqueue_style( 'tm-real-estate', TM_REAL_ESTATE_URI.'assets/css/tm-real-estate.css' );
+		wp_enqueue_script(
+			'fileupload_process',
+			TM_REAL_ESTATE_URI.'assets/js/locations.js',
+			array( 'jquery' ),
+			'1.0.0',
+			false
+		);
+		wp_enqueue_script(
+			'google_api',
+			'https://maps.googleapis.com/maps/api/js?v=3.exp&#038;signed_in=true&#038;ver=1.0'
+		);
 
 		wp_enqueue_script(
 			'jquery_ui_widget',
@@ -622,28 +633,6 @@ class TM_Real_Estate {
 				'id'			=> 'сurrency-sign',
 				'value'			=> '$',
 				'placeholder'	=> '$',
-			),
-		);
-
-		$settings['tm-properties-main-settings'][] = array(
-			'slug'	=> 'google-api-key',
-			'title'	=> __( 'Google API key', 'tm-real-estate' ),
-			'type'	=> 'text',
-			'field'	=> array(
-				'id'			=> 'google-api-key',
-				'value'			=> 'AIzaSyDF7dD2E-ix64gegMxS1DFXLpUKKotyNz8',
-				'placeholder'	=> '',
-			),
-		);
-
-		$settings['tm-properties-main-settings'][] = array(
-			'slug'	=> 'google-api-key',
-			'title'	=> __( 'Google API key', 'tm-real-estate' ),
-			'type'	=> 'text',
-			'field'	=> array(
-				'id'			=> 'google-api-key',
-				'value'			=> 'AIzaSyDF7dD2E-ix64gegMxS1DFXLpUKKotyNz8',
-				'placeholder'	=> '',
 			),
 		);
 

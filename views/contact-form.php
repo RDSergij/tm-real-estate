@@ -12,7 +12,7 @@
 
 ?>
 <div class="tm-re-contact-form">
-	<?php echo get_avatar( $__data['agent']->ID, 512 ); ?>
+	<?php echo get_avatar( $__data['agent']->ID, 128 ); ?>
 	<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name ?></h4>
 	<form>
 		<span class="message"></span>

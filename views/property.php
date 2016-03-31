@@ -58,7 +58,9 @@
 
 			<div class="property-location">
 				<h6><?php echo __( 'Location:', 'tm-real-estate' ) ?></h6>
-				<iframe src="<?php echo $property->map ?>"></iframe>
+				<?php if ( '' != $property->address ) : ?>
+					<div id="locations" data-address="<?php echo esc_attr( $property->address ); ?>"></div>
+				<?php endif; ?>
 			</div>
 
 			<footer>
