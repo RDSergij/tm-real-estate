@@ -29,14 +29,14 @@
 						<!-- Add Arrows -->
 						<div class="swiper-button-next swiper-button-white"></div>
 						<div class="swiper-button-prev swiper-button-white"></div>
-					<?php else: ?>
+					<?php else : ?>
 							<div class="swiper-wrapper">
 								<div class="swiper-slide" style="background-image:url(<?php echo $property->gallery['image'][0]['medium_large'][0] ?>"></div>
 							</div>
 					<?php endif; ?>
-				<?php else: ?>
+				<?php else : ?>
 						<div class="swiper-wrapper">
-							<div class="swiper-slide" style="background-image:url(<?php echo wp_get_attachment_url( get_post_thumbnail_id($property->ID) ); ?>"></div>
+							<div class="swiper-slide" style="background-image:url(<?php echo wp_get_attachment_url( get_post_thumbnail_id( $property->ID ) ); ?>"></div>
 						</div>
 				<?php endif; ?>
 			</div>
