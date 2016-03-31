@@ -40,22 +40,22 @@ function Locations() {
 	$me.initMap = function( lat, lng ) {
 		var mapOptions = {
 			zoom: 15,
-			center: new google.maps.LatLng( lat, lng ),
+			center: new window.google.maps.LatLng( lat, lng ),
 			scrollwheel: false,
 			draggable: false
 		};
 
-		var map = new google.maps.Map( document.getElementById( $me.id ), mapOptions );
+		var map = new window.google.maps.Map( document.getElementById( $me.id ), mapOptions );
 
-		var marker = new google.maps.Marker(
+		var marker = new window.google.maps.Marker(
 			{
-				position: new google.maps.LatLng( lat, lng ),
+				position: new window.google.maps.LatLng( lat, lng ),
 				map: map,
 				title: 'Click to zoom'
 			}
 		);
 
-		google.maps.event.addListener(
+		window.google.maps.event.addListener(
 			marker,
 			'click',
 			function() {
