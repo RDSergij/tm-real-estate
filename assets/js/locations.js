@@ -19,7 +19,7 @@ function Locations() {
 				dataType: 'json',
 				url: 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address,
 				success: function( response ) {
-					if ( 'OK' == response.status ) {
+					if ( 'OK' === response.status ) {
 						$me.initMap(
 							response.results[0].geometry.location.lat,
 							response.results[0].geometry.location.lng
