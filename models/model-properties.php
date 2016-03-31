@@ -487,7 +487,7 @@ class Model_Properties {
 			'ajaxUrl'			=> admin_url( 'admin-ajax.php' ),
 			'successMessage'	=> $contact_form_settings['success-message'],
 			'failedMessage'		=> $contact_form_settings['failed-message'],
-			'captchaKey'		=> $contact_form_settings['google-captcha-key'],
+			'captchaKey'		=> ! empty( $contact_form_settings['google-captcha-key'] ) ? $contact_form_settings['google-captcha-key'] : '',
 		) );
 
 		wp_enqueue_style(
