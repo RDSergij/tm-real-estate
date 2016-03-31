@@ -155,7 +155,7 @@ class TM_Real_Estate {
 		wp_enqueue_style( 'tm-real-estate', TM_REAL_ESTATE_URI.'assets/css/tm-real-estate.css' );
 		wp_enqueue_script(
 			'fileupload_process',
-			TM_REAL_ESTATE_URI.'assets/js/locations.js',
+			TM_REAL_ESTATE_URI.'assets/js/locations.min.js',
 			array( 'jquery' ),
 			'1.0.0',
 			false
