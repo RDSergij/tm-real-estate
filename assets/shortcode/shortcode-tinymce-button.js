@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 (function() {
-
+    var shortcodeView;
     tinymce.PluginManager.add('tm_shortcodes', function (editor) {
         jQuery.each(TMPageSettings.shortcodes, function (i) {
             if (TMPageSettings.shortcodes_views[TMPageSettings.shortcodes[i]]) {
@@ -29,11 +29,9 @@
                                     onclick: 'close'
                                 }],
                             onsubmit: function (e) {
-                                console.log( e );
                                 attr = e.data
                                 shortcode = '[' + TMPageSettings.shortcodes[i];
                                 for (var prop in attr) {
-                                    console.log("obj." + prop + " = " + attr[prop]);
                                     if (attr[prop]) {
                                         shortcode += ' ' + prop + '="' + attr[prop] + '"';
                                     }
