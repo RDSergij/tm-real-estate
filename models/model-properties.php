@@ -62,8 +62,8 @@ class Model_Properties {
 				$property->area      = self::get_area( $property->ID );
 				$property->tags      = self::get_property_tags( $property->ID );
 				$property->types     = self::get_property_types( $property->ID );
-				$property->map       = self::get_property_map( $property->ID );
 				$property->url		 = $single_page . '?id=' . $property->ID;
+				$property->address   = self::get_address( $property->ID );
 			}
 		}
 		return $properties;
@@ -326,7 +326,7 @@ class Model_Properties {
 		if ( current_user_can( 'administrator' ) || current_user_can( 're_agent' ) ) {
 			$property_status = 'publish';
 		} else {
-			$property_status = 'hidden';
+			$property_status = 'draft';
 		}
 		$property = array(
 			'post_title'     => $attr['title'],
@@ -493,7 +493,7 @@ class Model_Properties {
 			'ajaxUrl'			=> admin_url( 'admin-ajax.php' ),
 			'successMessage'	=> $contact_form_settings['success-message'],
 			'failedMessage'		=> $contact_form_settings['failed-message'],
-			'captchaKey'		=> $contact_form_settings['google-captcha-key'],
+			'captchaKey'		=> ! empty( $contact_form_settings['google-captcha-key'] ) ? $contact_form_settings['google-captcha-key'] : '',
 		) );
 
 		wp_enqueue_style(
@@ -521,6 +521,10 @@ class Model_Properties {
 			}
 
 			$agent_id = get_post_meta( $property_id, 'agent', true );
+		}
+
+		if ( '' == $agent_id ) {
+			$agent_id = 1;
 		}
 
 		$user_data = get_userdata( $agent_id );
@@ -552,6 +556,16 @@ class Model_Properties {
 	 */
 	public static function get_type( $post_id ) {
 		return (string) get_post_meta( $post_id, 'type', true );
+	}
+
+	/**
+	 * Get property address
+	 *
+	 * @param  [integer] $post_id id.
+	 * @return string property address.
+	 */
+	public static function get_address( $post_id ) {
+		return (string) get_post_meta( $post_id, 'address', true );
 	}
 
 	/**
@@ -598,20 +612,6 @@ class Model_Properties {
 		}
 		return end( $allowed );
 	}
-
-	/**
-	 * Get property map link
-	 *
-	 * @param  [type] $post_id id.
-	 * @return string property status.
-	 */
-	public static function get_property_map( $post_id ) {
-		$key = Model_Settings::get_google_map_key();
-		$address = (string) get_post_meta( $post_id, 'address', true );
-		$url = 'https://www.google.com/maps/embed/v1/search?q=' . $address . '&key=' . $key;
-		return $url;
-	}
-
 
 	/**
 	 * Get allowed property statuses

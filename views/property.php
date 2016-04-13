@@ -18,24 +18,37 @@
 			<header class="property-content">
 				<h4><?php echo $property->post_title; ?></h4>
 			</header>
-
 			<div class="swiper-container gallery-top">
-				<div class="swiper-wrapper">
-					<?php foreach ( $property->gallery['image'] as $image ) : ?>
-					<div class="swiper-slide" style="background-image:url(<?php echo $image['medium_large'][0] ?>"></div>
-					<?php endforeach; ?>
-				</div>
-				<!-- Add Arrows -->
-				<div class="swiper-button-next swiper-button-white"></div>
-				<div class="swiper-button-prev swiper-button-white"></div>
+				<?php if ( $property->gallery['image'][0]['medium_large'] ) : ?>
+					<?php if ( 1 < count( $property->gallery['image'] ) ) : ?>
+						<div class="swiper-wrapper">
+							<?php foreach ( $property->gallery['image'] as $image ) : ?>
+								<div class="swiper-slide" style="background-image:url(<?php echo $image['medium_large'][0] ?>"></div>
+							<?php endforeach; ?>
+						</div>
+						<!-- Add Arrows -->
+						<div class="swiper-button-next swiper-button-white"></div>
+						<div class="swiper-button-prev swiper-button-white"></div>
+					<?php else : ?>
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" style="background-image:url(<?php echo $property->gallery['image'][0]['medium_large'][0] ?>"></div>
+							</div>
+					<?php endif; ?>
+				<?php else : ?>
+						<div class="swiper-wrapper">
+							<div class="swiper-slide" style="background-image:url(<?php echo wp_get_attachment_url( get_post_thumbnail_id( $property->ID ) ); ?>"></div>
+						</div>
+				<?php endif; ?>
 			</div>
-			<div class="swiper-container gallery-thumbs">
-				<div class="swiper-wrapper">
-					<?php foreach ( $property->gallery['image'] as $image ) : ?>
-					<div class="swiper-slide" style="background-image:url(<?php echo $image['thumbnail'][0] ?>"></div>
-					<?php endforeach; ?>
-				</div>
+			<?php if ( 1 < count( $property->gallery['image'] ) ) : ?>
+				<div class="swiper-container gallery-thumbs">
+					<div class="swiper-wrapper">
+						<?php foreach ( $property->gallery['image'] as $image ) : ?>
+						<div class="swiper-slide" style="background-image:url(<?php echo $image['thumbnail'][0] ?>"></div>
+						<?php endforeach; ?>
+					</div>
 			</div>
+			<?php endif; ?>
 
 			<div class="property-content">
 				<div class="detail">
@@ -45,7 +58,9 @@
 
 			<div class="property-location">
 				<h6><?php echo __( 'Location:', 'tm-real-estate' ) ?></h6>
-				<iframe src="<?php echo $property->map ?>"></iframe>
+				<?php if ( '' != $property->address ) : ?>
+					<div id="locations" data-address="<?php echo esc_attr( $property->address ); ?>"></div>
+				<?php endif; ?>
 			</div>
 
 			<footer>

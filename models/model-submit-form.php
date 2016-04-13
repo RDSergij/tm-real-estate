@@ -36,10 +36,10 @@ class Model_Submit_Form {
 		$messages = Model_Settings::get_submission_form_settings();
 		$tm_json_request = array();
 		if ( empty( $_POST ) ) {
-			wp_send_json_error( $messages['failed-message'] );
+			wp_send_json_error( array( 'messages' => $messages ) );
 		}
 		if ( empty( $_POST['property']['title'] ) ) {
-			wp_send_json_error( $messages['failed-message'] );
+			wp_send_json_error( array( 'messages' => $messages ) );
 		}
 
 		$property['title']       = $_POST['property']['title'];
@@ -49,7 +49,7 @@ class Model_Submit_Form {
 		$post_id = Model_Properties::add_property( $property );
 
 		if ( ! $post_id ) {
-			wp_send_json_error( $messages['failed-message'] );
+			wp_send_json_error( array( 'messages' => $messages ) );
 		}
 
 		if ( ! empty( $_POST['property']['type'] ) ) {
@@ -63,7 +63,7 @@ class Model_Submit_Form {
 		if ( ! empty( $_FILES['thumb'] ) ) {
 			$attachment_id = Model_Submit_Form::insert_attacment( $_FILES['thumb'], $post_id );
 			if ( ! $attachment_id ) {
-				wp_send_json_error( $messages['failed-message'] );
+				wp_send_json_error( array( 'messages' => $messages ) );
 			}
 			set_post_thumbnail( $post_id, $attachment_id );
 		}
@@ -88,7 +88,13 @@ class Model_Submit_Form {
 			update_post_meta( $post_id, sanitize_text_field( $key ), $value );
 		}
 
-		wp_send_json_success( $messages['success-message'].' POSTID'.self::send_confirmation_email( $post_id ) );
+		wp_send_json_success(
+			array(
+				'messages' => $messages,
+				'send' => self::send_confirmation_email( $post_id ),
+			)
+		);
+
 	}
 
 	/**
@@ -97,21 +103,27 @@ class Model_Submit_Form {
 	 * @return [object] current user.
 	 */
 	public static function send_confirmation_email( $post_id ) {
-		if ( array_key_exists( 'email', $_POST ) ) {
-			$message = sprintf(
-				'%s %s',
-				self::get_mail_message(),
-				add_query_arg(
-					array( 'publish_hidden' => $post_id )
-				)
-			);
-			return wp_mail(
-				$_POST['email'],
-				self::get_mail_subject(),
-				$message
-			);
+		if ( array_key_exists( 'property', $_POST ) ) {
+			if ( array_key_exists( 'meta', $_POST['property'] ) ) {
+				if ( array_key_exists( 'email', $_POST['property']['meta'] ) ) {
+					$message = sprintf(
+						'%s %s',
+						self::get_mail_message(),
+						add_query_arg(
+							'publish_hidden',
+							$post_id,
+							get_bloginfo( 'url' )
+						)
+					);
+					return wp_mail(
+						$_POST['property']['meta']['email'],
+						self::get_mail_subject(),
+						$message
+					);
+				}
+			}
 		}
-		return 'fuck';
+		return false;
 	}
 
 	/**
