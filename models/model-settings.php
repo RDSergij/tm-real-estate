@@ -17,6 +17,7 @@ class Model_Settings {
 
 	/**
 	 * Titles for diferent area unit
+	 *
 	 * @var array
 	 */
 	private static $area_unit_symbols = array(
