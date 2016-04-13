@@ -20,4 +20,7 @@
 	<p>
 		<?php echo $__data['message_data']['message']; ?>
 	</p>
+	<p>
+		<?php _e( 'Phone', 'tm-real-estate' ); ?> : <?php echo $__data['message_data']['phone']; ?>
+	</p>
 </div>
