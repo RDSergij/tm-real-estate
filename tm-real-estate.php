@@ -407,6 +407,13 @@ class TM_Real_Estate {
 									'value'      => '',
 									'left_label' => __( 'Address', 'tm-real-estate' ),
 								),
+								'phone' => array(
+									'type'       => 'text',
+									'id'         => 'phone',
+									'name'       => 'phone',
+									'value'      => '',
+									'left_label' => __( 'Phone', 'tm-real-estate' ),
+								),
 							),
 						),
 					),

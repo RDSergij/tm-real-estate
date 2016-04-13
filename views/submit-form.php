@@ -41,7 +41,7 @@
 		<label class="label-block" id="property_type_label" for="property_type_input"><?php _e( 'Type', 'tm-real-estate' ); ?></label>
 		<select class="form-dropdown" style="width:150px" id="property_type_input" name="property[type]">
 			<option disabled selected value="">  </option>
-			<?php foreach ( $__data as $type ) { ?>
+			<?php foreach ( $__data['terms'] as $type ) { ?>
 				<optgroup label="<?php echo $type['name']; ?>">
 					<?php foreach ( $type['child'] as $child ) { ?>
 						<option value="<?php echo $child['term_id']; ?>"><?php echo $child['name']; ?></option>
@@ -71,6 +71,12 @@
 		<label class="label-block" id="property_map_label" for="property_map_input"><?php _e( 'Adress', 'tm-real-estate' ) ?></label>
 		<input type="text" id="property_map_input" name="property[meta][address]" value="">
 	</div>
+
+	<div>
+		<label class="label-block" id="property_phone_label" for="property_phone_input"><?php _e( 'Phone', 'tm-real-estate' ) ?></label>
+		<input type="text" id="property_phone_input" name="property[meta][phone]" value="" <?php echo $__data['required_for_gests']; ?>>
+	</div>
+
 	<?php if ( ! is_user_logged_in() ) : ?>
 		<div>
 			<label class="label-block" id="property_map_label" for="property_email"><?php _e( 'Your email', 'tm-real-estate' ) ?></label>
