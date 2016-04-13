@@ -14,6 +14,7 @@
  * Model properties
  */
 class Model_Properties {
+	
 	/**
 	 * Get all properties
 	 *
@@ -274,6 +275,7 @@ class Model_Properties {
 			array(
 				'form'			=> $form,
 				'properties'	=> $properties,
+				'area_unit'		=> Model_Settings::get_area_unit_title(),
 			)
 		);
 	}
@@ -292,8 +294,10 @@ class Model_Properties {
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/properties.php',
 			array(
-				'properties' => $properties,
-				'pagination' => self::get_pagination( $atts, $atts['posts_per_page'] ),
+				'properties'		=> $properties,
+				'pagination'		=> self::get_pagination( $atts, $atts['posts_per_page'] ),
+				'area_unit'			=> Model_Settings::get_area_unit_title(),
+				'currency_symbol'	=> Model_Settings::get_currency_symbol(),
 			)
 		);
 	}
@@ -392,8 +396,10 @@ class Model_Properties {
 			return Cherry_Core::render_view(
 				TM_REAL_ESTATE_DIR . 'views/property.php',
 				array(
-					'property'		=> $property,
+					'property'			=> $property,
 					'contact_form'		=> $contact_form,
+					'area_unit'			=> Model_Settings::get_area_unit_title(),
+					'currency_symbol'	=> Model_Settings::get_currency_symbol(),
 				)
 			);
 		}
