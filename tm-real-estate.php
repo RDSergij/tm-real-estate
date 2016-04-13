@@ -468,8 +468,17 @@ class TM_Real_Estate {
 			)
 		);
 
-		$send = wp_mail( $agent_data->user_email, $contact_form_settings['mail-subject'], $html, $headers );
-		wp_send_json( array( 'result' => $send ) );
+		$send = wp_mail(
+			$agent_data->user_email,
+			$contact_form_settings['mail-subject'],
+			$html,
+			$headers
+		);
+		wp_send_json(
+			array(
+				'result' => $send,
+			)
+		);
 	}
 
 	/**

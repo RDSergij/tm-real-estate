@@ -21,8 +21,13 @@
 		<input type="hidden" name="property_id" value="<?php echo $__data['property_id'] ?>"/>
 		<?php echo __( 'Name', 'tm-real-estate' ) ?>
 		<input type="text" id="name" name="name" value="" required />
+
 		<?php echo __( 'Email', 'tm-real-estate' ) ?>
 		<input type="email"id="email" name="email" value="" required />
+
+		<?php echo __( 'Phone', 'tm-real-estate' ) ?>
+		<input type="text"id="phone" name="phone" value="" />
+
 		<?php echo __( 'Message', 'tm-real-estate' ) ?>
 		<textarea id="message" name="message" required></textarea>
 		<div id="tm-re-contact-form-captcha" ></div>
