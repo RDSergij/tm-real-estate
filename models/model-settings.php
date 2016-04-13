@@ -14,6 +14,12 @@
  * Model settings class
  */
 class Model_Settings {
+
+	/*
+	 * Titles for diferent area unit
+	 */
+	private static $area_unit_symbols = array( 'meters' => 'm²', 'feets' => 'ft²', );
+
 	// Settings key option constant
 	const SETTINGS_KEY = 'tm-real-estate-default-settings';
 
@@ -83,6 +89,16 @@ class Model_Settings {
 	}
 
 	/**
+	 * Get are unit
+	 *
+	 * @return string property price.
+	 */
+	public static function get_area_unit_setting() {
+		$main_settings = self::get_main_settings();
+		return $main_settings['area-unit'];
+	}
+
+	/**
 	 * Get settings for submission form
 	 *
 	 * @return integer id.
@@ -106,7 +122,7 @@ class Model_Settings {
 	 * @return string property price.
 	 */
 	public static function get_search_result_page() {
-		$main_settings	= get_option( 'tm-properties-main-settings' );
+		$main_settings	= self::get_main_settings();
 		$page_id		= $main_settings['properties-search-result-page'];
 
 		$permalink = str_replace( home_url(), './', get_permalink( $page_id ) );
@@ -159,10 +175,30 @@ class Model_Settings {
 	 */
 	public static function get_area_unit() {
 		return array(
-			'feets'	=> 'feets',
+			'feets'		=> 'feets',
 			'meters'	=> 'meters',
 		);
 	}
+
+	/**
+	 * Get area unit title
+	 *
+	 * @return string title for view.
+	 */
+	public static function get_area_unit_title() {
+		return self::$area_unit_symbols[ self::get_area_unit_setting() ];
+	}
+
+	/**
+	 * Get currency symbol
+	 *
+	 * @return string symbol for currency.
+	 */
+	public static function get_currency_symbol() {
+		$main_settings	= self::get_main_settings();
+		return $main_settings['сurrency-sign'];
+	}
+
 
 	/**
 	 * Create default settings

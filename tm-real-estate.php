@@ -308,9 +308,6 @@ class TM_Real_Estate {
 							'ui_elements' => array(
 								'text',
 								'select',
-								'switcher',
-								'collection',
-								'media',
 							),
 						),
 					),

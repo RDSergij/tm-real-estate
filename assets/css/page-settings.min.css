@@ -1,21 +1,6 @@
-.cherry-settings-page p.submit {
-  display: inline; }
-.cherry-settings-page .block-reset {
-  display: inline; }
-  .cherry-settings-page .block-reset .reset-default-page {
-    width: 120px;
-    height: 26px; }
-    .cherry-settings-page .block-reset .reset-default-page:after {
-      content: ' ';
-      clear: both;
-      height: 1px;
-      width: 100%; }
-  .cherry-settings-page .block-reset .button-warning {
-    background: #c00;
-    color: #fff;
-    border-color: #F30101; }
-    .cherry-settings-page .block-reset .button-warning:active {
-      background: #fff;
-      color: #c00; }
-
-/*# sourceMappingURL=page-settings.min.css.map */
+.cherry-settings-page p.submit { display: inline; }
+.cherry-settings-page .block-reset { display: inline; }
+.cherry-settings-page .block-reset .reset-default-page { width: 120px; height: 26px; }
+.cherry-settings-page .block-reset .reset-default-page:after { content: ' '; clear: both; height: 1px; width: 100%; }
+.cherry-settings-page .block-reset .button-warning { background: #c00; color: #fff; border-color: #F30101; }
+.cherry-settings-page .block-reset .button-warning:active { background: #fff; color: #c00; }

@@ -66,7 +66,7 @@
 			<footer>
 				<ul class="property-meta">
 					<li class="price">
-						$ <?php echo $property->price; ?>
+						<?php echo $__data['currency_symbol'] ?>  <?php echo $property->price; ?>
 					</li>
 					<li class="type">
 						<?php echo esc_attr( $property->type ); ?>
@@ -101,7 +101,7 @@
 							<path class="path" d="M18.293 9.734c-0.391 0.395-0.391 1 0 1.429s1.023 0.4 1.4 0L20 10.868v9.263l-0.292-0.295 c-0.392-0.395-1.024-0.395-1.415 0s-0.391 1 0 1.428L21 24l2.707-2.736c0.391-0.394 0.391-1.033 0-1.428s-1.023-0.395-1.414 0 l-0.292 0.295v-9.263l0.292 0.295c0.392 0.4 1 0.4 1.4 0s0.391-1.034 0-1.429L21 7L18.293 9.734z"></path>
 							</svg>
 						</span>
-						<?php echo $property->area; ?>
+						<?php echo $property->area; ?> <?php echo __( $__data['area_unit'], 'tm-real-estate' ); ?>
 					</li>
 					<?php foreach ( $property->types as $type ) : ?>
 					<li class="type"><?php echo $type ?></li>
