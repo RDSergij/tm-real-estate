@@ -14,7 +14,6 @@
  * Model properties
  */
 class Model_Properties {
-	
 	/**
 	 * Get all properties
 	 *
@@ -523,7 +522,7 @@ class Model_Properties {
 			$agent_id = get_post_meta( $property_id, 'agent', true );
 		}
 
-		$agent_id = max( (int) $agent_id, 1);
+		$agent_id  = max( (int) $agent_id, 1 );
 		$user_data = get_userdata( $agent_id );
 
 		return Cherry_Core::render_view(

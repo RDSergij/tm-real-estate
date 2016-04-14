@@ -15,10 +15,15 @@
  */
 class Model_Settings {
 
-	/*
+	/**
 	 * Titles for diferent area unit
+	 *
+	 * @var array
 	 */
-	private static $area_unit_symbols = array( 'meters' => 'm²', 'feets' => 'ft²', );
+	private static $area_unit_symbols = array(
+		'meters' => 'm²',
+		'feets' => 'ft²',
+	);
 
 	// Settings key option constant
 	const SETTINGS_KEY = 'tm-real-estate-default-settings';

@@ -55,6 +55,8 @@
         "assets/shortcode/shortcode-tinymce-button.js",
 		"assets/js/property-gallery.min.js",
 		"assets/js/swiper.min.js",
-        "assets/js/locations.min.js"
+        "assets/js/locations.min.js",
+        "cherry-framework/modules/cherry-page-builder/assets/js/page-settings.min.js",
+        "cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-chooseicons/assets/js/ui-chooseicons.min.js"
   ]
 }
