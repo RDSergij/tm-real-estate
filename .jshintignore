@@ -12,6 +12,9 @@ cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-stepper/assets/ui
 cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-switcher/assets/ui-switcher.js
 cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-collection/assets/js/jquery.collection.js
 cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-collection/assets/js/ui-collection.js
+cherry-framework/modules/cherry-page-builder/assets/js/page-settings.min.js
+assets/js/page-settings.min.js
+assets/js/contact-form.min.js
 assets/js/uploader/canvas-to-blob.js
 assets/js/uploader/jquery.fileupload.js
 assets/js/uploader/load-image-exif-map.js
