@@ -24,7 +24,7 @@ cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-collection/assets
 cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-collection/assets/js/jquery.collection.js
 cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-collection/assets/js/min/jquery.collection.min.js
 cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-collection/assets/js/ui-collection.js
-cherry-framework/modules/cherry-page-builder/assets/js/custom.min.js
+cherry-framework/modules/cherry-page-builder/assets/js/page-settings.min.js
 assets/js/page-settings.min.js
 assets/js/contact-form.min.js
 assets/js/uploader/canvas-to-blob.js
