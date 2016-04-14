@@ -81,6 +81,9 @@ class TM_Real_Estate {
 		add_shortcode( Model_main::SHORT_CODE_SEARCH_RESULT, array( 'Model_Properties', 'shortcode_search_result' ) );
 
 		// Add tm-re-properties search result shortcode
+		add_shortcode( Model_main::SHORT_CODE_MAP, array( 'Model_Properties', 'shortcode_map' ) );
+
+		// Add tm-re-properties search result shortcode
 		add_shortcode( 'TMRE_AgentContactForm', array( 'Model_Properties', 'shortcode_agent_contact_form' ) );
 
 		// Scripts and Styles
@@ -163,6 +166,14 @@ class TM_Real_Estate {
 		wp_enqueue_script(
 			'google_api',
 			'https://maps.googleapis.com/maps/api/js?v=3.exp&#038;signed_in=true&#038;ver=1.0'
+		);
+
+		wp_enqueue_script(
+			'page_items',
+			TM_REAL_ESTATE_URI.'assets/js/property_items.js',
+			array( 'jquery', 'google_api' ),
+			'1.0.0',
+			true
 		);
 
 		wp_enqueue_script(

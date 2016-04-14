@@ -302,6 +302,55 @@ class Model_Properties {
 	}
 
 	/**
+	 * Get all addresses
+	 *
+	 * @return [array] properties address.
+	 */
+	public static function get_addresses() {
+		$result     = array();
+		$properties = (array) self::get_properties(
+			array(
+				'meta_query' => array(
+					array(
+						'key'     => 'address',
+						'value'   => '',
+						'compare' => '!=',
+					)
+				)
+			)
+		);
+
+		if ( count( $properties ) ) {
+			foreach ( $properties as &$p ) {
+				array_push(
+					$result,
+					array(
+						'id'      => $p->ID,
+						'address' => $p->address
+					)
+				);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Shortcode google map
+	 * with all property items.
+	 *
+	 * @return [string] map view.
+	 */
+	public static function shortcode_map() {
+		return Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/map.php',
+			array(
+				'addresses'      => self::get_addresses(),
+				'addresses_json' => json_encode( self::get_addresses() ),
+			)
+		);
+	}
+
+	/**
 	 * Publish hidden
 	 *
 	 * @param  [int] $id post.
