@@ -145,7 +145,7 @@ class TM_Real_Estate {
 			$post = get_post();
 		}
 
-		if ( array_key_exists('address', $_POST ) ) {
+		if ( array_key_exists( 'address', $_POST ) ) {
 			$lat_lng = Model_Properties::get_lat_lng( $_POST['address'] );
 			update_post_meta( $post_id, 'lat', (float) $lat_lng[0] );
 			update_post_meta( $post_id, 'lng', (float) $lat_lng[1] );

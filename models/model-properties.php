@@ -317,8 +317,8 @@ class Model_Properties {
 						'key'     => 'address',
 						'value'   => '',
 						'compare' => '!=',
-					)
-				)
+					),
+				),
 			)
 		);
 
@@ -330,7 +330,7 @@ class Model_Properties {
 						'id'      => $p->ID,
 						'address' => $p->address,
 						'lat'     => $p->lat,
-						'lng'     => $p->lng
+						'lng'     => $p->lng,
 					)
 				);
 			}
@@ -871,17 +871,18 @@ class Model_Properties {
 
 	/**
 	 * Get latitude and longitude from address.
-	 * @param  [type] $address [description]
-	 * @return [type]          [description]
+	 *
+	 * @param  [string] $address item.
+	 * @return [array]           array( $lat, $lng )
 	 */
 	public static function get_lat_lng( $address ) {
-		$url      = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address);
+		$url      = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode( $address );
 		$body     = false;
 		$lat      = 0;
 		$lng      = 0;
 		$response = wp_remote_request( $url );
 
-		if ( array_key_exists('body', $response ) ) {
+		if ( array_key_exists( 'body', $response ) ) {
 			$body = json_decode( $response['body'], true );
 			$lat  = $body['results'][0]['geometry']['location']['lat'];
 			$lng  = $body['results'][0]['geometry']['location']['lng'];
