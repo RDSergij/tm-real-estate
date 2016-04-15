@@ -47,6 +47,12 @@
 		markers: any = [];
 
 		/**
+		 * Property items data
+		 * @type {any}
+		 */
+		data: any = (<any>window).property_items;
+
+		/**
 		 * Property Items class constructor
 		 */
 		constructor() {
@@ -63,36 +69,28 @@
 			this.google_map = new this.google.maps.Map(
 				this.map,
 				{
-					zoom: 15,
-					center: new this.google.maps.LatLng(this.lat, this.lng),
-					scrollwheel: false,
-					draggable: false
+					zoom: 5,
+					center: new this.google.maps.LatLng(this.lat, this.lng)
 				}
 			);
 
-			this.addMarker(this.lat, this.lng);
-
-			this.google.maps.event.addListener(
-				this.markers[0],
-				'click',
-				function() {
-					this.google_map.setZoom(8);
-					this.google_map.setCenter(this.markers[0].getPosition());
+			if( 'undefined' !== typeof(this.data) ) {
+				for (var i = 0; i < this.data.length; i++ ) {
+					this.addMarker(this.data[i].lat, this.data[i].lng);
 				}
-			);
+			}
 		}
 
 		/**
 		 * Get lat and lng from address
 		 * @param {string} address  property.
-		 * @param {any}    callback geocode.
 		 */
-		getLatLng(address:string, callback:any) {
+		getLatLng(address:string) {
 			jQuery.ajax({
 				type: 'GET',
 				dataType: 'json',
 				url: 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address,
-				success: (response:any) => callback(response)
+				success: (response: any) => this.addMarkerCallBack(response)
 			});
 		}
 

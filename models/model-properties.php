@@ -61,8 +61,10 @@ class Model_Properties {
 				$property->area      = self::get_area( $property->ID );
 				$property->tags      = self::get_property_tags( $property->ID );
 				$property->types     = self::get_property_types( $property->ID );
-				$property->url		 = $single_page . '?id=' . $property->ID;
+				$property->url       = $single_page . '?id=' . $property->ID;
 				$property->address   = self::get_address( $property->ID );
+				$property->lat       = self::get_lat( $property->ID );
+				$property->lng       = self::get_lng( $property->ID );
 			}
 		}
 		return $properties;
@@ -326,7 +328,9 @@ class Model_Properties {
 					$result,
 					array(
 						'id'      => $p->ID,
-						'address' => $p->address
+						'address' => $p->address,
+						'lat'     => $p->lat,
+						'lng'     => $p->lng
 					)
 				);
 			}
@@ -614,6 +618,26 @@ class Model_Properties {
 	}
 
 	/**
+	 * Get property lat
+	 *
+	 * @param  [integer] $post_id id.
+	 * @return string property lat.
+	 */
+	public static function get_lat( $post_id ) {
+		return (float) get_post_meta( $post_id, 'lat', true );
+	}
+
+	/**
+	 * Get property lng
+	 *
+	 * @param  [integer] $post_id id.
+	 * @return string property lng.
+	 */
+	public static function get_lng( $post_id ) {
+		return (float) get_post_meta( $post_id, 'lng', true );
+	}
+
+	/**
 	 * Get property bathrooms
 	 *
 	 * @param  [type] $post_id id.
@@ -843,5 +867,26 @@ class Model_Properties {
 			return $types;
 		}
 		return false;
+	}
+
+	/**
+	 * Get latitude and longitude from address.
+	 * @param  [type] $address [description]
+	 * @return [type]          [description]
+	 */
+	public static function get_lat_lng( $address ) {
+		$url      = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address);
+		$body     = false;
+		$lat      = 0;
+		$lng      = 0;
+		$response = wp_remote_request( $url );
+
+		if ( array_key_exists('body', $response ) ) {
+			$body = json_decode( $response['body'], true );
+			$lat  = $body['results'][0]['geometry']['location']['lat'];
+			$lng  = $body['results'][0]['geometry']['location']['lng'];
+		}
+
+		return array( $lat, $lng );
 	}
 }
