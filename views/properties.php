@@ -14,6 +14,7 @@
 <?php if ( is_array( $__data['properties'] ) && count( $__data['properties'] ) ) : ?>
 
 	<div class="properties">
+		<?php echo $__data['order_html'] ?>
 		<?php foreach ( $__data['properties'] as $property ) : ?>
 		<article class="property-item">
 			<header class="property-content">
