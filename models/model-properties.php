@@ -342,7 +342,7 @@ class Model_Properties {
 	/**
 	 * Get html of order links
 	 *
-	 * @param  [string] $active active order by.
+	 * @return string html
 	 */
 	private static function properties_order() {
 
