@@ -1,5 +1,7 @@
 #locations { min-height: 300px; }
 
+#property_items { min-height: 300px; }
+
 .property-item { display: block; width: 100%; border: 1px solid rgba(0, 0, 0, 0.2); font-family: "Open Sans", "PT Sans", serif; }
 .property-item .property-content { padding-left: 20px; padding-right: 20px; }
 .property-item header { background: rgba(0, 0, 0, 0.1); padding-top: 20px; padding-bottom: 20px; }

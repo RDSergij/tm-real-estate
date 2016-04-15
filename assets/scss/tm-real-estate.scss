@@ -1,8 +1,13 @@
 // Variables
 $property-border: 1px solid rgba( 0, 0, 0, 0.2 );
+$google_map_min_height: 300px;
 
 #locations{
-	min-height: 300px;
+	min-height: $google_map_min_height;
+}
+
+#property_items{
+	min-height: $google_map_min_height;
 }
 
 // CSS

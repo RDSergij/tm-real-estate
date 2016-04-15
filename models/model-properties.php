@@ -61,8 +61,10 @@ class Model_Properties {
 				$property->area      = self::get_area( $property->ID );
 				$property->tags      = self::get_property_tags( $property->ID );
 				$property->types     = self::get_property_types( $property->ID );
-				$property->url		 = $single_page . '?id=' . $property->ID;
+				$property->url       = $single_page . '?id=' . $property->ID;
 				$property->address   = self::get_address( $property->ID );
+				$property->lat       = self::get_lat( $property->ID );
+				$property->lng       = self::get_lng( $property->ID );
 			}
 		}
 		return $properties;
@@ -357,11 +359,62 @@ class Model_Properties {
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/order.php',
+				array(
+					'query_string'			=> $query_string,
+					'orderby'				=> $orderby,
+					'order'					=> $order,
+					'reverse'				=> $reverse,
+				)
+			);
+	}
+
+	/**
+	 * Get all addresses
+	 *
+	 * @return [array] properties address.
+	 */
+	public static function get_addresses() {
+		$result     = array();
+		$properties = (array) self::get_properties(
 			array(
-				'query_string'			=> $query_string,
-				'orderby'				=> $orderby,
-				'order'					=> $order,
-				'reverse'				=> $reverse,
+				'meta_query' => array(
+					array(
+						'key'     => 'address',
+						'value'   => '',
+						'compare' => '!=',
+					),
+				),
+			)
+		);
+
+		if ( count( $properties ) ) {
+			foreach ( $properties as &$p ) {
+				array_push(
+					$result,
+					array(
+						'id'      => $p->ID,
+						'address' => $p->address,
+						'lat'     => $p->lat,
+						'lng'     => $p->lng,
+					)
+				);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Shortcode google map
+	 * with all property items.
+	 *
+	 * @return [string] map view.
+	 */
+	public static function shortcode_map() {
+		return Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/map.php',
+			array(
+				'addresses'      => self::get_addresses(),
+				'addresses_json' => json_encode( self::get_addresses() ),
 			)
 		);
 	}
@@ -632,6 +685,26 @@ class Model_Properties {
 	}
 
 	/**
+	 * Get property lat
+	 *
+	 * @param  [integer] $post_id id.
+	 * @return string property lat.
+	 */
+	public static function get_lat( $post_id ) {
+		return (float) get_post_meta( $post_id, 'lat', true );
+	}
+
+	/**
+	 * Get property lng
+	 *
+	 * @param  [integer] $post_id id.
+	 * @return string property lng.
+	 */
+	public static function get_lng( $post_id ) {
+		return (float) get_post_meta( $post_id, 'lng', true );
+	}
+
+	/**
 	 * Get property bathrooms
 	 *
 	 * @param  [type] $post_id id.
@@ -861,5 +934,27 @@ class Model_Properties {
 			return $types;
 		}
 		return false;
+	}
+
+	/**
+	 * Get latitude and longitude from address.
+	 *
+	 * @param  [string] $address item.
+	 * @return [array]           array( $lat, $lng )
+	 */
+	public static function get_lat_lng( $address ) {
+		$url      = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode( $address );
+		$body     = false;
+		$lat      = 0;
+		$lng      = 0;
+		$response = wp_remote_request( $url );
+
+		if ( array_key_exists( 'body', $response ) ) {
+			$body = json_decode( $response['body'], true );
+			$lat  = $body['results'][0]['geometry']['location']['lat'];
+			$lng  = $body['results'][0]['geometry']['location']['lng'];
+		}
+
+		return array( $lat, $lng );
 	}
 }

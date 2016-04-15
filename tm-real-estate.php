@@ -81,6 +81,9 @@ class TM_Real_Estate {
 		add_shortcode( Model_main::SHORT_CODE_SEARCH_RESULT, array( 'Model_Properties', 'shortcode_search_result' ) );
 
 		// Add tm-re-properties search result shortcode
+		add_shortcode( Model_main::SHORT_CODE_MAP, array( 'Model_Properties', 'shortcode_map' ) );
+
+		// Add tm-re-properties search result shortcode
 		add_shortcode( 'TMRE_AgentContactForm', array( 'Model_Properties', 'shortcode_agent_contact_form' ) );
 
 		// Scripts and Styles
@@ -91,6 +94,9 @@ class TM_Real_Estate {
 
 		// Set default data
 		add_action( 'init', array( &$this, 'set_defaults' ) );
+
+		// Get lat and lng
+		add_action( 'save_post', array( &$this, 'save_meta' ) );
 
 		// Custom assets
 		add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
@@ -112,6 +118,38 @@ class TM_Real_Estate {
 
 		// Fix "Preview" link in post edit page
 		add_filter( 'preview_post_link', array( &$this, 'override_preview' ), 10, 2 );
+	}
+
+	/**
+	 * Save additional taxonomy meta on edit or create tax
+	 *
+	 * @since  1.0.0
+	 * @param  int    $post_id The ID of the current post being saved.
+	 * @param  object $post    The post object currently being saved.
+	 * @return void|int
+	 */
+	public function save_meta( $post_id, $post = '' ) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['cherry-meta-nonce'] ) || ! wp_verify_nonce( $_POST['cherry-meta-nonce'], 'cherry-meta-nonce' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return;
+		}
+
+		if ( ! is_object( $post ) ) {
+			$post = get_post();
+		}
+
+		if ( array_key_exists( 'address', $_POST ) ) {
+			$lat_lng = Model_Properties::get_lat_lng( $_POST['address'] );
+			update_post_meta( $post_id, 'lat', (float) $lat_lng[0] );
+			update_post_meta( $post_id, 'lng', (float) $lat_lng[1] );
+		}
 	}
 
 	/**
@@ -163,6 +201,14 @@ class TM_Real_Estate {
 		wp_enqueue_script(
 			'google_api',
 			'https://maps.googleapis.com/maps/api/js?v=3.exp&#038;signed_in=true&#038;ver=1.0'
+		);
+
+		wp_enqueue_script(
+			'page_items',
+			TM_REAL_ESTATE_URI.'assets/js/property_items.js',
+			array( 'jquery', 'google_api' ),
+			'1.0.0',
+			true
 		);
 
 		wp_enqueue_script(
