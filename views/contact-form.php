@@ -12,8 +12,10 @@
 
 ?>
 <div class="tm-re-contact-form">
-	<?php echo get_avatar( $__data['agent']->ID, 128 ); ?>
-	<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name ?></h4>
+	<a href="<?php echo $__data['agent_page'] ?>">
+		<?php echo get_avatar( $__data['agent']->ID, 128 ); ?>
+		<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name ?></h4>
+	</a>
 	<form>
 		<span class="message"></span>
 		<input type="hidden" name="action" value="tm_re_contact_form"/>

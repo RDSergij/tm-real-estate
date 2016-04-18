@@ -586,6 +586,53 @@ class Model_Properties {
 	}
 
 	/**
+	 * Agent contact form shortcode
+	 *
+	 * @return html code.
+	 */
+	public static function shortcode_agent_properties( $atts ) {
+
+		if ( ! is_array( $atts ) ) {
+			$atts = array();
+		}
+
+		if ( empty( $atts['agent_id'] ) && empty( $atts['property_id'] ) && empty( $_GET['agent_id'] ) && empty( $_GET['property_id'] ) ) {
+			return;
+		}
+
+		$atts = array_merge( $atts, $_GET );
+
+		$property_id = null;
+		if ( ! empty( $atts['property_id'] ) ) {
+			$property_id = $atts['property_id'];
+		}
+
+		$agent_id = null;
+		if ( ! empty( $atts['agent_id'] ) ) {
+			$agent_id = $atts['agent_id'];
+		} else {
+			$agent_id = get_post_meta( $property_id, 'agent', true );
+		}
+
+		$args = array( 'agent' => $agent_id );
+
+		$args = array_merge( $atts, $args );
+
+		$contact_form_html = self::agent_contact_form( $agent_id, $property_id );
+
+		$properties_html = self::shortcode_properties( $args );
+
+		return Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/agent-properties.php',
+			array(
+				'contact_form_html'	=> $contact_form_html,
+				'properties_html'		=> $properties_html,
+			)
+		);
+
+	}
+
+	/**
 	 * Contact form assets
 	 */
 	public static function contact_form_assets() {
@@ -644,12 +691,14 @@ class Model_Properties {
 
 		$agent_id  = max( (int) $agent_id, 1 );
 		$user_data = get_userdata( $agent_id );
+		$agent_page = Model_Settings::get_agent_properties_page() . '?agent_id=' . $agent_id;
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/contact-form.php',
 			array(
 				'agent'			=> $user_data->data,
 				'property_id'	=> $property_id,
+				'agent_page'	=> $agent_page,
 			)
 		);
 	}

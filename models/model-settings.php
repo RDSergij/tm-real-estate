@@ -57,6 +57,7 @@ class Model_Settings {
 					'properties-list-page'			=> null,
 					'property-item-page'			=> null,
 					'properties-submission-page'	=> null,
+					'agent-properties-page'			=> null,
 					'area-unit'						=> 'meters',
 					'сurrency-sign'					=> '$',
 				),
@@ -141,8 +142,22 @@ class Model_Settings {
 	 * @return string property price.
 	 */
 	public static function get_search_single_page() {
-		$main_settings	= get_option( 'tm-properties-main-settings' );
+		$main_settings	= self::get_main_settings();
 		$page_id		= $main_settings['property-item-page'];
+
+		$permalink = get_permalink( $page_id );
+
+		return $permalink;
+	}
+
+	/**
+	 * Get single page link
+	 *
+	 * @return string property price.
+	 */
+	public static function get_agent_properties_page() {
+		$main_settings	= self::get_main_settings();
+		$page_id		= $main_settings['agent-properties-page'];
 
 		$permalink = get_permalink( $page_id );
 
@@ -262,6 +277,17 @@ class Model_Settings {
 				'ID'            => $defaults['tm-properties-main-settings']['properties-submission-page'],
 				'post_title'	=> __( 'Submission form', 'tm-real-estate' ),
 				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_SUBMISSION_FORM ),
+				'post_type'		=> 'page',
+				'post_status'	=> 'publish',
+			)
+		);
+
+		// Agent properties page
+		$defaults['tm-properties-main-settings']['agent-properties-page'] = Cherry_Creator::post(
+			array(
+				'ID'            => $defaults['tm-properties-main-settings']['agent-properties-page'],
+				'post_title'	=> __( 'Agent properties', 'tm-real-estate' ),
+				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_AGENT_PROPERTIES ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)
