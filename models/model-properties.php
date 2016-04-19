@@ -109,6 +109,18 @@ class Model_Properties {
 	public static function prepare_param_properties( $atts ) {
 
 		if ( is_array( $atts ) ) {
+			if ( ! empty( $atts['orderby'] ) ) {
+				$atts['orderby'] = $atts['orderby'];
+			} else {
+				$atts['orderby'] = 'date';
+			}
+
+			if ( ! empty( $atts['order'] ) ) {
+				$atts['order'] = $atts['order'];
+			} else {
+				$atts['order'] = 'desc';
+			}
+
 			if ( ! empty( $atts['limit'] ) ) {
 				$atts['posts_per_page'] = $atts['limit'];
 				unset( $atts['limit'] );
@@ -266,10 +278,16 @@ class Model_Properties {
 	 *
 	 * @return html code.
 	 */
-	public static function shortcode_search_result() {
+	public static function shortcode_search_result( $atts ) {
+		$atts = shortcode_atts(
+				array(
+					'show_sorting'	=> 'no',
+					'order'			=> 'desc',
+				), $atts );
+		$atts = array_merge( $atts, $_GET );
 
-		$form		= self::shortcode_search_form( $_GET );
-		$properties	= self::shortcode_properties( $_GET );
+		$form		= self::shortcode_search_form( $atts );
+		$properties	= self::shortcode_properties( $atts );
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/search-result.php',
@@ -288,19 +306,66 @@ class Model_Properties {
 	 * @return html code.
 	 */
 	public static function shortcode_properties( $atts ) {
+		$atts = shortcode_atts(
+				array(
+					'show_sorting'	=> 'no',
+					'orderby'		=> 'date',
+					'order'			=> 'desc',
+				), $atts );
+		$atts = array_merge( $atts, $_GET );
 
 		$atts = self::prepare_param_properties( $atts );
 		$properties = (array) self::get_properties( $atts );
+
+		$show_sorting = 'no';
+		$order_html = '';
+		if ( ! empty( $atts['show_sorting'] ) ) {
+			$show_sorting = $atts['show_sorting'];
+			if ( 'yes' == $atts['show_sorting'] ) {
+				$order_html = self::properties_order();
+			}
+		}
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/properties.php',
 			array(
 				'properties'		=> $properties,
+				'show_sorting'		=> $show_sorting,
+				'order_html'		=> $order_html,
 				'pagination'		=> self::get_pagination( $atts, $atts['posts_per_page'] ),
 				'area_unit'			=> Model_Settings::get_area_unit_title(),
 				'currency_symbol'	=> Model_Settings::get_currency_symbol(),
 			)
 		);
+	}
+
+	/**
+	 * Get html of order links
+	 *
+	 * @return string html
+	 */
+	private static function properties_order() {
+
+		$orderby	= ! empty( $_GET['orderby'] ) ? $_GET['orderby'] : 'date';
+		$order		= ! empty( $_GET['order'] ) ? $_GET['order'] : 'desc';
+
+		unset( $_GET['orderby'], $_GET['order'] );
+		$query_string = '?' . build_query( $_GET );
+
+		$reverse = 'desc';
+		if ( 'desc' == $order ) {
+			$reverse = 'asc';
+		}
+
+		return Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/order.php',
+				array(
+					'query_string'			=> $query_string,
+					'orderby'				=> $orderby,
+					'order'					=> $order,
+					'reverse'				=> $reverse,
+				)
+			);
 	}
 
 	/**
@@ -462,7 +527,7 @@ class Model_Properties {
 	 *
 	 * @return html code.
 	 */
-	public static function shortcode_search_form() {
+	public static function shortcode_search_form( $atts ) {
 
 		$default_value = array(
 			'keyword'			=> '',
@@ -476,8 +541,10 @@ class Model_Properties {
 			'max_area'			=> '',
 			'property_status'	=> '',
 			'property_type'		=> '',
+			'show_sorting'		=> 'no',
+			'orderby'			=> 'date',
 		);
-		$values = array_merge( $default_value, $_GET );
+		$values = array_merge( $default_value, $_GET, $atts );
 
 		$action_url = Model_Settings::get_search_result_page();
 
@@ -516,6 +583,53 @@ class Model_Properties {
 		}
 
 		return self::agent_contact_form( $agent_id, $property_id );
+	}
+
+	/**
+	 * Agent contact form shortcode
+	 *
+	 * @return html code.
+	 */
+	public static function shortcode_agent_properties( $atts ) {
+
+		if ( ! is_array( $atts ) ) {
+			$atts = array();
+		}
+
+		if ( empty( $atts['agent_id'] ) && empty( $atts['property_id'] ) && empty( $_GET['agent_id'] ) && empty( $_GET['property_id'] ) ) {
+			return;
+		}
+
+		$atts = array_merge( $atts, $_GET );
+
+		$property_id = null;
+		if ( ! empty( $atts['property_id'] ) ) {
+			$property_id = $atts['property_id'];
+		}
+
+		$agent_id = null;
+		if ( ! empty( $atts['agent_id'] ) ) {
+			$agent_id = $atts['agent_id'];
+		} else {
+			$agent_id = get_post_meta( $property_id, 'agent', true );
+		}
+
+		$args = array( 'agent' => $agent_id );
+
+		$args = array_merge( $atts, $args );
+
+		$contact_form_html = self::agent_contact_form( $agent_id, $property_id );
+
+		$properties_html = self::shortcode_properties( $args );
+
+		return Cherry_Core::render_view(
+			TM_REAL_ESTATE_DIR . 'views/agent-properties.php',
+			array(
+				'contact_form_html'	=> $contact_form_html,
+				'properties_html'		=> $properties_html,
+			)
+		);
+
 	}
 
 	/**
@@ -577,12 +691,14 @@ class Model_Properties {
 
 		$agent_id  = max( (int) $agent_id, 1 );
 		$user_data = get_userdata( $agent_id );
+		$agent_page = Model_Settings::get_agent_properties_page() . '?agent_id=' . $agent_id;
 
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/contact-form.php',
 			array(
 				'agent'			=> $user_data->data,
 				'property_id'	=> $property_id,
+				'agent_page'	=> $agent_page,
 			)
 		);
 	}

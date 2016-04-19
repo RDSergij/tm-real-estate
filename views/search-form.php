@@ -13,6 +13,10 @@
 ?>
 <form action="<?php echo $__data['action_url'] ?>" class="search-form">
 
+	<input type="hidden" name="show_sorting" value="<?php echo $__data['values']['show_sorting'] ?>">
+	<input type="hidden" name="orderby" value="<?php echo $__data['values']['orderby'] ?>">
+	<input type="hidden" name="order" value="<?php echo $__data['values']['order'] ?>">
+
 	<label for="keyword"><?php _e( 'Keyword', 'tm-real-estate' ); ?></label>
 	<input type="text" name="keyword" id="keyword" placeholder="Any" value="<?php echo $__data['values']['keyword'] ?>">
 

@@ -57,6 +57,7 @@
 		"assets/js/swiper.min.js",
         "assets/js/locations.min.js",
         "cherry-framework/modules/cherry-page-builder/assets/js/page-settings.min.js",
-        "cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-chooseicons/assets/js/ui-chooseicons.min.js"
+        "cherry-framework/modules/cherry-ui-elements/inc/ui-elements/ui-chooseicons/assets/js/ui-chooseicons.min.js",
+		"assets/js/property_items.js",
   ]
 }

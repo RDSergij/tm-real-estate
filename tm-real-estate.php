@@ -80,6 +80,9 @@ class TM_Real_Estate {
 		// Add tm-re-properties search result shortcode
 		add_shortcode( Model_main::SHORT_CODE_SEARCH_RESULT, array( 'Model_Properties', 'shortcode_search_result' ) );
 
+		// Add tm-re-agent-properties agent info shortcode
+		add_shortcode( Model_main::SHORT_CODE_AGENT_PROPERTIES, array( 'Model_Properties', 'shortcode_agent_properties' ) );
+
 		// Add tm-re-properties search result shortcode
 		add_shortcode( Model_main::SHORT_CODE_MAP, array( 'Model_Properties', 'shortcode_map' ) );
 
@@ -666,6 +669,18 @@ class TM_Real_Estate {
 			'title'			=> __( 'Submission property page', 'tm-real-estate' ),
 			'field'			=> array(
 				'id'			=> 'properties-submission-page',
+				'size'			=> 1,
+				'value'			=> '',
+				'options'		=> Model_Settings::get_page_list(),
+			),
+		);
+
+		$settings['tm-properties-main-settings'][] = array(
+			'type'			=> 'select',
+			'slug'			=> 'agent-properties-page',
+			'title'			=> __( 'Agent properties page', 'tm-real-estate' ),
+			'field'			=> array(
+				'id'			=> 'agent-properties-page',
 				'size'			=> 1,
 				'value'			=> '',
 				'options'		=> Model_Settings::get_page_list(),
