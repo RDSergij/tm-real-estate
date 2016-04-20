@@ -147,6 +147,17 @@ class Model_Properties {
 				unset( $atts['property_type'] );
 			}
 
+			if ( ! empty( $atts['location'] ) ) {
+
+				$atts['tax_query'][] = array(
+					'taxonomy' => 'location',
+					'field'    => 'term_id',
+					'terms'    => (int) $atts['location'],
+				);
+				unset( $atts['location'] );
+
+			}
+
 			if ( ! empty( $atts['tag'] ) ) {
 				$atts['tax_query'][] = array(
 					'taxonomy' => 'property-tag',
@@ -280,10 +291,12 @@ class Model_Properties {
 	 */
 	public static function shortcode_search_result( $atts ) {
 		$atts = shortcode_atts(
-				array(
-					'show_sorting'	=> 'no',
-					'order'			=> 'desc',
-				), $atts );
+			array(
+				'show_sorting'	=> 'no',
+				'order'			=> 'desc',
+			),
+			$atts
+		);
 		$atts = array_merge( $atts, $_GET );
 
 		$form		= self::shortcode_search_form( $atts );
@@ -307,11 +320,13 @@ class Model_Properties {
 	 */
 	public static function shortcode_properties( $atts ) {
 		$atts = shortcode_atts(
-				array(
-					'show_sorting'	=> 'no',
-					'orderby'		=> 'date',
-					'order'			=> 'desc',
-				), $atts );
+			array(
+				'show_sorting'	=> 'no',
+				'orderby'		=> 'date',
+				'order'			=> 'desc',
+			),
+			$atts
+		);
 		$atts = array_merge( $atts, $_GET );
 
 		$atts = self::prepare_param_properties( $atts );
@@ -555,6 +570,7 @@ class Model_Properties {
 				'property_types'	=> self::get_all_property_types(),
 				'action_url'		=> $action_url,
 				'values'			=> $values,
+				'locations'         => Model_Submit_Form::get_locations(),
 			)
 		);
 	}

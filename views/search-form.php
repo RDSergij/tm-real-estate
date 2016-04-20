@@ -68,5 +68,15 @@
 		</select>
 	<?php endif; ?>
 
+	<?php if ( is_array( $__data['locations'] ) && count( $__data['locations'] ) ) : ?>
+	<label for="location"><?php _e( 'Location', 'tm-real-estate' ); ?></label>
+	<select class="form-dropdown" id="location" name="property[location]">
+		<option value=""><?php _e( 'Any', 'tm-real-estate' ); ?></option>
+		<?php foreach ( $__data['locations'] as $key => $value ) :?>
+			<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+		<?php endforeach; ?>
+	</select>
+	<?php endif; ?>
+
 	<button type="submit"><?php _e( 'Search', 'tm-real-estate' ); ?></button>
 </form>
