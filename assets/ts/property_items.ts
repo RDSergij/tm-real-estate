@@ -47,6 +47,12 @@
 		markers: any = [];
 
 		/**
+		 * Google map bounds
+		 * @type {any}
+		 */
+		bounds: any = [];
+
+		/**
 		 * Property items data
 		 * @type {any}
 		 */
@@ -79,6 +85,13 @@
 					this.addMarker(this.data[i].lat, this.data[i].lng);
 				}
 			}
+
+			this.bounds = new this.google.maps.LatLngBounds();
+			for (var i = 0; i < this.markers.length; i++) {
+				this.bounds.extend(this.markers[i].getPosition());
+			}
+
+			this.google_map.fitBounds(this.bounds);
 		}
 
 		/**
