@@ -28,9 +28,32 @@ class Model_Submit_Form {
 			TM_REAL_ESTATE_DIR . '/views/submit-form.php',
 			array(
 				'terms'              => $terms,
+				'locations'          => self::get_locations(),
 				'required_for_gests' => self::get_required_for_gests(),
 			)
 		);
+	}
+
+	/**
+	 * Get locations
+	 *
+	 * @return [array] Locations.
+	 */
+	public static function get_locations() {
+		$result    = array();
+		$locations = get_terms(
+			'location',
+			array(
+				'parent'     => 0,
+				'hide_empty' => false,
+			)
+		);
+		if ( ! is_wp_error( $locations ) ) {
+			foreach ( $locations as $location ) {
+				$result[$location->term_id] = $location->name;
+			}
+		}
+		return $result;
 	}
 
 	/**

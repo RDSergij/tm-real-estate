@@ -39,7 +39,7 @@
 	</div>
 	<div>
 		<label class="label-block" id="property_type_label" for="property_type_input"><?php _e( 'Type', 'tm-real-estate' ); ?></label>
-		<select class="form-dropdown" style="width:150px" id="property_type_input" name="property[type]">
+		<select class="form-dropdown" id="property_type_input" name="property[type]">
 			<option disabled selected value="">  </option>
 			<?php foreach ( $__data['terms'] as $type ) { ?>
 				<optgroup label="<?php echo $type['name']; ?>">
@@ -48,6 +48,14 @@
 					<?php } ?>
 				</optgroup>
 			<?php } ?>
+		</select>
+	</div>
+	<div>
+		<label class="label-block" for="location"><?php _e( 'Location', 'tm-real-estate' ); ?></label>
+		<select class="form-dropdown" id="location" name="property[location]">
+		<?php foreach ( $__data['locations'] as $key => $value ) :?>
+			<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+		<?php endforeach; ?>
 		</select>
 	</div>
 	<div>

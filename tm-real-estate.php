@@ -571,6 +571,15 @@ class TM_Real_Estate {
 				->set_arguments( array( 'hierarchical' => false ) )
 				->set_slug( 'property-tag' )
 				->init();
+
+		$this->core->modules['cherry-taxonomies']
+				->create(
+					'Locations',
+					'property',
+					'Location'
+				)
+				->set_slug( 'location' )
+				->init();
 	}
 
 	/**
