@@ -50,7 +50,7 @@ class Model_Submit_Form {
 		);
 		if ( ! is_wp_error( $locations ) ) {
 			foreach ( $locations as $location ) {
-				$result[$location->term_id] = $location->name;
+				$result[ $location->term_id ] = $location->name;
 			}
 		}
 		return $result;
