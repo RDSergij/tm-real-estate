@@ -432,7 +432,7 @@ class Model_Properties {
 				'addresses_json'    => json_encode( self::get_addresses() ),
 				'property_settings' => json_encode(
 					array(
-						'base_url' => sprintf( '%s?id=', Model_Settings::get_search_single_page() )
+						'base_url' => sprintf( '%s?id=', Model_Settings::get_search_single_page() ),
 					)
 				),
 			)

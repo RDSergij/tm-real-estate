@@ -277,7 +277,7 @@ class TM_Real_Estate {
 			'cherry-js-core',
 			'formUrl',
 			array(
-				'url' => admin_url( 'admin-ajax.php' )
+				'url' => admin_url( 'admin-ajax.php' ),
 			)
 		);
 
