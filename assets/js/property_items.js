@@ -21,6 +21,9 @@
             if (null !== this.map) {
                 this.initMap();
             }
+            $(document).on('click', '.info-window', function () {
+                window.open($(this).data('url'));
+            });
         }
         PropertyItems.prototype.initMap = function () {
             this.google_map = new this.google.maps.Map(this.map, {

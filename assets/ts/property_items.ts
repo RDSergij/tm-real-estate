@@ -89,6 +89,14 @@
 			if (null !== this.map) {
 				this.initMap();
 			}
+
+			$(document).on(
+				'click',
+				'.info-window',
+				function() {
+					window.open($(this).data('url'));
+				}
+			);
 		}
 
 		/**
