@@ -209,7 +209,7 @@ class TM_Real_Estate {
 		wp_enqueue_script(
 			'page_items',
 			TM_REAL_ESTATE_URI.'assets/js/property_items.js',
-			array( 'jquery', 'google_api' ),
+			array( 'jquery', 'google_api', 'underscore' ),
 			'1.0.0',
 			true
 		);
@@ -271,11 +271,13 @@ class TM_Real_Estate {
 			'all'
 		);
 
+		wp_enqueue_script( 'underscore' );
+
 		wp_localize_script(
 			'cherry-js-core',
 			'formUrl',
 			array(
-				'url' => admin_url( 'admin-ajax.php' ),
+				'url' => admin_url( 'admin-ajax.php' )
 			)
 		);
 

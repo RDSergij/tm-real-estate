@@ -428,8 +428,13 @@ class Model_Properties {
 		return Cherry_Core::render_view(
 			TM_REAL_ESTATE_DIR . 'views/map.php',
 			array(
-				'addresses'      => self::get_addresses(),
-				'addresses_json' => json_encode( self::get_addresses() ),
+				'addresses'         => self::get_addresses(),
+				'addresses_json'    => json_encode( self::get_addresses() ),
+				'property_settings' => json_encode(
+					array(
+						'base_url' => sprintf( '%s?id=', Model_Settings::get_search_single_page() )
+					)
+				),
 			)
 		);
 	}

@@ -8,8 +8,15 @@
             this.map = null;
             this.google_map = null;
             this.markers = [];
+            this.info_windows = [];
             this.bounds = [];
             this.data = window.property_items;
+            this._ = window._;
+            this.template = null;
+            this._.templateSettings = {
+                interpolate: /\{\{(.+?)\}\}/g
+            };
+            this.template = this._.template(jQuery('#info_window_content_tmpl').html());
             this.map = document.getElementById(this.id);
             if (null !== this.map) {
                 this.initMap();
@@ -30,19 +37,25 @@
                 this.bounds.extend(this.markers[i].getPosition());
             }
             this.google_map.fitBounds(this.bounds);
+            this.initInfo();
         };
-        PropertyItems.prototype.getLatLng = function (address) {
-            var _this = this;
-            jQuery.ajax({
-                type: 'GET',
-                dataType: 'json',
-                url: 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address,
-                success: function (response) { return _this.addMarkerCallBack(response); }
-            });
-        };
-        PropertyItems.prototype.addMarkerCallBack = function (response) {
-            if ('OK' === response.status) {
-                this.addMarker(response.results[0].geometry.location.lat, response.results[0].geometry.location.lng);
+        PropertyItems.prototype.initInfo = function () {
+            this._.templateSettings = {
+                interpolate: /\{\{(.+?)\}\}/g
+            };
+            for (var i = 0; i < this.markers.length; i++) {
+                this.info_windows.push(new this.google.maps.InfoWindow({
+                    content: this.template({
+                        id: this.data[i].id,
+                        url: window.property_settings.base_url + this.data[i].id,
+                        content: this.data[i].address
+                    })
+                }));
+                (function (x, me) {
+                    me.markers[x].addListener('click', function () {
+                        me.info_windows[x].open(me.google_map, me.markers[x]);
+                    });
+                }(i, this));
             }
         };
         PropertyItems.prototype.addMarker = function (lat, lng) {

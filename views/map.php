@@ -12,5 +12,9 @@
 ?>
 <script>
 	var property_items = <?php echo $__data['addresses_json']; ?>;
+	var property_settings = <?php echo $__data['property_settings']; ?>;
+</script>
+<script type="text/template" id="info_window_content_tmpl">
+	<span class="info-window" data-id="{{ id }}" data-url="{{ url }}">{{ content }}</span>
 </script>
 <div id="property_items"></div>
