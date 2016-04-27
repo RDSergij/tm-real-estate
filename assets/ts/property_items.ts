@@ -47,19 +47,56 @@
 		markers: any = [];
 
 		/**
+		 * Goole map info windows
+		 * @type {any}
+		 */
+		info_windows: any = [];
+
+		/**
+		 * Google map bounds
+		 * @type {any}
+		 */
+		bounds: any = [];
+
+		/**
 		 * Property items data
 		 * @type {any}
 		 */
 		data: any = (<any>window).property_items;
 
 		/**
+		 * Underscore
+		 * @type {any}
+		 */
+		_: any = (<any>window)._;
+
+		/**
+		 * Undersore template
+		 * @type {any}
+		 */
+		template: any = null;
+
+		/**
 		 * Property Items class constructor
 		 */
 		constructor() {
+			this._.templateSettings = {
+				interpolate: /\{\{(.+?)\}\}/g
+			};
+			this.template = this._.template(jQuery('#info_window_content_tmpl').html());
+
 			this.map = document.getElementById(this.id);
 			if (null !== this.map) {
 				this.initMap();
 			}
+
+			$(document).on(
+				'click',
+				'.info-window',
+				function() {
+					window.open($(this).data('url'));
+				}
+			);
 		}
 
 		/**
@@ -79,31 +116,42 @@
 					this.addMarker(this.data[i].lat, this.data[i].lng);
 				}
 			}
+
+			this.bounds = new this.google.maps.LatLngBounds();
+			for (var i = 0; i < this.markers.length; i++) {
+				this.bounds.extend(this.markers[i].getPosition());
+			}
+
+			this.google_map.fitBounds(this.bounds);
+
+			this.initInfo();
 		}
 
 		/**
-		 * Get lat and lng from address
-		 * @param {string} address  property.
+		 * Initialize info windows
 		 */
-		getLatLng(address:string) {
-			jQuery.ajax({
-				type: 'GET',
-				dataType: 'json',
-				url: 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address,
-				success: (response: any) => this.addMarkerCallBack(response)
-			});
-		}
-
-		/**
-		 * Add marker callback
-		 * @param {any} response google geocode response.
-		 */
-		addMarkerCallBack(response:any) {
-			if ('OK' === response.status) {
-				this.addMarker(
-					response.results[0].geometry.location.lat,
-					response.results[0].geometry.location.lng
+		initInfo() {
+			this._.templateSettings = {
+				interpolate: /\{\{(.+?)\}\}/g
+			};
+			for (var i = 0; i < this.markers.length; i++) {
+				this.info_windows.push(
+					new this.google.maps.InfoWindow({
+						content: this.template({
+							id: this.data[i].id,
+							url: (<any>window).property_settings.base_url + this.data[i].id,
+							content: this.data[i].address
+						})
+					})
 				);
+				(function(x : any, me: any) {
+					me.markers[x].addListener(
+						'click',
+						function() {
+							me.info_windows[x].open(me.google_map, me.markers[x]);
+						}
+					);
+				} (i, this));
 			}
 		}
 

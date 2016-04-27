@@ -209,7 +209,7 @@ class TM_Real_Estate {
 		wp_enqueue_script(
 			'page_items',
 			TM_REAL_ESTATE_URI.'assets/js/property_items.js',
-			array( 'jquery', 'google_api' ),
+			array( 'jquery', 'google_api', 'underscore' ),
 			'1.0.0',
 			true
 		);
@@ -270,6 +270,8 @@ class TM_Real_Estate {
 			'1.0.0',
 			'all'
 		);
+
+		wp_enqueue_script( 'underscore' );
 
 		wp_localize_script(
 			'cherry-js-core',
@@ -570,6 +572,15 @@ class TM_Real_Estate {
 				)
 				->set_arguments( array( 'hierarchical' => false ) )
 				->set_slug( 'property-tag' )
+				->init();
+
+		$this->core->modules['cherry-taxonomies']
+				->create(
+					'Locations',
+					'property',
+					'Location'
+				)
+				->set_slug( 'location' )
 				->init();
 	}
 
