@@ -29,6 +29,7 @@ if ( ! class_exists( 'UI_Collection' ) ) {
 	 *  		'left_label' => __( 'Gallery', 'tm-real-estate' ),
 	 *  		'controls' => array(
 	 *  			'UI_Text' => array(
+	 *					'ui'      => 'UI_Text',
 	 *  				'type'    => 'text',
 	 *  				'id'      => 'title',
 	 *  				'class'   => 'large_text',
@@ -37,6 +38,7 @@ if ( ! class_exists( 'UI_Collection' ) ) {
 	 *  				'left_label' => __( 'Title', 'tm-real-estate' )
 	 *  			),
 	 *  			'UI_Media' => array(
+	 *					'ui'      => 'UI_Media',
 	 *  				'id'      => 'image',
 	 *  				'name'    => 'image',
 	 *  				'value'   => '',
@@ -77,6 +79,9 @@ if ( ! class_exists( 'UI_Collection' ) ) {
 			if ( is_array( $this->settings['controls'] ) && count( $this->settings['controls'] ) ) {
 				for ( $i = 0; $i < $count; $i++ ) {
 					foreach ( $this->settings['controls'] as $class => $args ) {
+						if ( ! empty( $args['ui'] ) ) {
+							$class = $args['ui'];
+						}
 						if ( in_array( 'I_UI', class_implements( $class ) ) ) {
 							$control      = new $class( $args );
 							$control_old_name = $control->get_name();

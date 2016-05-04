@@ -119,24 +119,6 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		}
 
 		/**
-		 * Add admin menu page
-		 */
-		function add_admin_page() {
-			$page = $this->make( $this->args['slug'], $this->args['title'], $this->args['parent'], $this->args['views'] )->set(
-				array(
-					'capability'    => $this->args['capability'],
-					'icon'          => $this->args['icon'],
-					'position'      => $this->args['position'],
-					'tabs'          => $this->args['tabs'],
-					'sections'      => $this->args['sections'],
-					'settings'      => $this->args['settings'],
-				)
-			);
-			$page->add_sections( $this->args['sections'] );
-			$page->add_settings( $this->args['settings'] );
-		}
-
-		/**
 		 * Set base data of page
 		 *
 		 * @param type string $slug        The page slug name.
@@ -145,7 +127,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 *
 		 * @return object
 		 */
-		public function make( $slug, $title, $parent = null ) {
+		public function make( $slug, $title, $parent = null, $view = null ) {
 			$page	= new Cherry_Page_Builder( $this->core, $this->args );
 
 			// Set the page properties.
@@ -159,6 +141,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				'tabs'          => true,
 				'menu'          => $title,
 			);
+			$page->data['view'] = $view;
 			$page->data['rules'] = array();
 
 			return $page;
@@ -175,8 +158,12 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		public function set( array $params = array() ) {
 			$this->args = $params;
 
-			$this->add_sections( $params['sections'] );
-			$this->add_settings( $params['settings'] );
+			if ( ! empty( $params['sections'] ) ) {
+				$this->add_sections( $params['sections'] );
+				if ( ! empty( $params['settings'] ) ) {
+					$this->add_settings( $params['settings'] );
+				}
+			}
 
 			add_action( 'admin_menu', array( $this, 'build' ) );
 
@@ -203,16 +190,20 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		 * @return void
 		 */
 		public function render() {
-			$title			= ! empty( $this->data['title'] ) ? $this->data['title'] : '';
-			$page_slug		= ! empty( $this->data['slug'] ) ? $this->data['slug'] : '';
-			$page_before	= ! empty( $this->args['before'] ) ? $this->args['before'] : '';
-			$page_after		= ! empty( $this->args['after'] ) ? $this->args['after'] : '';
-			$button_before	= ! empty( $this->args['button_before'] ) ? $this->args['button_before'] : '';
-			$button_after	= ! empty( $this->args['button_after'] ) ? $this->args['button_after'] : '';
+			$title			= ! empty( $this->data['title'] ) 			? $this->data['title'] : '';
+			$page_slug		= ! empty( $this->data['slug'] ) 			? $this->data['slug'] : '';
+			$page_before	= ! empty( $this->args['before'] ) 			? $this->args['before'] : '';
+			$page_after		= ! empty( $this->args['after'] ) 			? $this->args['after'] : '';
+			$button_before	= ! empty( $this->args['button_before'] ) 	? $this->args['button_before'] : '';
+			$button_after	= ! empty( $this->args['button_after'] ) 	? $this->args['button_after'] : '';
+			$custom_data	= ! empty( $this->args['custom_data'] ) 	? $this->args['custom_data'] : array();
+
 			$sections		= ( ! empty( $this->sections ) && is_array( $this->sections ) ) ? $this->sections : array();
 
+			$view_file_path = ! empty( $this->data['view'] ) ? $this->data['view'] : $this->views . 'page.php';
+
 			$html = Cherry_Core::render_view(
-				$this->views . 'page.php',
+				$view_file_path,
 				array(
 					'title'			=> $title,
 					'page_slug'		=> $page_slug,
@@ -220,6 +211,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 					'page_after'	=> $page_after,
 					'button_before'	=> $button_before,
 					'button_after'	=> $button_after,
+					'custom_data'	=> $custom_data,
 					'sections'		=> $sections,
 				)
 			);
@@ -368,7 +360,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 		public function assets() {
 			wp_enqueue_script( 'jquery-form' );
 
-			wp_localize_script( 'cherry-settings-page', 'TMRealEstateMessage', array(
+			wp_localize_script( 'cherry-settings-page', 'CherrySettingsPageMessage', array(
 				'success' => __( 'Successfully', 'tm-real-estate' ),
 				'failed' => __( 'Failed', 'tm-real-estate' ),
 			) );
@@ -377,7 +369,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				'cherry-settings-page',
 				$this->core->get_core_url() . 'modules/' . $this->module_slug . '/assets/js/page-settings.min.js',
 				array( 'jquery' ),
-				'0.2.0',
+				'0.2.1',
 				true
 			);
 

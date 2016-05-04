@@ -10,9 +10,12 @@
 			var self = this;
 			if( CherryJsCore.status.document_ready ){
 				self.render( target );
+				console.log( 'test' );
 			}else{
 				CherryJsCore.variable.$document.on('ready', self.render( target ) );
+				console.log( 'test3' );
 			}
+			console.log( 'test1' );
 		},
 		render: function ( target ) {
 			var cherry_uploader;
@@ -26,6 +29,8 @@
 										title_text = $(this).data('title'),
 										multiple = $(this).data('multi-upload'),
 										library_type = $(this).data('library-type');
+
+										console.log(cherry_uploader);
 
 										if ( undefined !== cherry_uploader ) {
 											cherry_uploader.open();
@@ -159,6 +164,7 @@
 
 	$( window ).on( 'cherry-ui-elements-init',
 		function( event, data ) {
+			console.log( 'test2' );
 			CherryJsCore.ui_elements.media.init( data.target );
 		}
 	);
