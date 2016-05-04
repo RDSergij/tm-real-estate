@@ -359,6 +359,8 @@ class TM_Real_Estate {
 							'ui_elements' => array(
 								'text',
 								'select',
+								'media',
+								'collection',
 							),
 						),
 					),
@@ -844,6 +846,150 @@ class TM_Real_Estate {
 				),
 				'settings'		=> $settings,
 				'button_after'	=> $button_reset->render(),
+			)
+		);
+
+		$agents_list = get_users( /* array( 'role' => array( 're_agent', 'admin' ) ) */ );
+
+		if ( ! empty( $agents_list ) ) {
+			foreach( $agents_list as $agent ) {
+
+				$user_id_obj = new UI_Text(
+					array(
+						'type'    => 'hidden',
+						'id'      => 'user_id_' . $agent->ID,
+						'name'    => 'user_id[]',
+						'value'   => $agent->ID,
+					)
+				);
+
+				$user_login_obj = new UI_Text(
+					array(
+						'type'    => 'text',
+						'id'      => 'user_login',
+						'name'    => 'user_login[]',
+						'value'   => $agent->user_login,
+					)
+				);
+				
+				$first_name_obj = new UI_Text(
+					array(
+						'type'    => 'text',
+						'id'      => 'first_name',
+						'name'    => 'first_name[]',
+						'value'   => $agent->first_name,
+					)
+				);
+				
+				$last_name_obj = new UI_Text(
+					array(
+						'type'    => 'text',
+						'id'      => 'last_name',
+						'name'    => 'last_name[]',
+						'value'   => $agent->last_name,
+					)
+				);
+				
+				$user_email_obj = new UI_Text(
+					array(
+						'type'    => 'text',
+						'id'      => 'user_email',
+						'name'    => 'user_email[]',
+						'value'   => $agent->user_email,
+					)
+				);
+				
+				$photo_obj = new UI_Media(
+					array(
+						'id'      => 'photo',
+						'name'    => 'photo[]',
+						//'value'   => $agent->get['photo'],
+					)
+				);
+
+				$agents[] = array(
+					'user_id_html'		=> $user_id_obj->render(),
+					'user_login_html'	=> $user_login_obj->render(),
+					'first_name_html'	=> $first_name_obj->render(),
+					'last_name_html'	=> $last_name_obj->render(),
+					'photo_html'		=> $photo_obj->render(),
+					'user_email_html'	=> $user_email_obj->render(),
+				);
+
+			}
+		} else {
+			$agents= array();
+		}
+
+		$user_id_new_obj = new UI_Text(
+			array(
+				'type'    => 'hidden',
+				'id'      => 'user_id',
+				'name'    => 'user_id[]',
+				'value'   => '',
+			)
+		);
+		$user_login_new_obj = new UI_Text(
+			array(
+				'type'    => 'text',
+				'id'      => 'user_login',
+				'name'    => 'user_login[]',
+				'value'   => '',
+			)
+		);
+		
+		$first_name_new_obj = new UI_Text(
+			array(
+				'type'    => 'text',
+				'id'      => 'first_name',
+				'name'    => 'first_name[]',
+				'value'   => '',
+			)
+		);
+		
+		$last_name_new_obj = new UI_Text(
+			array(
+				'type'    => 'text',
+				'id'      => 'last_name',
+				'name'    => 'last_name[]',
+				'value'   => '',
+			)
+		);
+		
+		$user_email_new_obj = new UI_Text(
+			array(
+				'type'    => 'text',
+				'id'      => 'user_email',
+				'name'    => 'user_email[]',
+				'value'   => '',
+			)
+		);
+		
+		$photo_new_obj = new UI_Media(
+			array(
+				'id'      => 'photo',
+				'name'    => 'photo[]',
+				'value'   => '',
+			)
+		);
+
+		$agent_new = array(
+			'user_login_html'	=> $user_login_new_obj->render(),
+			'first_name_html'	=> $first_name_new_obj->render(),
+			'last_name_html'	=> $last_name_new_obj->render(),
+			'photo_html'		=> $photo_new_obj->render(),
+			'user_email_html'	=> $user_email_new_obj->render(),
+		);
+
+		$this->core->modules['cherry-page-builder']->make( 'cherry-agents-list', 'Agents', 'edit.php?post_type=property', TM_REAL_ESTATE_DIR . 'views/admin-agents-list.php' )->set(
+			array(
+				'capability'	=> 'manage_options',
+				'position'		=> 10,
+				'icon'			=> 'dashicons-admin-site',
+				'custom_data'	=> array(
+					'agents'	=> $agents,
+					'agent_new'	=> $agent_new,
+				),
 			)
 		);
 	}
