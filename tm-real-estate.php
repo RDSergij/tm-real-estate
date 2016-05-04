@@ -848,8 +848,8 @@ class TM_Real_Estate {
 				'button_after'	=> $button_reset->render(),
 			)
 		);
-
-		$agents_list = get_users( /* array( 'role' => array( 're_agent', 'admin' ) ) */ );
+/*
+		$agents_list = get_users(  );
 
 		if ( ! empty( $agents_list ) ) {
 			foreach( $agents_list as $agent ) {
@@ -905,6 +905,22 @@ class TM_Real_Estate {
 						'name'    => 'photo[]',
 						//'value'   => $agent->get['photo'],
 					)
+				);
+
+				$is_delete_obj = new UI_Checkbox(
+					array(
+						'id'			=> 'is_delete',
+						'name'			=> 'is_delete',
+						'value'			=> array(
+							'checkbox-1' => 'false',
+						),
+						'options'		=> array(
+							'del'	=> 'd',
+						),
+						'label'			=> '',
+						'class'			=> '',
+						'master'		=> '',
+					);
 				);
 
 				$agents[] = array(
@@ -991,7 +1007,7 @@ class TM_Real_Estate {
 					'agent_new'	=> $agent_new,
 				),
 			)
-		);
+		); */
 	}
 
 	/**
