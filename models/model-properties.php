@@ -723,6 +723,31 @@ class Model_Properties {
 			)
 		);
 	}
+	
+	public static function get_agents_list() {
+		$agents = get_users( array( 'role' => 're_agent' ) );
+
+		if ( ! empty( $agents ) && is_array( $agents ) ) {
+			foreach( $agents as &$agent ) {
+				$agent->agent_page = esc_url( Model_Settings::get_agent_properties_page() . '?agent_id=' . $agents->ID );
+			}
+			return $agents;
+		}
+
+		return null;
+	}
+	
+	public static function shortcode_agents_list() {
+		$agents = self::get_agents_list();
+		if ( ! empty( $agents ) ) {
+			return Cherry_Core::render_view(
+				TM_REAL_ESTATE_DIR . 'views/agents-list.php',
+				array(
+					'agents'		=> $agents,
+				)
+			);
+		}
+	}
 
 	/**
 	 * Get property price
