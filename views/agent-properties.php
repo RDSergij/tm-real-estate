@@ -9,9 +9,8 @@
  * @link       http://www.cherryframework.com/
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
-
 ?>
 <div class="tm-re-agent-properties">
-	<?php echo $__data['contact_form_html'] ?>
-	<?php echo $__data['properties_html'] ?>
+	<?php echo $__data['contact_form_html']; ?>
+	<?php echo $__data['properties_html']; ?>
 </div>

@@ -50,6 +50,9 @@ class TM_Real_Estate {
 	 * TM_REAL_ESTATE class constructor
 	 */
 	private function __construct() {
+		
+		
+		//add_action( 'admin_menu', array( $this, 'test' ) );
 
 		// Set the constants needed by the plugin.
 		$this->constants();
@@ -83,11 +86,11 @@ class TM_Real_Estate {
 		// Add tm-re-agent-properties agent info shortcode
 		add_shortcode( Model_main::SHORT_CODE_AGENT_PROPERTIES, array( 'Model_Properties', 'shortcode_agent_properties' ) );
 
-		// Add tm-re-properties search result shortcode
-		add_shortcode( Model_main::SHORT_CODE_MAP, array( 'Model_Properties', 'shortcode_map' ) );
+		// Add tm-re-agent-properties agent info shortcode
+		add_shortcode( Model_main::SHORT_CODE_AGENTS_LIST, array( 'Model_Properties', 'shortcode_agents_list' ) );
 
 		// Add tm-re-properties search result shortcode
-		add_shortcode( 'TMRE_AgentContactForm', array( 'Model_Properties', 'shortcode_agent_contact_form' ) );
+		add_shortcode( Model_main::SHORT_CODE_MAP, array( 'Model_Properties', 'shortcode_map' ) );
 
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
@@ -132,7 +135,8 @@ class TM_Real_Estate {
 	 * @return void|int
 	 */
 	public function save_meta( $post_id, $post = '' ) {
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+
+		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ) {
 			return;
 		}
 
@@ -183,7 +187,7 @@ class TM_Real_Estate {
 	 */
 	public function override_preview( $preview_link, $post ) {
 		if ( 'property' == $post->post_type ) {
-			$preview_link = sprintf( '%s?id=%s', Model_Settings::get_search_single_page(), $post->ID );
+			$preview_link = esc_url( sprintf( '%s?id=%s', Model_Settings::get_search_single_page(), $post->ID ) );
 		}
 		return $preview_link;
 	}
@@ -361,6 +365,7 @@ class TM_Real_Estate {
 								'select',
 								'media',
 								'collection',
+								'checkbox',
 							),
 						),
 					),
@@ -594,8 +599,9 @@ class TM_Real_Estate {
 	 */
 	public function set_defaults() {
 		// Publish hidden properties from confirm email
-		if ( array_key_exists( 'publish_hidden', $_GET ) ) {
-			Model_Properties::publish_hidden( (int) $_GET['publish_hidden'] );
+		$publish_hidden = get_query_var( 'publish_hidden', null );
+		if ( ! empty( $publish_hidden ) ) {
+			Model_Properties::publish_hidden( (int) $publish_hidden );
 			wp_redirect( get_bloginfo( 'url' ) );
 		}
 
@@ -619,7 +625,6 @@ class TM_Real_Estate {
 			array(
 				'defaultOptions' => Model_Settings::get_default_options(),
 				'pagesList'      => Model_Settings::get_page_list(),
-				'debug'          => get_option( Model_Settings::SETTINGS_KEY ),
 			)
 		);
 	}
@@ -848,8 +853,8 @@ class TM_Real_Estate {
 				'button_after'	=> $button_reset->render(),
 			)
 		);
-/*
-		$agents_list = get_users(  );
+
+		$agents_list = Model_Properties::get_agents_list();
 
 		if ( ! empty( $agents_list ) ) {
 			foreach( $agents_list as $agent ) {
@@ -920,7 +925,7 @@ class TM_Real_Estate {
 						'label'			=> '',
 						'class'			=> '',
 						'master'		=> '',
-					);
+					)
 				);
 
 				$agents[] = array(
@@ -930,6 +935,7 @@ class TM_Real_Estate {
 					'last_name_html'	=> $last_name_obj->render(),
 					'photo_html'		=> $photo_obj->render(),
 					'user_email_html'	=> $user_email_obj->render(),
+					'is_delete_html'	=> $is_delete_obj->render(),
 				);
 
 			}
@@ -996,8 +1002,8 @@ class TM_Real_Estate {
 			'photo_html'		=> $photo_new_obj->render(),
 			'user_email_html'	=> $user_email_new_obj->render(),
 		);
-
-		$this->core->modules['cherry-page-builder']->make( 'cherry-agents-list', 'Agents', 'edit.php?post_type=property', TM_REAL_ESTATE_DIR . 'views/admin-agents-list.php' )->set(
+		//TM_REAL_ESTATE_DIR . 'views/admin-agents-list.php'
+		$this->core->modules['cherry-page-builder']->make( 'cherry-agents-list', 'Agents', 'edit.php?post_type=property', ABSPATH . '/wp-admin/users.php' )->set(
 			array(
 				'capability'	=> 'manage_options',
 				'position'		=> 10,
@@ -1007,14 +1013,34 @@ class TM_Real_Estate {
 					'agent_new'	=> $agent_new,
 				),
 			)
-		); */
+		);
+	}
+	
+	function test() {
+		global $menu;
+    	global $submenu;
+		//echo 'test';
+		//var_dump( $submenu );
+		echo ABSPATH.'/wp-admin/users.php';
+		
+		//add_submenu_page( 'edit.php?post_type=property', 'Agents-2', 'Agents-2', 'manage_options', 'users.php', array( $this, 'test2' ) );
+
+	}
+	
+	function test2() {
+		ob_start();
+		include ABSPATH.'/wp-admin/users.php';
+		
+		$content = ob_get_contents();
+		ob_end_clean();
+		echo $content;
+		return $content;
 	}
 
 	/**
 	 * Include assets files
 	 *
 	 * @since 1.0
-	 * @return void
 	 */
 	public function assets() {
 

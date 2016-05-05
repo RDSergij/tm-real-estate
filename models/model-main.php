@@ -36,6 +36,9 @@ class Model_Main {
 	// Agent contact form
 	const SHORT_CODE_AGENT_PROPERTIES    = 'tm-re-agent-properties';
 
+	// Agents list
+	const SHORT_CODE_AGENTS_LIST    = 'tm-re-agents-list';
+
 	// Map with all items
 	const SHORT_CODE_MAP             = 'tm-re-map';
 

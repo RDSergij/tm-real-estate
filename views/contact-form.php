@@ -9,19 +9,18 @@
  * @link       http://www.cherryframework.com/
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
-
 ?>
 <div class="tm-re-contact-form">
-	<a href="<?php echo $__data['agent_page'] ?>">
+	<a href="<?php echo $__data['agent_page']; ?>">
 		<?php echo get_avatar( $__data['agent']->ID, 128 ); ?>
-		<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name ?></h4>
+		<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name; ?></h4>
 	</a>
 	<form>
 		<span class="message"></span>
 		<input type="hidden" name="action" value="tm_re_contact_form"/>
-		<input type="hidden" name="agent_id" value="<?php echo $__data['agent']->ID ?>"/>
-		<input type="hidden" name="property_id" value="<?php echo $__data['property_id'] ?>"/>
-		<?php echo __( 'Name', 'tm-real-estate' ) ?>
+		<input type="hidden" name="agent_id" value="<?php echo $__data['agent']->ID; ?>"/>
+		<input type="hidden" name="property_id" value="<?php echo $__data['property_id']; ?>"/>
+		<?php echo __( 'Name', 'tm-real-estate' ); ?>
 		<input type="text" id="name" name="name" value="" required />
 
 		<?php echo __( 'Email', 'tm-real-estate' ) ?>
@@ -33,6 +32,6 @@
 		<?php echo __( 'Message', 'tm-real-estate' ) ?>
 		<textarea id="message" name="message" required></textarea>
 		<div id="tm-re-contact-form-captcha" ></div>
-		<input type="submit"id="submit" value="<?php echo __( 'Send Message', 'tm-real-estate' ) ?>"/>
+		<input type="submit"id="submit" value="<?php echo __( 'Send Message', 'tm-real-estate' ); ?>"/>
 	</form>
 </div>

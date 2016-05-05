@@ -56,6 +56,9 @@
                         <td>
                             <?php echo $agent['user_email_html']; ?>
                         </td>
+                        <td>
+                            <?php echo $agent['is_delete_html']; ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
                     <tr id="agent_new">

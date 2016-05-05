@@ -58,7 +58,7 @@
 
 			<div class="property-location">
 				<h6><?php echo __( 'Location:', 'tm-real-estate' ) ?></h6>
-				<?php if ( '' != $property->address ) : ?>
+				<?php if ( ! empty( $property->address  ) ) : ?>
 					<div id="locations" data-address="<?php echo esc_attr( $property->address ); ?>"></div>
 				<?php endif; ?>
 			</div>
@@ -107,10 +107,10 @@
 						<?php echo $property->area; ?> <?php echo __( $__data['area_unit'], 'tm-real-estate' ); ?>
 					</li>
 					<?php foreach ( $property->types as $type ) : ?>
-					<li class="type"><?php echo $type ?></li>
+					<li class="type"><?php echo $type; ?></li>
 					<?php endforeach; ?>
 					<?php foreach ( $property->tags as $tag ) : ?>
-					<li class="tag"><?php echo $tag ?></li>
+					<li class="tag"><?php echo $tag; ?></li>
 					<?php endforeach; ?>
 				</ul>
 			</footer>

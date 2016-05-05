@@ -23,9 +23,9 @@ class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 		$this->widget_id          = 'tm-real-estate-search-form-widget';
 		$this->widget_name        = __( 'Search Form Widget', 'tm-real-estate' );
 		$this->settings           = array(
-			'title'  => array(
+			'title' => array(
 				'type'  => 'text',
-				'value' => esc_html__( '', 'tm-real-estate' ),
+				'value' => '',
 				'label' => esc_html__( 'Title', 'tm-real-estate' ),
 			),
 		);
@@ -41,7 +41,7 @@ class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 	public function widget( $args, $instance ) {
 		$title = '';
 		if ( array_key_exists( 'title', $instance ) ) {
-			$title = $args['before_title'] . $instance['title'] . $args['after_title'];
+			$title = $args['before_title'] . sanitize_text_field( $instance['title'] ) . $args['after_title'];
 		}
 		echo $args['before_widget'];
 		echo $title;

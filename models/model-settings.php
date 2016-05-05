@@ -123,17 +123,28 @@ class Model_Settings {
 	}
 
 	/**
+	 * Get page link
+	 *
+	 * @return string property price.
+	 */
+	public static function get_page_link( $page_type ) {
+		$main_settings	= self::get_main_settings();
+		$page_id		= $main_settings[ $page_type ];
+
+		$permalink = get_permalink( $page_id );
+
+		return $permalink;
+	}
+
+	/**
 	 * Get search result page
 	 *
 	 * @return string property price.
 	 */
 	public static function get_search_result_page() {
-		$main_settings	= self::get_main_settings();
-		$page_id		= $main_settings['properties-search-result-page'];
+		$permalink = str_replace( home_url(), '.', self::get_page_link( 'properties-search-result-page' ) );
 
-		$permalink = str_replace( home_url(), './', get_permalink( $page_id ) );
-
-		return $permalink;
+		return self::get_page_link( 'properties-search-result-page' );
 	}
 
 	/**
@@ -142,12 +153,7 @@ class Model_Settings {
 	 * @return string property price.
 	 */
 	public static function get_search_single_page() {
-		$main_settings	= self::get_main_settings();
-		$page_id		= $main_settings['property-item-page'];
-
-		$permalink = get_permalink( $page_id );
-
-		return $permalink;
+		return self::get_page_link( 'property-item-page' );
 	}
 
 	/**
@@ -156,12 +162,7 @@ class Model_Settings {
 	 * @return string property price.
 	 */
 	public static function get_agent_properties_page() {
-		$main_settings	= self::get_main_settings();
-		$page_id		= $main_settings['agent-properties-page'];
-
-		$permalink = get_permalink( $page_id );
-
-		return $permalink;
+		return self::get_page_link( 'agent-properties-page' );
 	}
 
 	/**
@@ -206,7 +207,10 @@ class Model_Settings {
 	 * @return string title for view.
 	 */
 	public static function get_area_unit_title() {
-		return self::$area_unit_symbols[ self::get_area_unit_setting() ];
+		if ( ! empty( self::$area_unit_symbols[ self::get_area_unit_setting() ] ) ) {
+			return self::$area_unit_symbols[ self::get_area_unit_setting() ];
+		}
+		return self::$area_unit_symbols['feets'];
 	}
 
 	/**

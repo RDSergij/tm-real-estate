@@ -9,12 +9,11 @@
  * @link       http://www.cherryframework.com/
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
-
 ?>
 <div class="wrap">
 	<h3>
 		<a href="<?php echo get_permalink( $__data['property_data']->ID ) ?>">
-			<?php echo $__data['property_data']->post_title ?>
+			<?php echo $__data['property_data']->post_title; ?>
 		</a>
 	</h3>
 	<p>

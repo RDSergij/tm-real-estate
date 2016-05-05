@@ -21,7 +21,8 @@ class Model_Submit_Form {
 	 * @return html code.
 	 */
 	public static function shortcode_submit_form() {
-		wp_enqueue_script( 'submit-form', plugins_url( 'tm-real-estate' ) . '/assets/js/submit-form.js',array( 'jquery' ), '1.0.0', true );
+		self::submit_form_assets();
+
 		$terms = Model_Properties::get_types();
 
 		return Cherry_Core::render_view(
@@ -32,6 +33,13 @@ class Model_Submit_Form {
 				'required_for_gests' => self::get_required_for_gests(),
 			)
 		);
+	}
+
+	/**
+	 * Submit form assets
+	 */
+	public static function submit_form_assets() {
+		wp_enqueue_script( 'submit-form', plugins_url( 'tm-real-estate' ) . '/assets/js/submit-form.js',array( 'jquery' ), '1.0.0', true );
 	}
 
 	/**
