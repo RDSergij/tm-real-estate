@@ -78,7 +78,7 @@ jQuery( document ).ready( function( $ ) {
 			// Do something with attachment.id and/or attachment.url here
 			// write the selected image url to the value of the #tm_re_agent_photo_meta text field
 			$( '#tm_re_agent_photo_upload_meta' ).val( attachment.id );
-			$( '#tm_re_agent_photo_upload_edit_meta' ).val( '/wp-admin/post.php?post=' + attachment.id + '&action=edit&image-editor' );
+			$( '#tm_re_agent_photo_upload_edit_meta' ).val( './post.php?post=' + attachment.id + '&action=edit&image-editor' );
 			$( '.agent-photo-img' ).attr('src', imageSrc).removeClass( 'placeholder' );
 		};
 	};
