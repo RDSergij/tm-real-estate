@@ -12,7 +12,7 @@
 ?>
 <div class="tm-re-contact-form">
 	<a href="<?php echo $__data['agent_page']; ?>">
-		<img src="<?php echo $agent->photo_url; ?>">
+		<img src="<?php echo $__data['photo_url']; ?>">
 		<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name; ?></h4>
 	</a>
 	<form>
