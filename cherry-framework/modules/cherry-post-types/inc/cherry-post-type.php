@@ -97,7 +97,7 @@ class Cherry_Post_Type {
 	public function load_font_awesome() {
 		wp_enqueue_style(
 			'font-awesome',
-			'//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
+			'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
 		);
 
 		?>

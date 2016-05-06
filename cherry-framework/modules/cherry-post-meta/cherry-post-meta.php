@@ -285,7 +285,7 @@ if ( ! class_exists( 'Cherry_Post_Meta' ) ) {
 				);
 
 			}
-			return Cherry_Toolkit::render_view(
+			return Cherry_Core::render_view(
 				$this->module_directory . '/views/meta.php',
 				array(
 					'elements' => $elements,
@@ -343,8 +343,7 @@ if ( ! class_exists( 'Cherry_Post_Meta' ) ) {
 
 			foreach ( $this->args['fields'] as $key => $field ) {
 
-				if ( empty( $_POST[ $key ] ) ) {
-					update_post_meta( $post_id, $key, false );
+				if ( ! isset( $_POST[ $key ] ) ) {
 					continue;
 				}
 

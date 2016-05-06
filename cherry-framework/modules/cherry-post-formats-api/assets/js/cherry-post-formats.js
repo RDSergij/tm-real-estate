@@ -31,33 +31,30 @@
 
 		initalize: function( object ) {
 
-			$(window).load(function () {
+			$( '*[data-cherry' + object + '="1"]' ).each( function() {
+				var plugin = $( this ).data( object ),
+					init   = $( this ).data( 'init' );
 
-				$( '*[data-cherry' + object + '="1"]' ).each( function() {
-					var plugin = $( this ).data( object ),
-						init   = $( this ).data( 'init' );
-
-					$( this ).data( 'initalized', false );
-					$( this ).trigger({
-						type: 'cherry-post-formats-custom-init',
-						item: $( this ),
-						object: object
-					});
-
-					if ( true === $( this ).data( 'initalized' ) ) {
-						return 1;
-					}
-
-					if ( ! plugin ) {
-						return !1;
-					}
-
-					if ( ! $.isFunction( jQuery.fn[ plugin ] ) ) {
-						return !1;
-					}
-
-					$( this )[ plugin ]( init );
+				$( this ).data( 'initalized', false );
+				$( this ).trigger({
+					type: 'cherry-post-formats-custom-init',
+					item: $( this ),
+					object: object
 				});
+
+				if ( true === $( this ).data( 'initalized' ) ) {
+					return 1;
+				}
+
+				if ( ! plugin ) {
+					return !1;
+				}
+
+				if ( ! $.isFunction( jQuery.fn[ plugin ] ) ) {
+					return !1;
+				}
+
+				$( this )[ plugin ]( init );
 			});
 
 		}

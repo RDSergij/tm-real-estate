@@ -1,3 +1,12 @@
+<?php
+/**
+ * Agent photo view
+ *
+ * @package  TM Real Estate
+ * @author   Guriev Eugen & Sergyj Osadchij
+ * @license  GPL-2.0+
+ */
+?>
 <div id="tm_re_agent_photo_container">
 
 	<table class="form-table">
@@ -13,7 +22,7 @@
 							<a class="remove_img"><span>Remove</span></a>
 							<a href="<?php echo $__data['upload_edit_url']; ?>" class="edit_img" target="_blank"><span>Edit</span></a>
 						</div>
-					<?php elseif( ! empty( $__data['url'] ) ) : ?>
+					<?php elseif ( ! empty( $__data['url'] ) ) : ?>
 						<img src="<?php echo esc_url( $__data['url'] ); ?>" class="agent-photo-img">
 						<div class="edit_options single">
 							<a class="remove_img"><span><?php _e( 'Remove', 'tm-real-estate' ); ?></span></a>
@@ -32,7 +41,7 @@
 				</div>
 				<!-- Outputs the save button -->
 				<span class="description"><?php _e( 'Upload a custom photo.', 'tm-real-estate' ); ?></span>
-				<p class="description"><?php _e('Update Profile to save your changes.', 'tm-real-estate'); ?></p>
+				<p class="description"><?php _e( 'Update Profile to save your changes.', 'tm-real-estate' ); ?></p>
 			</td>
 		</tr>
 

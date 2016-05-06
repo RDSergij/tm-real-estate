@@ -155,6 +155,7 @@ class Model_Agents {
 				'agent'			=> $user_data->data,
 				'property_id'	=> $property_id,
 				'agent_page'	=> $agent_page,
+				'photo_url'		=> self::get_agent_photo_url( $agent_id ),
 			)
 		);
 	}
@@ -168,8 +169,9 @@ class Model_Agents {
 		$agents = get_users( array( 'role' => 're_agent' ) );
 
 		if ( ! empty( $agents ) && is_array( $agents ) && count( $agents ) > 0 ) {
-			foreach( $agents as &$agent ) {
+			foreach ( $agents as &$agent ) {
 				$agent->agent_page = esc_url( Model_Settings::get_agent_properties_page() . '?agent_id=' . $agent->ID );
+				$agent->photo_url = self::get_agent_photo_url( $agent->ID );
 			}
 			return $agents;
 		}
@@ -194,11 +196,13 @@ class Model_Agents {
 		}
 	}
 
-	// Enqueue scripts and styles
+	/**
+	 * Include photo assets
+	 */
 	public static function photo_assets() {
 		// Register
 		wp_register_style( 'tm_agent_photo_admin_css', TM_REAL_ESTATE_URI . 'assets/css/styles.css', false, '1.0.0', 'all' );
-		wp_register_script( 'tm_agent_photo_admin_js', TM_REAL_ESTATE_URI . 'assets/js/agent-photo.js', array('jquery'), '1.0.0' );
+		wp_register_script( 'tm_agent_photo_admin_js', TM_REAL_ESTATE_URI . 'assets/js/agent-photo.js', array( 'jquery' ), '1.0.0' );
 
 		// Enqueue
 		wp_enqueue_style( 'tm_agent_photo_admin_css' );
@@ -207,12 +211,12 @@ class Model_Agents {
 
 	/**
 	 * Add photo field in profile
-	 * 
-	 * @param type $user
-	 * @return boolean
+	 *
+	 * @param object $user
+	 * @return html code
 	 */
 	public static function profile_img_fields( $user ) {
-		if ( ! current_user_can('upload_files') ) {
+		if ( ! current_user_can( 'upload_files' ) ) {
 			return false;
 		}
 
@@ -237,7 +241,7 @@ class Model_Agents {
 					'photo_id'			=> $photo_id,
 					'upload_edit_url'	=> $upload_edit_url,
 					'btn_text'			=> $btn_text,
-					'default_image'		=> TM_REAL_ESTATE_URI . 'assets/images/placehold.png'
+					'default_image'		=> TM_REAL_ESTATE_URI . 'assets/images/placehold.png',
 				)
 			);
 
@@ -245,13 +249,14 @@ class Model_Agents {
 
 	/**
 	 * Save image
-	 * 
-	 * @param type $user
+	 *
+	 * @param integer agent
 	 */
 	public static function save_img_meta( $user_id ) {
 
-		if ( !current_user_can( 'upload_files', $user_id ) )
+		if ( ! current_user_can( 'upload_files', $user_id ) ) {
 			return false;
+		}
 
 		// If the current user can edit Users, allow this.
 		update_user_meta( $user_id, 'tm-re-photo-upload-meta', sanitize_text_field( $_POST['tm_re_agent_photo_upload_meta'] ) );
@@ -260,34 +265,40 @@ class Model_Agents {
 
 	/**
 	 * Photo url
-	 * 
-	 * @param type $user
+	 *
+	 * @param integer agent
 	 * @return string
 	 */
 	public static function get_agent_photo_url( $agent_id ) {
 		$attachment_id = get_the_author_meta( 'tm-re-photo-upload-meta', $agent_id );
-		$image = wp_get_attachment_image_src ( $attachment_id, 'medium' );
-		return $image[0];
+
+		if ( empty( $attachment_id ) ) {
+			$photo_url = TM_REAL_ESTATE_URI . 'assets/images/placehold.png';
+		} else {
+			$image = wp_get_attachment_image_src( $attachment_id, 'medium' );
+			$photo_url = $image[0];
+		}
+
+		return $photo_url;
 	}
 
 	/**
-	 * Photo url
-	 * 
-	 * @param type $user
-	 * @return string
+	 * Photo id
+	 *
+	 * @param integer agent
+	 * @return integer
 	 */
 	public static function get_agent_photo_id( $agent_id ) {
-		return get_the_author_meta( 'tm-re-photo-upload-meta', $agent_id );
+		return (int) get_the_author_meta( 'tm-re-photo-upload-meta', $agent_id );
 	}
 
 	/**
-	 * Edit image url
-	 * 
-	 * @param type $user
+	 * Agent`s photo url
+	 *
+	 * @param integer agent
 	 * @return string
 	 */
 	public static function get_edit_agent_photo_url( $agent_id ) {
 		return get_the_author_meta( 'tm-re-photo-upload-edit-meta', $agent_id );
 	}
-
 }

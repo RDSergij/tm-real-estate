@@ -58,7 +58,7 @@
 
 			<div class="property-location">
 				<h6><?php echo __( 'Location:', 'tm-real-estate' ) ?></h6>
-				<?php if ( ! empty( $property->address  ) ) : ?>
+				<?php if ( ! empty( $property->address ) ) : ?>
 					<div id="locations" data-address="<?php echo esc_attr( $property->address ); ?>"></div>
 				<?php endif; ?>
 			</div>

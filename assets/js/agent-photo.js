@@ -26,15 +26,15 @@ jQuery( document ).ready( function( $ ) {
 				$( this ).stop( true, true ).animate({opacity: 0}, 100);
 			});
 
-			$('.remove_img').on( 'click', function( event ) {
+			$( '.remove_img' ).on( 'click', function( event ) {
 				event.preventDefault();
-				var placeholder = $('#tm_re_agent_photo_placeholder_meta').val();
+				var placeholder = $( '#tm_re_agent_photo_placeholder_meta' ).val();
 
-				$(this).parent().fadeOut('fast', function(){
-					$(this).remove();
-					$('.agent-photo-img').addClass('placeholder').attr('src', placeholder);
+				$( this ).parent().fadeOut( 'fast', function() {
+					$( this ).remove();
+					$( '.agent-photo-img' ).addClass( 'placeholder' ).attr( 'src', placeholder );
 				});
-				$('#tm_re_agent_photo_upload_meta, #tm_re_agent_photo_upload_edit_meta, #tm_re_agent_photo_meta').val('');
+				$( '#tm_re_agent_photo_upload_meta, #tm_re_agent_photo_upload_edit_meta, #tm_re_agent_photo_meta' ).val( '' );
 			});
 		};
 
@@ -57,7 +57,7 @@ jQuery( document ).ready( function( $ ) {
 			// When an image is selected, run a callback.
 			file_frame.on( 'select', function() {
 				// We set multiple to false so only get one image from the uploader
-				attachment = file_frame.state().get('selection').first().toJSON();
+				attachment = file_frame.state().get( 'selection' ).first().toJSON();
 
 				// Set photo
 				tmrePhoto.setPhoto( attachment );
@@ -68,18 +68,18 @@ jQuery( document ).ready( function( $ ) {
 		};
 
 		tmrePhoto.setPhoto = function( attachment ) {
-			var image_src;
+			var imageSrc;
 			if ( undefined === attachment.sizes ||  undefined === attachment.sizes.medium ) {
-				image_src = attachment.url;
+				imageSrc = attachment.url;
 			} else {
-				image_src = attachment.sizes.medium.url;
+				imageSrc = attachment.sizes.medium.url;
 			}
-			console.log( attachment.id);
+
 			// Do something with attachment.id and/or attachment.url here
 			// write the selected image url to the value of the #tm_re_agent_photo_meta text field
-			$('#tm_re_agent_photo_upload_meta').val( attachment.id );
-			$('#tm_re_agent_photo_upload_edit_meta').val('/wp-admin/post.php?post=' + attachment.id + '&action=edit&image-editor');
-			$('.agent-photo-img').attr('src', image_src).removeClass( 'placeholder' );
+			$( '#tm_re_agent_photo_upload_meta' ).val( attachment.id );
+			$( '#tm_re_agent_photo_upload_edit_meta' ).val( '/wp-admin/post.php?post=' + attachment.id + '&action=edit&image-editor' );
+			$( '.agent-photo-img' ).attr('src', imageSrc).removeClass( 'placeholder' );
 		};
 	};
 
