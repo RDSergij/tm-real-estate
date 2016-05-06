@@ -883,4 +883,24 @@ class Model_Properties {
 
 		return array( $lat, $lng );
 	}
+
+	/**
+	 * Single column
+	 *
+	 * @param array $columns
+	 * @return array
+	 */
+	public static function property_single_column_layout( $columns ) {
+		$columns['property'] = 1;
+		return $columns;
+	}
+
+	/**
+	 * Single column
+	 *
+	 * @return int
+	 */
+	public static function property_single_column_layout_post() {
+		return 1;
+	}
 }
