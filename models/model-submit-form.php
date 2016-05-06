@@ -25,7 +25,7 @@ class Model_Submit_Form {
 
 		$terms = Model_Properties::get_types();
 
-		return Cherry_Core::render_view(
+		return Cherry_Toolkit::render_view(
 			TM_REAL_ESTATE_DIR . '/views/submit-form.php',
 			array(
 				'terms'              => $terms,

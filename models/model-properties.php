@@ -302,7 +302,7 @@ class Model_Properties {
 		$form		= self::shortcode_search_form( $atts );
 		$properties	= self::shortcode_properties( $atts );
 
-		return Cherry_Core::render_view(
+		return Cherry_Toolkit::render_view(
 			TM_REAL_ESTATE_DIR . 'views/search-result.php',
 			array(
 				'form'			=> $form,
@@ -341,7 +341,7 @@ class Model_Properties {
 			}
 		}
 
-		return Cherry_Core::render_view(
+		return Cherry_Toolkit::render_view(
 			TM_REAL_ESTATE_DIR . 'views/properties.php',
 			array(
 				'properties'		=> $properties,
@@ -372,7 +372,7 @@ class Model_Properties {
 			$reverse = 'asc';
 		}
 
-		return Cherry_Core::render_view(
+		return Cherry_Toolkit::render_view(
 			TM_REAL_ESTATE_DIR . 'views/order.php',
 				array(
 					'query_string'			=> $query_string,
@@ -425,7 +425,7 @@ class Model_Properties {
 	 * @return [string] map view.
 	 */
 	public static function shortcode_map() {
-		return Cherry_Core::render_view(
+		return Cherry_Toolkit::render_view(
 			TM_REAL_ESTATE_DIR . 'views/map.php',
 			array(
 				'addresses'         => self::get_addresses(),
@@ -528,9 +528,9 @@ class Model_Properties {
 			$properties	= (array) self::get_properties( array( 'include' => $id, 'limit' => 1 ) );
 			$property	= $properties[0];
 
-			$contact_form = self::agent_contact_form( null, $id );
+			$contact_form = Model_Agents::agent_contact_form( null, $id );
 
-			return Cherry_Core::render_view(
+			return Cherry_Toolkit::render_view(
 				TM_REAL_ESTATE_DIR . 'views/property.php',
 				array(
 					'property'			=> $property,
@@ -568,7 +568,7 @@ class Model_Properties {
 
 		$action_url = Model_Settings::get_search_result_page();
 
-		return Cherry_Core::render_view(
+		return Cherry_Toolkit::render_view(
 			TM_REAL_ESTATE_DIR . 'views/search-form.php',
 			array(
 				'property_statuses'	=> self::get_allowed_property_statuses(),
@@ -578,175 +578,6 @@ class Model_Properties {
 				'locations'         => Model_Submit_Form::get_locations(),
 			)
 		);
-	}
-
-	/**
-	 * Agent contact form shortcode
-	 *
-	 * @return html code.
-	 */
-	public static function shortcode_contact_form( $atts ) {
-
-		if ( empty( $atts['agent_id'] ) && empty( $atts['property_id'] ) ) {
-			return;
-		}
-
-		$property_id = null;
-		if ( ! empty( $atts['property_id'] ) ) {
-			$property_id = $atts['property_id'];
-		}
-
-		$agent_id = null;
-		if ( ! empty( $atts['agent_id'] ) ) {
-			$agent_id = $atts['agent_id'];
-		} else {
-			$agent_id = get_post_meta( $property_id, 'agent', true );
-		}
-
-		return self::agent_contact_form( $agent_id, $property_id );
-	}
-
-	/**
-	 * Agent contact form shortcode
-	 *
-	 * @return html code.
-	 */
-	public static function shortcode_agent_properties( $atts ) {
-
-		if ( ! is_array( $atts ) ) {
-			$atts = array();
-		}
-
-		if ( empty( $atts['agent_id'] ) && empty( $atts['property_id'] ) && empty( $_GET['agent_id'] ) && empty( $_GET['property_id'] ) ) {
-			return;
-		}
-
-		$atts = array_merge( $atts, $_GET );
-
-		$property_id = null;
-		if ( ! empty( $atts['property_id'] ) ) {
-			$property_id = $atts['property_id'];
-		}
-
-		$agent_id = null;
-		if ( ! empty( $atts['agent_id'] ) ) {
-			$agent_id = $atts['agent_id'];
-		} else {
-			$agent_id = get_post_meta( $property_id, 'agent', true );
-		}
-
-		$args = array( 'agent' => $agent_id );
-
-		$args = array_merge( $atts, $args );
-
-		$contact_form_html = self::agent_contact_form( $agent_id, $property_id );
-
-		$properties_html = self::shortcode_properties( $args );
-
-		return Cherry_Core::render_view(
-			TM_REAL_ESTATE_DIR . 'views/agent-properties.php',
-			array(
-				'contact_form_html'	=> $contact_form_html,
-				'properties_html'		=> $properties_html,
-			)
-		);
-
-	}
-
-	/**
-	 * Contact form assets
-	 */
-	public static function contact_form_assets() {
-
-		$contact_form_settings = Model_Settings::get_contact_form_settings();
-
-		wp_enqueue_script(
-			'google-captcha',
-			'https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit',
-			null,
-			'1.0.0',
-			false
-		);
-
-		wp_enqueue_script(
-			'tm-real-state-contact-form',
-			plugins_url( 'tm-real-estate' ) . '/assets/js/contact-form.min.js',
-			array( 'jquery' ),
-			'1.0.0',
-			true
-		);
-
-		wp_localize_script( 'tm-real-state-contact-form', 'TMREContactForm', array(
-			'ajaxUrl'			=> admin_url( 'admin-ajax.php' ),
-			'successMessage'	=> $contact_form_settings['success-message'],
-			'failedMessage'		=> $contact_form_settings['failed-message'],
-			'captchaKey'		=> ! empty( $contact_form_settings['google-captcha-key'] ) ? $contact_form_settings['google-captcha-key'] : '',
-		) );
-
-		wp_enqueue_style(
-			'tm-real-contact-form',
-			plugins_url( 'tm-real-estate' ) . '/assets/css/contact-form.min.css',
-			array(),
-			'1.0.0',
-			'all'
-		);
-
-	}
-
-	/**
-	 * Agent contact form
-	 *
-	 * @return html code.
-	 */
-	public static function agent_contact_form( $agent_id, $property_id ) {
-
-		self::contact_form_assets();
-
-		if ( empty( $agent_id ) ) {
-			if ( empty( $property_id ) ) {
-				return;
-			}
-
-			$agent_id = get_post_meta( $property_id, 'agent', true );
-		}
-
-		$agent_id  = max( (int) $agent_id, 1 );
-		$user_data = get_userdata( $agent_id );
-		$agent_page = Model_Settings::get_agent_properties_page() . '?agent_id=' . $agent_id;
-
-		return Cherry_Core::render_view(
-			TM_REAL_ESTATE_DIR . 'views/contact-form.php',
-			array(
-				'agent'			=> $user_data->data,
-				'property_id'	=> $property_id,
-				'agent_page'	=> $agent_page,
-			)
-		);
-	}
-	
-	public static function get_agents_list() {
-		$agents = get_users( array( 'role' => 're_agent' ) );
-
-		if ( ! empty( $agents ) && is_array( $agents ) ) {
-			foreach( $agents as &$agent ) {
-				$agent->agent_page = esc_url( Model_Settings::get_agent_properties_page() . '?agent_id=' . $agents->ID );
-			}
-			return $agents;
-		}
-
-		return null;
-	}
-	
-	public static function shortcode_agents_list() {
-		$agents = self::get_agents_list();
-		if ( ! empty( $agents ) ) {
-			return Cherry_Core::render_view(
-				TM_REAL_ESTATE_DIR . 'views/agents-list.php',
-				array(
-					'agents'		=> $agents,
-				)
-			);
-		}
 	}
 
 	/**

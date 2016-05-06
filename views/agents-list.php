@@ -11,12 +11,14 @@
  */
 ?>
 <div class="tm-re-agents-list">
-    <?php foreach( $__data['agents'] as $agent ) : ?>
-    <div class="agent-item" id="agent-<?php echo $agent->ID ?>">
-        <a href="<?php echo $__data['agent_page']; ?>">
-            <?php echo get_avatar( $agent->ID, 128 ); ?>
-            <h4><?php echo $agent->display_name; ?></h4>
-        </a>
-    </div>
-    <?php endforeach; ?>
+    <?php if ( count( $__data['agents'] ) > 0 ) : ?>
+        <?php foreach( $__data['agents'] as $agent ) : ?>
+        <div class="agent-item" id="agent-<?php echo $agent->ID ?>">
+            <a href="<?php echo $__data['agent_page']; ?>">
+                <?php echo get_avatar( $agent->ID, 128 ); ?>
+                <h4><?php echo $agent->display_name; ?></h4>
+            </a>
+        </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </div>

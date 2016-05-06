@@ -202,7 +202,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 
 			$view_file_path = ! empty( $this->data['view'] ) ? $this->data['view'] : $this->views . 'page.php';
 
-			$html = Cherry_Core::render_view(
+			$html = Cherry_Toolkit::render_view(
 				$view_file_path,
 				array(
 					'title'			=> $title,
@@ -314,7 +314,7 @@ if ( ! class_exists( 'Cherry_Page_Builder' ) ) {
 				}
 			}
 
-			$html = Cherry_Core::render_view(
+			$html = Cherry_Toolkit::render_view(
 				$this->views . 'section.php',
 				array(
 					'description' => $description,

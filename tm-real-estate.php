@@ -50,9 +50,6 @@ class TM_Real_Estate {
 	 * TM_REAL_ESTATE class constructor
 	 */
 	private function __construct() {
-		
-		
-		//add_action( 'admin_menu', array( $this, 'test' ) );
 
 		// Set the constants needed by the plugin.
 		$this->constants();
@@ -84,10 +81,10 @@ class TM_Real_Estate {
 		add_shortcode( Model_main::SHORT_CODE_SEARCH_RESULT, array( 'Model_Properties', 'shortcode_search_result' ) );
 
 		// Add tm-re-agent-properties agent info shortcode
-		add_shortcode( Model_main::SHORT_CODE_AGENT_PROPERTIES, array( 'Model_Properties', 'shortcode_agent_properties' ) );
+		add_shortcode( Model_main::SHORT_CODE_AGENT_PROPERTIES, array( 'Model_Agents', 'shortcode_agent_properties' ) );
 
 		// Add tm-re-agent-properties agent info shortcode
-		add_shortcode( Model_main::SHORT_CODE_AGENTS_LIST, array( 'Model_Properties', 'shortcode_agents_list' ) );
+		add_shortcode( Model_main::SHORT_CODE_AGENTS_LIST, array( 'Model_Agents', 'shortcode_agents_list' ) );
 
 		// Add tm-re-properties search result shortcode
 		add_shortcode( Model_main::SHORT_CODE_MAP, array( 'Model_Properties', 'shortcode_map' ) );
@@ -124,6 +121,17 @@ class TM_Real_Estate {
 
 		// Fix "Preview" link in post edit page
 		add_filter( 'preview_post_link', array( &$this, 'override_preview' ), 10, 2 );
+
+		// Agents photo block
+		add_action( 'admin_enqueue_scripts', array( 'Model_Agents', 'photo_assets' ) );
+
+		// Show the new image field in the user profile page.
+		add_action( 'show_user_profile', array( 'Model_Agents', 'profile_img_fields' ) );
+		add_action( 'edit_user_profile', array( 'Model_Agents', 'profile_img_fields' ) );
+
+		// Save the new user CUPP url.
+		add_action( 'personal_options_update', array( 'Model_Agents', 'save_img_meta' ) );
+		add_action( 'edit_user_profile_update', array( 'Model_Agents', 'save_img_meta' ) );
 	}
 
 	/**
@@ -294,6 +302,7 @@ class TM_Real_Estate {
 		$models = array(
 			'Model_Main',
 			'Model_Properties',
+			'Model_Agents',
 			'Model_Settings',
 			'Model_Submit_Form',
 			'Model_Shortcode_Tinymce',
@@ -524,7 +533,7 @@ class TM_Real_Estate {
 		$headers = 'From: ' . $data['name'] . ' <' . $data['email'] . '>' . "\r\n";
 		$headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
 
-		$html = Cherry_Core::render_view(
+		$html = Cherry_Toolkit::render_view(
 			TM_REAL_ESTATE_DIR . 'views/mail.php',
 			array(
 				'message_data'	=> $data,
@@ -854,10 +863,10 @@ class TM_Real_Estate {
 			)
 		);
 
-		$agents_list = Model_Properties::get_agents_list();
+		$agents_list = Model_Agents::get_agents_list();
 
 		if ( ! empty( $agents_list ) ) {
-			foreach( $agents_list as $agent ) {
+			foreach ( $agents_list as $agent ) {
 
 				$user_id_obj = new UI_Text(
 					array(
@@ -876,7 +885,7 @@ class TM_Real_Estate {
 						'value'   => $agent->user_login,
 					)
 				);
-				
+
 				$first_name_obj = new UI_Text(
 					array(
 						'type'    => 'text',
@@ -885,7 +894,7 @@ class TM_Real_Estate {
 						'value'   => $agent->first_name,
 					)
 				);
-				
+
 				$last_name_obj = new UI_Text(
 					array(
 						'type'    => 'text',
@@ -894,7 +903,7 @@ class TM_Real_Estate {
 						'value'   => $agent->last_name,
 					)
 				);
-				
+
 				$user_email_obj = new UI_Text(
 					array(
 						'type'    => 'text',
@@ -903,12 +912,12 @@ class TM_Real_Estate {
 						'value'   => $agent->user_email,
 					)
 				);
-				
+
 				$photo_obj = new UI_Media(
 					array(
 						'id'      => 'photo',
 						'name'    => 'photo[]',
-						//'value'   => $agent->get['photo'],
+						/*'value'   => $agent->get['photo'],*/
 					)
 				);
 
@@ -959,7 +968,7 @@ class TM_Real_Estate {
 				'value'   => '',
 			)
 		);
-		
+
 		$first_name_new_obj = new UI_Text(
 			array(
 				'type'    => 'text',
@@ -977,7 +986,7 @@ class TM_Real_Estate {
 				'value'   => '',
 			)
 		);
-		
+
 		$user_email_new_obj = new UI_Text(
 			array(
 				'type'    => 'text',
@@ -986,7 +995,7 @@ class TM_Real_Estate {
 				'value'   => '',
 			)
 		);
-		
+
 		$photo_new_obj = new UI_Media(
 			array(
 				'id'      => 'photo',
@@ -1002,8 +1011,8 @@ class TM_Real_Estate {
 			'photo_html'		=> $photo_new_obj->render(),
 			'user_email_html'	=> $user_email_new_obj->render(),
 		);
-		//TM_REAL_ESTATE_DIR . 'views/admin-agents-list.php'
-		$this->core->modules['cherry-page-builder']->make( 'cherry-agents-list', 'Agents', 'edit.php?post_type=property', ABSPATH . '/wp-admin/users.php' )->set(
+
+		/*$this->core->modules['cherry-page-builder']->make( 'cherry-agents-list', 'Agents', TM_REAL_ESTATE_DIR . 'views/admin-agents-list.php' )->set(
 			array(
 				'capability'	=> 'manage_options',
 				'position'		=> 10,
@@ -1013,28 +1022,7 @@ class TM_Real_Estate {
 					'agent_new'	=> $agent_new,
 				),
 			)
-		);
-	}
-	
-	function test() {
-		global $menu;
-    	global $submenu;
-		//echo 'test';
-		//var_dump( $submenu );
-		echo ABSPATH.'/wp-admin/users.php';
-		
-		//add_submenu_page( 'edit.php?post_type=property', 'Agents-2', 'Agents-2', 'manage_options', 'users.php', array( $this, 'test2' ) );
-
-	}
-	
-	function test2() {
-		ob_start();
-		include ABSPATH.'/wp-admin/users.php';
-		
-		$content = ob_get_contents();
-		ob_end_clean();
-		echo $content;
-		return $content;
+		);*/
 	}
 
 	/**
