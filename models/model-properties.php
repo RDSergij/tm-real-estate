@@ -711,7 +711,7 @@ class Model_Properties {
 	public static function get_gallery( $post_id ) {
 		$gallery = (string) get_post_meta( $post_id, 'gallery', true );
 		$images = explode( ',', $gallery );
-		if (is_array( $images ) && 0 < count( $images ) ) {
+		if ( is_array( $images ) && 0 < count( $images ) ) {
 			foreach ( $images as &$image ) {
 				$imgs[] = self::get_all_images( $image );
 			}
@@ -890,7 +890,7 @@ class Model_Properties {
 	/**
 	 * Single column
 	 *
-	 * @param array $columns
+	 * @param array $columns screen option
 	 * @return array
 	 */
 	public static function property_single_column_layout( $columns ) {

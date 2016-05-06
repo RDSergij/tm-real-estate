@@ -363,6 +363,10 @@ class TM_Real_Estate {
 						'priority'	=> 999,
 						'autoload'	=> true,
 					),
+					'cherry-api-js'	=> array(
+						'priority'	=> 999,
+						'autoload'	=> true,
+					),
 					'cherry-utility'	=> array(
 						'priority'	=> 999,
 						'autoload'	=> true,
@@ -442,10 +446,11 @@ class TM_Real_Estate {
 									'left_label' => __( 'Parking places', 'tm-real-estate' ),
 								),
 								'gallery' => array(
-									'type'	  => 'media',
-									'id'      => 'gallery',
-									'name'    => 'gallery',
-									'left_label' => __( 'Gallery', 'tm-real-estate' ),
+									'type'			=> 'media',
+									'id'			=> 'gallery',
+									'name'			=> 'gallery',
+									'multi_upload'	=> true,
+									'left_label'	=> __( 'Gallery', 'tm-real-estate' ),
 								),
 								'agent' => array(
 									'type'        => 'select',
