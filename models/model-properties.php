@@ -709,13 +709,14 @@ class Model_Properties {
 	 * @return property gallery.
 	 */
 	public static function get_gallery( $post_id ) {
-		$gallery = get_post_meta( $post_id, 'gallery', true );
-		if ( array_key_exists( 'image', (array) $gallery ) ) {
-			foreach ( $gallery['image'] as &$image ) {
-				$image = self::get_all_images( $image );
+		$gallery = (string) get_post_meta( $post_id, 'gallery', true );
+		$images = explode( ',', $gallery );
+		if (is_array( $images ) && 0 < count( $images ) ) {
+			foreach ( $images as &$image ) {
+				$imgs[] = self::get_all_images( $image );
 			}
 		}
-		return $gallery;
+		return $imgs;
 	}
 
 	/**
@@ -869,19 +870,21 @@ class Model_Properties {
 	 * @return [array]           array( $lat, $lng )
 	 */
 	public static function get_lat_lng( $address ) {
-		$url      = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode( $address );
-		$body     = false;
-		$lat      = 0;
-		$lng      = 0;
-		$response = wp_remote_request( $url );
+		if ( ! empty( $address ) ) {
+			$url      = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode( $address );
+			$body     = false;
+			$lat      = 0;
+			$lng      = 0;
+			$response = wp_remote_request( $url );
 
-		if ( array_key_exists( 'body', $response ) ) {
-			$body = json_decode( $response['body'], true );
-			$lat  = $body['results'][0]['geometry']['location']['lat'];
-			$lng  = $body['results'][0]['geometry']['location']['lng'];
+			if ( array_key_exists( 'body', $response ) ) {
+				$body = json_decode( $response['body'], true );
+				$lat  = $body['results'][0]['geometry']['location']['lat'];
+				$lng  = $body['results'][0]['geometry']['location']['lng'];
+			}
+
+			return array( $lat, $lng );
 		}
-
-		return array( $lat, $lng );
 	}
 
 	/**
