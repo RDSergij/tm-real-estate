@@ -40,6 +40,13 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 	&:hover {
 		background: darken($accent-color, 10%);
 	}
+	&:active {
+		margin: 0;
+		top: 0;
+		border: none;
+		box-shadow: none;
+		transform: none;
+	}
 }
 @mixin form-input() {
 	border: none;
@@ -54,25 +61,155 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 /* Styles */
 // Edit page
 .post-type-property {
-	#poststuff {
-		/*#post-body.columns-2 {
-			margin: 0;
 
-			#post-body-content {
-				float: none;
-			}
-			#postbox-container-1 {
-				margin: 0;
-				width: 100%;
-				float: none;
+	// Button after title
+	.page-title-action {
+		@include button();
+		display: inline-block;
+		background: $success-color;
+		top: 0;
+		margin: 20px 0 0;
 
-				#side-sortables {
+		&:before {
+			@include font-awesome-icon;
+			font-size: 16px;
+			display: inline-block;
+			vertical-align: middle;
+			margin: 0 10px 0 0;
+			content: '\f067';
+		}
+	}
+
+	// Tabs on top
+	ul.subsubsub {
+		float: none;
+		border-bottom: 1px solid $border-color;
+
+		li {
+			font-size: 0;
+
+			a {
+				font-size: 14px;
+				font-weight: bold;
+				text-transform: uppercase;
+				color: $gray-color-1;
+				display: inline-block;
+				padding: 0 22px 25px 22px;
+				position: relative;
+
+				& + a {
+					margin-left: 1px;
+				}
+				&:after {
+					content: '';
 					width: 100%;
-					min-height: inherit;
+					height: 3px;
+					background: $accent-color;
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					transition: 300ms all cubic-bezier(.54,-0.36,.46,1.31);
+					transform: scale(0, 1);
+				}
+				.count {
+					color: inherit;
+					font-weight: bold;
+				}
+				&.current,
+				&:hover {
+					color: $accent-color;
+
+					&:after {
+						transform: scale(1, 1);
+					}
+				}
+				&:active {
+					border: none;
+					box-shadow: none;
 				}
 			}
-		}*/
+		}
 	}
+
+	#posts-filter {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+
+		.screen-reader-text {
+			flex: 0;
+			display: none;
+		}
+		.wp-list-table,
+		.tablenav.bottom {
+			flex: 1 0 100%;
+			max-width: 100%;
+		}
+	}
+
+	// Search box
+	.search-box {
+		margin: 30px 0 0;
+
+		#post-search-input {
+			@include form-input();
+		}
+		.button {
+			@include button();
+			margin: 0 0 0 10px;
+			background: $gray-color-3;
+
+			&:hover {
+				background: darken($gray-color-3, 10%);
+			}
+		}
+	}
+
+	// Filters on top
+	.tablenav {
+		height: auto;
+		margin: 30px 0 0;
+
+		select {
+			margin: 0 10px 0 0;
+			padding: 0;
+			@include form-input();
+		}
+		.button {
+			@include button();
+			background: $gray-color-3;
+
+			&:hover {
+				background: darken($gray-color-3, 10%);
+			}
+		}
+		.actions {
+			overflow: visible;
+			padding-top: 0;
+			padding-right: 20px;
+		}
+		.tablenav-pages {
+			margin-top: 10px;
+			margin-left: 0;
+		}
+	}
+
+	// Posts list 
+	.wp-list-table {
+		padding: 0;
+		margin: 30px 0 0;
+		border-radius: 7px;
+		border: 2px solid $border-color;
+		background: $gray-color-2;
+
+		thead {
+			background: $white-color;
+		}
+		tbody {
+			padding: 30px;
+		}
+	}
+
 	#screen-meta-links {
 		display: none;
 	}
@@ -93,11 +230,13 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				font-weight: bold;
 			}
 			> form {
-				padding: 30px 30px 38px;
-				margin: 30px 0 0;
-				border-radius: 7px;
-				border: 2px solid $border-color;
-				background: $gray-color-2;
+				&:not(#posts-filter):not([method="get"]) {
+					padding: 30px 30px 38px;
+					margin: 30px 0 0;
+					border-radius: 7px;
+					border: 2px solid $border-color;
+					background: $gray-color-2;
+				}
 			}
 		}
 
@@ -186,14 +325,6 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		.postbox, 
 		.stuffbox {
 			margin: 0 0 30px;
-		}
-		.meta-box-sortables {
-			.postbox,
-			.stuffbox {
-				&:last-child {
-					margin: 0;
-				}
-			}
 		}
 
 		#titlediv {

@@ -1077,7 +1077,7 @@ class TM_Real_Estate {
 
 		wp_enqueue_script(
 			'cherry-add-property-page',
-			plugins_url( 'tm-real-estate' )  . '/assets/js/page-add-property.min.js',
+			plugins_url( 'tm-real-estate' )  . '/assets/js/properties.min.js',
 			array( 'jquery' ),
 			'0.0.1',
 			true
@@ -1085,7 +1085,7 @@ class TM_Real_Estate {
 
 		wp_enqueue_style(
 			'cherry-add-property-page',
-			plugins_url( 'tm-real-estate' )  . '/assets/css/page-add-property.min.css',
+			plugins_url( 'tm-real-estate' )  . '/assets/css/properties.min.css',
 			array(),
 			'0.0.1',
 			'all'
