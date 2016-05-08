@@ -224,12 +224,96 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 
 	// Posts list 
 	.wp-list-table {
-		padding: 0 30px;
-		border-spacing: 0 30px;
+		padding: 0;
+		border-spacing: 0;
+
 		margin: 30px 0 0;
 		border-radius: 7px;
 		border: 2px solid $border-color;
 		background: $gray-color-2;
+		overflow: hidden;
+
+		display: block;
+
+		thead,
+		tbody,
+		tfoot {
+			display: block;
+			width: 100%;
+		}
+
+		thead,
+		tbody,
+		tfoot {
+			tr {
+				display: flex;
+				justify-content: space-between;
+
+				> * {
+					display: block;
+					width: auto;
+				}
+				/*.check-column {
+					flex: 0 0 1.875%;
+				}
+				.column-title  {
+					flex: 1 0 18.125%;
+				}
+				.column-author {
+					flex: 1 0 9.375%;
+				}
+				.column-taxonomy-property-type {
+					flex: 1 0 18.125%;
+				}
+				.column-taxonomy-property-tag {
+					flex: 1 0 18.125%;
+				}
+				.column-taxonomy-location {
+					flex: 1 0 17.1875%;
+				}
+				.column-comments {
+					flex: 1 0 5%;
+				}
+				.column-date {
+					flex: 1 0 8.75%;
+				}*/
+			}
+		}
+		tbody {
+			padding: 0 30px;
+			margin: 30px 0;
+
+			tr {
+				flex-wrap: wrap;
+				padding: 30px
+			}
+
+			.check-column {
+			}
+			.column-title  {
+				flex: 1;
+			}
+			.column-author,
+			.column-taxonomy-property-type,
+			.column-taxonomy-property-tag,
+			.column-taxonomy-location,
+			.column-comments,
+			.column-date {
+				flex: 1 0 100%;
+				position: relative;
+				padding: 0 20px 0 10%;
+
+				&:before {
+					content: attr(data-colname) ": ";
+					display: inline-block;
+					vertical-align: middle;
+					min-width: 10%;
+					left: 20px;
+					top: 0;
+					position: absolute;
+				}
+			}
+		}
 
 		thead,
 		tfoot {
@@ -242,7 +326,9 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		}
 		tbody {
 			tr {
+				box-shadow: $box-shadow;
 				background: $white-color;
+				border-radius: 5px;
 			}
 			.row-title {
 				font-weight: bold;
@@ -840,7 +926,9 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 	}
 }
 
-.taxonomy-property-type {
+.taxonomy-property-type,
+.taxonomy-property-tag,
+.taxonomy-location {
 	// Type edit page
 	#col-container {
 		display: flex;
@@ -857,6 +945,11 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			&#col-left {
 				order: 1;
 			}
+		}
+	}
+	#posts-filter {
+		.tablenav {
+			width: 100%;
 		}
 	}
 	.form-wrap {
@@ -919,10 +1012,32 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		}
 	}
 
-	// Edit tag
-	#edittag {
-		
+	.tagcloud {
+		width: 100%;
+
+		h2 {
+			font-size: 1.8em;
+			line-height: 1.2;
+			margin: 0 0 20px;
+		}
+		a {
+			display: inline-block;
+			vertical-align: middle;
+			border: 2px solid $gray-color-2;
+			color: $heading-color;
+			text-transform: uppercase;
+			font-weight: bold;
+			padding: 10px 20px 12px;
+			margin-right: 10px;
+			text-decoration: none;
+
+			&:hover {
+				border-color: $accent-color;
+			}
+		}
 	}
+
+	// Edit tag
 	.form-table {
 		border-collapse: separate;
 		border-spacing: 0 30px;
@@ -989,9 +1104,13 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 	}
 }
 
-.post-type-property.taxonomy-property-type {
-	#wpbody-content .wrap > form#edittag {
-		padding-top: 0;
-		padding-bottom: 0;
+.post-type-property.taxonomy-property-type,
+.post-type-property.taxonomy-property-tag,
+.post-type-property.taxonomy-location {
+	#wpbody-content .wrap {
+		> form#edittag {
+			padding-top: 0;
+			padding-bottom: 0;
+		}
 	}
 }
