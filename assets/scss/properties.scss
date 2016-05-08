@@ -253,30 +253,6 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 					display: block;
 					width: auto;
 				}
-				/*.check-column {
-					flex: 0 0 1.875%;
-				}
-				.column-title  {
-					flex: 1 0 18.125%;
-				}
-				.column-author {
-					flex: 1 0 9.375%;
-				}
-				.column-taxonomy-property-type {
-					flex: 1 0 18.125%;
-				}
-				.column-taxonomy-property-tag {
-					flex: 1 0 18.125%;
-				}
-				.column-taxonomy-location {
-					flex: 1 0 17.1875%;
-				}
-				.column-comments {
-					flex: 1 0 5%;
-				}
-				.column-date {
-					flex: 1 0 8.75%;
-				}*/
 			}
 		}
 		tbody {
@@ -285,13 +261,38 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 
 			tr {
 				flex-wrap: wrap;
-				padding: 30px
+				padding: 0 20px 30px;
+				margin: 0 0 30px;
 			}
 
 			.check-column {
+				padding: 20px 0;
+
+				span {
+					left: 0;
+					top: 19px;
+				}
 			}
-			.column-title  {
+			.column-title {
 				flex: 1;
+				padding: 20px 0 20px 20px;
+
+				display: flex;
+				align-items: center;
+
+				strong {
+					flex: 1;
+					margin: 0;
+				}
+
+				.row-actions {
+					left: 0;
+					padding: 5px 0 0;
+
+					span {
+						margin: 0 0 0 20px;
+					}
+				}
 			}
 			.column-author,
 			.column-taxonomy-property-type,
@@ -308,9 +309,35 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 					display: inline-block;
 					vertical-align: middle;
 					min-width: 10%;
-					left: 20px;
+					padding-right: 20px;
+					left: 0;
 					top: 0;
 					position: absolute;
+					box-sizing: border-box;
+					text-align: right;
+				}
+				a {
+					color: $gray-color-1;
+
+					&:hover {
+						color: $accent-color;
+					}
+				}
+			}
+			.column-author {
+				padding-top: 20px;
+				
+				&:before {
+					top: 20px;
+				}
+				&:after {
+					content: '';
+					width: calc(100% + 60px);
+					height: 1px;
+					background: $border-color;
+					position: absolute;
+					top: 0;
+					left: -30px;
 				}
 			}
 		}
@@ -323,12 +350,33 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			th {
 				border: none;
 			}
+			.check-column {
+				padding: 20px 0 20px 20px;
+
+				span {
+					top: 19px;
+					left: 19px;
+				}
+			}
+			.column-title,
+			.column-author,
+			.column-taxonomy-property-type,
+			.column-taxonomy-property-tag,
+			.column-taxonomy-location,
+			.column-comments,
+			.column-date {
+				display: none;
+			}
 		}
 		tbody {
 			tr {
 				box-shadow: $box-shadow;
 				background: $white-color;
 				border-radius: 5px;
+
+				&.hidden {
+					padding: 0;
+				}
 			}
 			.row-title {
 				font-weight: bold;
