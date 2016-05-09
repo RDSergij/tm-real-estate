@@ -19,10 +19,10 @@
 				<h4><?php echo $property->post_title; ?></h4>
 			</header>
 			<div class="swiper-container gallery-top">
-				<?php if ( $property->gallery['image'][0]['medium_large'] ) : ?>
-					<?php if ( 1 < count( $property->gallery['image'] ) ) : ?>
+				<?php if ( ! empty( $property->gallery[0]['medium_large'] ) ) : ?>
+					<?php if ( 1 < count( $property->gallery ) ) : ?>
 						<div class="swiper-wrapper">
-							<?php foreach ( $property->gallery['image'] as $image ) : ?>
+							<?php foreach ( $property->gallery as $image ) : ?>
 								<div class="swiper-slide" style="background-image:url(<?php echo $image['medium_large'][0] ?>"></div>
 							<?php endforeach; ?>
 						</div>
@@ -40,10 +40,10 @@
 						</div>
 				<?php endif; ?>
 			</div>
-			<?php if ( 1 < count( $property->gallery['image'] ) ) : ?>
+			<?php if ( ! empty( $property->gallery ) && 1 < count( $property->gallery ) ) : ?>
 				<div class="swiper-container gallery-thumbs">
 					<div class="swiper-wrapper">
-						<?php foreach ( $property->gallery['image'] as $image ) : ?>
+						<?php foreach ( $property->gallery as $image ) : ?>
 						<div class="swiper-slide" style="background-image:url(<?php echo $image['thumbnail'][0] ?>"></div>
 						<?php endforeach; ?>
 					</div>

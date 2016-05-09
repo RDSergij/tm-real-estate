@@ -76,7 +76,7 @@ class Model_Agents {
 
 		$contact_form_html = self::agent_contact_form( $agent_id, $property_id );
 
-		$properties_html = self::shortcode_properties( $args );
+		$properties_html = Model_Properties::shortcode_properties( $args );
 
 		return Cherry_Toolkit::render_view(
 			TM_REAL_ESTATE_DIR . 'views/agent-properties.php',
@@ -206,7 +206,7 @@ class Model_Agents {
 
 		// Enqueue
 		wp_enqueue_style( 'tm_agent_photo_admin_css' );
-		wp_enqueue_script( 'tm_agent_photo_admin_js' );
+		//wp_enqueue_script( 'tm_agent_photo_admin_js' );
 	}
 
 	/**
@@ -220,7 +220,7 @@ class Model_Agents {
 			return false;
 		}
 
-		wp_enqueue_media();
+		//wp_enqueue_media();
 
 		// vars
 		$upload_url = self::get_agent_photo_url( $user->ID );
@@ -233,10 +233,27 @@ class Model_Agents {
 			$upload_edit_url = self::get_edit_agent_photo_url( $user->ID );
 			$btn_text = 'Change Current Image';
 		}
+		
+		//var_dump(TM_Real_Estate::get_instance());
+
+		$agent_photo_obj = new UI_Media(
+			array(
+				'id'					=> 'tm_re_agent_photo_upload"',
+				'name'					=> 'tm_re_agent_photo_upload_meta',
+				'value'					=> self::get_agent_photo_id( $user->ID ),
+				'multi_upload'			=> false,
+				'library_type'			=> 'image', // image, video
+				'upload_button_text'	=> __( 'Choose Media', 'tm-real-estate' ),
+				'label'					=> '',
+				'class'					=> '',
+				'master'				=> '',
+			)
+		);
 
 		echo Cherry_Toolkit::render_view(
 				TM_REAL_ESTATE_DIR . 'views/agent-profile-photo.php',
 				array(
+					'agent_photo_html'	=> $agent_photo_obj->render(),
 					'upload_url'		=> $upload_url,
 					'photo_id'			=> $photo_id,
 					'upload_edit_url'	=> $upload_edit_url,
@@ -260,7 +277,7 @@ class Model_Agents {
 
 		// If the current user can edit Users, allow this.
 		update_user_meta( $user_id, 'tm-re-photo-upload-meta', sanitize_text_field( $_POST['tm_re_agent_photo_upload_meta'] ) );
-		update_user_meta( $user_id, 'tm-re-photo-upload-edit-meta', sanitize_text_field( $_POST['tm_re_agent_photo_upload_edit_meta'] ) );
+		//update_user_meta( $user_id, 'tm-re-photo-upload-edit-meta', sanitize_text_field( $_POST['tm_re_agent_photo_upload_edit_meta'] ) );
 	}
 
 	/**
