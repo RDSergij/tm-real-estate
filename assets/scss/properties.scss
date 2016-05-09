@@ -568,6 +568,7 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				vertical-align: middle;
 				text-align: center;
 				margin: 0 10px 0 0;
+				overflow: hidden;
 
 				&:after {
 					@include font-awesome-icon();
@@ -990,6 +991,7 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				vertical-align: middle;
 				text-align: center;
 				margin: 0 10px 0 0;
+				overflow: hidden;
 
 				&:after {
 					@include font-awesome-icon();
