@@ -438,26 +438,31 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			.column-posts {
 				flex: 1 0 100%;
 				position: relative;
-				padding: 0 20px 0 10%;
+				padding: 0 20px 0 0;
 				color: $gray-color-1;
 				text-align: left;
+
+				display: flex;
 
 				&:not(:empty) {
 					&:before {
 						content: attr(data-colname) ": ";
 						display: inline-block;
 						vertical-align: middle;
-						min-width: 10%;
+						width: 10%;
 						padding-right: 20px;
 						left: 0;
 						top: 0;
-						position: absolute;
+						position: relative;
 						box-sizing: border-box;
 						text-align: right;
 						color: $heading-color;
+						flex: 1 0 10%;
+						max-width: 10%;
 					}
 				}
 				a {
+					align-self: flex-start;
 					color: $gray-color-1;
 
 					&:hover {
@@ -472,12 +477,7 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			.column-author,
 			.column-description {
 				padding-top: 20px;
-				
-				&:not(:empty) {
-					&:before {
-						top: 20px;
-					}
-				}
+
 				&:after {
 					content: '';
 					width: calc(100% + 60px);
@@ -486,6 +486,11 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 					position: absolute;
 					top: 0;
 					left: -30px;
+				}
+			}
+			.column-date {
+				abbr {
+					margin-left: 10px;
 				}
 			}
 		}
