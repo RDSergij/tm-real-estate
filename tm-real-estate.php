@@ -122,7 +122,9 @@ class TM_Real_Estate {
 		// Fix "Preview" link in post edit page
 		add_filter( 'preview_post_link', array( &$this, 'override_preview' ), 10, 2 );
 
-		// Agents photo block
+		/*
+		 * Agents photo block
+		 */
 		add_action( 'admin_enqueue_scripts', array( 'Model_Agents', 'photo_assets' ) );
 
 		// Show the new image field in the user profile page.
@@ -133,27 +135,12 @@ class TM_Real_Estate {
 		add_action( 'personal_options_update', array( 'Model_Agents', 'save_img_meta' ) );
 		add_action( 'edit_user_profile_update', array( 'Model_Agents', 'save_img_meta' ) );
 
-		//add_action( 'add_meta_boxes', array( $this, 'my_remove_meta_boxes' ) );
-
-
+		// One column for property
+		add_filter( 'screen_layout_columns', array( 'Model_Properties', 'property_single_column_layout' ) );
+		add_filter( 'get_user_option_screen_layout_property',  array( 'Model_Properties', 'property_single_column_layout_post' ) );
+		add_action( 'get_user_option_meta-box-order_property', array( 'Model_Properties', 'property_metabox_order_layout' ), 0, 1 );
 	}
 
-	public function my_remove_meta_boxes() {
-		global $wp_meta_boxes;
-		
-		//var_dump($wp_meta_boxes['property']['side']['core']);
-		//var_dump($wp_meta_boxes['property']['normal']['core']);
-
-		//unset($wp_meta_boxes['property']['side']);
-		//unset($wp_meta_boxes['property']['normal']['core']);
-
-		//var_dump($wp_meta_boxes['property']);
-		remove_meta_box( 'postexcerpt', 'property', 'normal' );
-		remove_meta_box( 'authordiv', 'property', 'normal');
-
-		add_meta_box( 'authordiv' , 'property', 'normal', 'high');
-		//print '<pre>';print_r( $wp_meta_boxes['post'] );print '<pre>';
-	}
 	/**
 	 * Save additional taxonomy meta on edit or create tax
 	 *
@@ -377,10 +364,6 @@ class TM_Real_Estate {
 						'priority'	=> 999,
 						'autoload'	=> true,
 					),
-					'cherry-api-js'	=> array(
-						'priority'	=> 999,
-						'autoload'	=> true,
-					),
 					'cherry-utility'	=> array(
 						'priority'	=> 999,
 						'autoload'	=> true,
@@ -460,11 +443,27 @@ class TM_Real_Estate {
 									'left_label' => __( 'Parking places', 'tm-real-estate' ),
 								),
 								'gallery' => array(
-									'type'			=> 'media',
-									'id'			=> 'gallery',
-									'name'			=> 'gallery',
-									'multi_upload'	=> true,
-									'left_label'	=> __( 'Gallery', 'tm-real-estate' ),
+									'type'	  => 'collection',
+									'id'      => 'gallery',
+									'name'    => 'gallery',
+									'left_label' => __( 'Gallery', 'tm-real-estate' ),
+									'controls' => array(
+										'UI_Text' => array(
+											'type'    => 'text',
+											'id'      => 'title',
+											'class'   => 'large_text',
+											'name'    => 'title',
+											'value'   => '',
+											'left_label' => __( 'Title', 'tm-real-estate' ),
+										),
+										'UI_Media' => array(
+											'id'           => 'image',
+											'name'         => 'image',
+											'value'        => '',
+											'multi_upload' => false,
+											'left_label'   => __( 'Image', 'tm-real-estate' ),
+										),
+									),
 								),
 								'agent' => array(
 									'type'        => 'select',
@@ -871,6 +870,7 @@ class TM_Real_Estate {
 			)
 		);
 
+		/*
 		$agents_list = Model_Agents::get_agents_list();
 
 		if ( ! empty( $agents_list ) ) {
@@ -925,7 +925,6 @@ class TM_Real_Estate {
 					array(
 						'id'      => 'photo',
 						'name'    => 'photo[]',
-						/*'value'   => $agent->get['photo'],*/
 					)
 				);
 
@@ -957,7 +956,7 @@ class TM_Real_Estate {
 
 			}
 		} else {
-			$agents= array();
+			$agents = array();
 		}
 
 		$user_id_new_obj = new UI_Text(
@@ -985,7 +984,7 @@ class TM_Real_Estate {
 				'value'   => '',
 			)
 		);
-		
+
 		$last_name_new_obj = new UI_Text(
 			array(
 				'type'    => 'text',
@@ -1020,7 +1019,8 @@ class TM_Real_Estate {
 			'user_email_html'	=> $user_email_new_obj->render(),
 		);
 
-		/*$this->core->modules['cherry-page-builder']->make( 'cherry-agents-list', 'Agents', TM_REAL_ESTATE_DIR . 'views/admin-agents-list.php' )->set(
+
+		$this->core->modules['cherry-page-builder']->make( 'cherry-agents-list', 'Agents', TM_REAL_ESTATE_DIR . 'views/admin-agents-list.php' )->set(
 			array(
 				'capability'	=> 'manage_options',
 				'position'		=> 10,
@@ -1030,7 +1030,8 @@ class TM_Real_Estate {
 					'agent_new'	=> $agent_new,
 				),
 			)
-		);*/
+		);
+		*/
 	}
 
 	/**
@@ -1043,6 +1044,14 @@ class TM_Real_Estate {
 		wp_enqueue_script(
 			'tm-real-state-settings-page',
 			plugins_url( 'tm-real-estate' ) . '/assets/js/page-settings.min.js',
+			array( 'jquery' ),
+			'1.0.0',
+			true
+		);
+
+		wp_enqueue_script(
+			'tm-real-state-scripts',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/properties.min.js',
 			array( 'jquery' ),
 			'1.0.0',
 			true
@@ -1065,19 +1074,11 @@ class TM_Real_Estate {
 			'all'
 		);
 
-		wp_enqueue_script(
-			'cherry-add-property-page',
-			plugins_url( 'tm-real-estate' )  . '/assets/js/properties.min.js',
-			array( 'jquery' ),
-			'0.0.1',
-			true
-		);
-
 		wp_enqueue_style(
-			'cherry-add-property-page',
-			plugins_url( 'tm-real-estate' )  . '/assets/css/properties.min.css',
+			'tm-real-state-styles',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/properties.min.css',
 			array(),
-			'0.0.1',
+			'1.0.0',
 			'all'
 		);
 	}
@@ -1146,36 +1147,3 @@ class TM_Real_Estate {
 }
 
 TM_Real_Estate::get_instance();
-
-function force_single_column_layout( $columns ) {
-    $columns['property'] = 1;
-    return $columns;
-}
-add_filter( 'screen_layout_columns', 'force_single_column_layout' );
-
-function force_single_column_layout_post() {
-    return 1;
-}
-add_filter( 'get_user_option_screen_layout_property', 'force_single_column_layout_post' );
-
-
-add_action( 'get_user_option_meta-box-order_property', 'force_metabox_order_layout', 0, 1 );
-function force_metabox_order_layout( $order ) {
-    return array(
-        'normal'   => join( ",", array(
-            'postexcerpt',
-            'formatdiv',
-            'trackbacksdiv',
-            'tagsdiv-post_tag',
-            'categorydiv',
-            'postimagediv',
-            'postcustom',
-            'commentstatusdiv',
-            'slugdiv',
-            'authordiv',
-            'submitdiv',
-        ) ),
-        'side'     => '',
-        'advanced' => '',
-    );
-}

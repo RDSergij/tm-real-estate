@@ -709,14 +709,13 @@ class Model_Properties {
 	 * @return property gallery.
 	 */
 	public static function get_gallery( $post_id ) {
-		$gallery = (string) get_post_meta( $post_id, 'gallery', true );
-		$images = explode( ',', $gallery );
-		if ( is_array( $images ) && 0 < count( $images ) ) {
-			foreach ( $images as &$image ) {
-				$imgs[] = self::get_all_images( $image );
+		$gallery = get_post_meta( $post_id, 'gallery', true );
+		if ( array_key_exists( 'image', (array) $gallery ) ) {
+			foreach ( $gallery['image'] as &$image ) {
+				$image = self::get_all_images( $image );
 			}
 		}
-		return $imgs;
+		return $gallery;
 	}
 
 	/**
@@ -870,27 +869,25 @@ class Model_Properties {
 	 * @return [array]           array( $lat, $lng )
 	 */
 	public static function get_lat_lng( $address ) {
-		if ( ! empty( $address ) ) {
-			$url      = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode( $address );
-			$body     = false;
-			$lat      = 0;
-			$lng      = 0;
-			$response = wp_remote_request( $url );
+		$url      = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode( $address );
+		$body     = false;
+		$lat      = 0;
+		$lng      = 0;
+		$response = wp_remote_request( $url );
 
-			if ( array_key_exists( 'body', $response ) ) {
-				$body = json_decode( $response['body'], true );
-				$lat  = $body['results'][0]['geometry']['location']['lat'];
-				$lng  = $body['results'][0]['geometry']['location']['lng'];
-			}
-
-			return array( $lat, $lng );
+		if ( array_key_exists( 'body', $response ) ) {
+			$body = json_decode( $response['body'], true );
+			$lat  = $body['results'][0]['geometry']['location']['lat'];
+			$lng  = $body['results'][0]['geometry']['location']['lng'];
 		}
+
+		return array( $lat, $lng );
 	}
 
 	/**
 	 * Single column
 	 *
-	 * @param array $columns screen option
+	 * @param array $columns
 	 * @return array
 	 */
 	public static function property_single_column_layout( $columns ) {
@@ -905,5 +902,31 @@ class Model_Properties {
 	 */
 	public static function property_single_column_layout_post() {
 		return 1;
+	}
+
+	/**
+	 * Edit / add page metabox order layout
+	 *
+	 * @param array $order
+	 * @return array
+	 */
+	public static function property_metabox_order_layout( $order ) {
+		return array(
+			'normal'   => join( ",", array(
+				'postexcerpt',
+				'formatdiv',
+				'trackbacksdiv',
+				'tagsdiv-post_tag',
+				'categorydiv',
+				'postimagediv',
+				'postcustom',
+				'commentstatusdiv',
+				'slugdiv',
+				'authordiv',
+				'submitdiv',
+			) ),
+			'side'     => '',
+			'advanced' => '',
+		);
 	}
 }
