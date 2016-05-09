@@ -78,6 +78,60 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		}
 	}
 
+	// WP user settings panel on top
+	#screen-meta {
+		margin: 0 0 30px;
+		border-radius: 7px;
+		border: 2px solid $border-color;
+		background: $gray-color-2;
+		padding: 40px 50px;
+	}
+	#screen-meta-links {
+		position: absolute;
+		top: 0;
+		right: 50px;
+		margin: 0;
+
+		.button {
+			@include button();
+			padding: 5px 5px 5px 10px;
+			border-radius: 0 0 2px 2px;
+			background: $gray-color-3;
+			line-height: 1.7;
+
+			&:after {
+				color: $white-color;
+				padding: 0;
+			}
+			&:hover {
+				background: darken($gray-color-3, 10%);
+			}
+		}
+	}
+	#screen-options-wrap {
+		padding: 0;
+		background: $white-color;
+		border-radius: 2px;
+		box-shadow: $box-shadow;
+		padding: 30px;
+
+		.view-mode,
+		.columns-prefs {
+			display: none;
+		}
+		.submit {
+			margin: 20px 0 0;
+		}
+		.button {
+			@include button();
+			background: $success-color;
+
+			&:hover {
+				background: darken($success-color, 10%);
+			}
+		}
+	}
+
 	// Button after title
 	.page-title-action {
 		@include button();
@@ -93,6 +147,9 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			vertical-align: middle;
 			margin: 0 10px 0 0;
 			content: '\f067';
+		}
+		&:hover {
+			background: darken($success-color, 10%);
 		}
 	}
 
@@ -226,13 +283,11 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 	.wp-list-table {
 		padding: 0;
 		border-spacing: 0;
-
 		margin: 30px 0 0;
 		border-radius: 7px;
 		border: 2px solid $border-color;
 		background: $gray-color-2;
 		overflow: hidden;
-
 		display: block;
 
 		thead,
@@ -273,7 +328,8 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 					top: 19px;
 				}
 			}
-			.column-title {
+			.column-title,
+			.column-name {
 				flex: 1;
 				padding: 20px 0 20px 20px;
 
@@ -299,22 +355,30 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			.column-taxonomy-property-tag,
 			.column-taxonomy-location,
 			.column-comments,
-			.column-date {
+			.column-date,
+			.column-description,
+			.column-slug,
+			.column-posts {
 				flex: 1 0 100%;
 				position: relative;
 				padding: 0 20px 0 10%;
+				color: $gray-color-1;
+				text-align: left;
 
-				&:before {
-					content: attr(data-colname) ": ";
-					display: inline-block;
-					vertical-align: middle;
-					min-width: 10%;
-					padding-right: 20px;
-					left: 0;
-					top: 0;
-					position: absolute;
-					box-sizing: border-box;
-					text-align: right;
+				&:not(:empty) {
+					&:before {
+						content: attr(data-colname) ": ";
+						display: inline-block;
+						vertical-align: middle;
+						min-width: 10%;
+						padding-right: 20px;
+						left: 0;
+						top: 0;
+						position: absolute;
+						box-sizing: border-box;
+						text-align: right;
+						color: $heading-color;
+					}
 				}
 				a {
 					color: $gray-color-1;
@@ -323,12 +387,19 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 						color: $accent-color;
 					}
 				}
+				p {
+					margin: 0;
+					color: $gray-color-1;
+				}
 			}
-			.column-author {
+			.column-author,
+			.column-description {
 				padding-top: 20px;
 				
-				&:before {
-					top: 20px;
+				&:not(:empty) {
+					&:before {
+						top: 20px;
+					}
 				}
 				&:after {
 					content: '';
@@ -364,7 +435,11 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			.column-taxonomy-property-tag,
 			.column-taxonomy-location,
 			.column-comments,
-			.column-date {
+			.column-date,
+			.column-name,
+			.column-description,
+			.column-slug,
+			.column-posts {
 				display: none;
 			}
 		}
@@ -375,7 +450,11 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				border-radius: 5px;
 
 				&.hidden {
+					margin: 0;
 					padding: 0;
+				}
+				&.inline-editor {
+					padding: 20px;
 				}
 			}
 			.row-title {
@@ -533,9 +612,6 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		}
 	}
 
-	#screen-meta-links {
-		display: none;
-	}
 	#wpbody-content {
 		background: $white-color;
 		margin: 20px 0 50px;
@@ -543,6 +619,7 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		border-right: none;
 		padding: 40px 50px 50px;
 		box-sizing: border-box;
+		position: relative;
 
 		.wrap {
 			margin: 0;
