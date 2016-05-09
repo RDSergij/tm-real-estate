@@ -134,6 +134,8 @@ class TM_Real_Estate {
 		add_action( 'edit_user_profile_update', array( 'Model_Agents', 'save_img_meta' ) );
 
 		//add_action( 'add_meta_boxes', array( $this, 'my_remove_meta_boxes' ) );
+
+
 	}
 
 	public function my_remove_meta_boxes() {
@@ -1167,3 +1169,25 @@ function force_single_column_layout_post() {
     return 1;
 }
 add_filter( 'get_user_option_screen_layout_property', 'force_single_column_layout_post' );
+
+
+add_action( 'get_user_option_meta-box-order_property', 'force_metabox_order_layout', 0, 1 );
+function force_metabox_order_layout( $order ) {
+    return array(
+        'normal'   => join( ",", array(
+            'postexcerpt',
+            'formatdiv',
+            'trackbacksdiv',
+            'tagsdiv-post_tag',
+            'categorydiv',
+            'postimagediv',
+            'postcustom',
+            'commentstatusdiv',
+            'slugdiv',
+            'authordiv',
+            'submitdiv',
+        ) ),
+        'side'     => '',
+        'advanced' => '',
+    );
+}

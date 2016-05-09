@@ -84,7 +84,7 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		border-radius: 7px;
 		border: 2px solid $border-color;
 		background: $gray-color-2;
-		padding: 40px 50px;
+		padding: 30px;
 	}
 	#screen-meta-links {
 		position: absolute;
@@ -128,6 +128,83 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 
 			&:hover {
 				background: darken($success-color, 10%);
+			}
+		}
+	}
+
+	// Messages 
+	#message {
+		margin: 30px 0;
+		padding: 10px 15px;
+		border: none;
+		box-shadow: none;
+		background: $gray-color-2;
+
+		p {
+			border: none;
+			padding: 0;
+			margin: 0;
+			color: $heading-color;
+
+			a {
+				color: $heading-color;
+
+				&:hover {
+					color: $gray-color-1;
+				}
+			}
+		}
+		&.updated {
+			background: #ecf9f0;
+
+			p {
+				color: $success-color;
+
+				&:before {
+					@include font-awesome-icon;
+					font-size: 18px;
+					display: inline-block;
+					vertical-align: middle;
+					margin: 0 10px 0 0;
+					content: '\f05a';
+				}
+				a {
+					color: $success-color;
+
+					&:hover {
+						color: $heading-color;
+					}
+				}
+			}
+		}
+		&.error {
+			background: #fbcdcd;
+
+			p {
+				color: $warning-color;
+
+				a {
+					color: $warning-color;
+
+					&:hover {
+						color: $heading-color;
+					}
+				}
+			}
+			.notice-dismiss {
+				&:before {
+					color: $white-color;
+				}
+				&:hover {
+					&:before {
+						color: $heading-color;
+					}
+				}
+			}
+		}
+		&.notice {
+			&.notice-warning {
+				border-left: 5px solid $warning-color;
 			}
 		}
 	}
@@ -331,7 +408,7 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			.column-title,
 			.column-name {
 				flex: 1;
-				padding: 20px 0 20px 20px;
+				padding: 20px 0 16px 20px;
 
 				display: flex;
 				align-items: center;
@@ -454,6 +531,9 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 					padding: 0;
 				}
 				&.inline-editor {
+					padding: 20px;
+				}
+				&.no-items {
 					padding: 20px;
 				}
 			}
@@ -727,6 +807,17 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		.postbox, 
 		.stuffbox {
 			margin: 0 0 30px;
+		}
+
+		.postbox {
+			.handlediv {
+				width: 50px;
+				height: 50px;
+			}
+		}
+
+		#submitdiv {
+			margin: 0;
 		}
 
 		#titlediv {
