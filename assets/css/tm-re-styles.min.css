@@ -869,6 +869,35 @@
   content: '\f06e';
 }
 
+.post-type-property .wp-list-table .inline-editor .colspanchange {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  width: 100%;
+}
+
+.post-type-property .wp-list-table .inline-editor .colspanchange .inline-edit-col-left,
+.post-type-property .wp-list-table .inline-editor .colspanchange .inline-edit-col-right {
+  -webkit-flex: 1 0 40%;
+      -ms-flex: 1 0 40%;
+          flex: 1 0 40%;
+}
+
+.post-type-property .wp-list-table .inline-editor .colspanchange .inline-edit-col-center {
+  -webkit-flex: 1 0 20%;
+      -ms-flex: 1 0 20%;
+          flex: 1 0 20%;
+}
+
+.post-type-property .wp-list-table .inline-editor .colspanchange .inline-edit-save {
+  -webkit-flex: 1 0 100%;
+      -ms-flex: 1 0 100%;
+          flex: 1 0 100%;
+}
+
 .post-type-property .wp-list-table .inline-editor select,
 .post-type-property .wp-list-table .inline-editor textarea,
 .post-type-property .wp-list-table .inline-editor input[type="text"] {
@@ -879,6 +908,9 @@
   padding: 0 20px;
   background: #f1f1f1;
   border-radius: 2px;
+  padding: 10px;
+  height: 40px;
+  line-height: 40px;
   width: auto;
 }
 
@@ -931,6 +963,57 @@
 
 .post-type-property .wp-list-table .inline-editor button.save:hover {
   background: #34a652;
+}
+
+.post-type-property .wp-list-table .inline-editor .inline-edit-private input,
+.post-type-property .wp-list-table .inline-editor .inline-edit-col-right .inline-edit-group label input {
+  display: none;
+  height: 50px;
+}
+
+.post-type-property .wp-list-table .inline-editor .inline-edit-private input[type="checkbox"]:checked + span.checkbox-box,
+.post-type-property .wp-list-table .inline-editor .inline-edit-col-right .inline-edit-group label input[type="checkbox"]:checked + span.checkbox-box {
+  background: #48c569;
+}
+
+.post-type-property .wp-list-table .inline-editor .inline-edit-private input[type="checkbox"]:checked + span.checkbox-box:after,
+.post-type-property .wp-list-table .inline-editor .inline-edit-col-right .inline-edit-group label input[type="checkbox"]:checked + span.checkbox-box:after {
+  opacity: 1;
+  -webkit-transform: scale(1);
+      -ms-transform: scale(1);
+          transform: scale(1);
+}
+
+.post-type-property .wp-list-table .inline-editor .inline-edit-private span.checkbox-box,
+.post-type-property .wp-list-table .inline-editor .inline-edit-col-right .inline-edit-group label span.checkbox-box {
+  width: 26px;
+  height: 26px;
+  border-radius: 2px;
+  background: #f1f1f1;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  margin: 0 10px 0 0;
+  overflow: hidden;
+}
+
+.post-type-property .wp-list-table .inline-editor .inline-edit-private span.checkbox-box:after,
+.post-type-property .wp-list-table .inline-editor .inline-edit-col-right .inline-edit-group label span.checkbox-box:after {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: '\f00c';
+  color: #ffffff;
+  line-height: 26px;
+  opacity: 0;
+  -webkit-transform: scale(2);
+      -ms-transform: scale(2);
+          transform: scale(2);
+  transition: 300ms all;
+  vertical-align: top;
 }
 
 .post-type-property #wpbody-content {
@@ -1107,6 +1190,100 @@
 
 .post-type-property #wpbody-content #post-body-content #delete-action .submitdelete:hover,
 .post-type-property #wpbody-content .postbox-container #delete-action .submitdelete:hover {
+  background: #d71e1e;
+}
+
+.post-type-property #wpbody-content #post-body-content #replyrow,
+.post-type-property #wpbody-content .postbox-container #replyrow {
+  padding: 20px;
+}
+
+.post-type-property #wpbody-content #post-body-content #replycontainer .quicktags-toolbar .button,
+.post-type-property #wpbody-content .postbox-container #replycontainer .quicktags-toolbar .button {
+  padding: 5px 10px;
+  background: #495159;
+}
+
+.post-type-property #wpbody-content #post-body-content #replycontainer .quicktags-toolbar .button:hover,
+.post-type-property #wpbody-content .postbox-container #replycontainer .quicktags-toolbar .button:hover {
+  background: #32373d;
+}
+
+.post-type-property #wpbody-content #post-body-content #replysubmit .button-primary,
+.post-type-property #wpbody-content .postbox-container #replysubmit .button-primary {
+  border: none;
+  box-shadow: 4px 7px 21px 0px rgba(0, 0, 0, 0.1);
+  text-shadow: none;
+  color: #ffffff;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 1;
+  padding: 19px 20px;
+  height: auto;
+  background: #298ffc;
+  border-radius: 2px;
+  transition: 300ms all;
+  background: #48c569;
+}
+
+.post-type-property #wpbody-content #post-body-content #replysubmit .button-primary:hover,
+.post-type-property #wpbody-content .postbox-container #replysubmit .button-primary:hover {
+  background: #0375ef;
+}
+
+.post-type-property #wpbody-content #post-body-content #replysubmit .button-primary:active,
+.post-type-property #wpbody-content .postbox-container #replysubmit .button-primary:active {
+  margin: 0;
+  top: 0;
+  border: none;
+  box-shadow: none;
+  -webkit-transform: none;
+      -ms-transform: none;
+          transform: none;
+}
+
+.post-type-property #wpbody-content #post-body-content #replysubmit .button-primary:hover,
+.post-type-property #wpbody-content .postbox-container #replysubmit .button-primary:hover {
+  background: #34a652;
+}
+
+.post-type-property #wpbody-content #post-body-content #replysubmit .button-secondary,
+.post-type-property #wpbody-content .postbox-container #replysubmit .button-secondary {
+  border: none;
+  box-shadow: 4px 7px 21px 0px rgba(0, 0, 0, 0.1);
+  text-shadow: none;
+  color: #ffffff;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 1;
+  padding: 19px 20px;
+  height: auto;
+  background: #298ffc;
+  border-radius: 2px;
+  transition: 300ms all;
+  background: #e54343;
+}
+
+.post-type-property #wpbody-content #post-body-content #replysubmit .button-secondary:hover,
+.post-type-property #wpbody-content .postbox-container #replysubmit .button-secondary:hover {
+  background: #0375ef;
+}
+
+.post-type-property #wpbody-content #post-body-content #replysubmit .button-secondary:active,
+.post-type-property #wpbody-content .postbox-container #replysubmit .button-secondary:active {
+  margin: 0;
+  top: 0;
+  border: none;
+  box-shadow: none;
+  -webkit-transform: none;
+      -ms-transform: none;
+          transform: none;
+}
+
+.post-type-property #wpbody-content #post-body-content #replysubmit .button-secondary:hover,
+.post-type-property #wpbody-content .postbox-container #replysubmit .button-secondary:hover {
   background: #d71e1e;
 }
 

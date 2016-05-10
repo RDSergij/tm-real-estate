@@ -667,10 +667,29 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		}
 
 		.inline-editor {
+			.colspanchange {
+				display: flex;
+				flex-wrap: wrap;
+				width: 100%;
+
+				.inline-edit-col-left,
+				.inline-edit-col-right {
+					flex: 1 0 40%;
+				}
+				.inline-edit-col-center {
+					flex: 1 0 20%;
+				}
+				.inline-edit-save {
+					flex: 1 0 100%;
+				}
+			}
 			select,
 			textarea,
 			input[type="text"] {
 				@include form-input();
+				padding: 10px;
+				height: 40px;
+				line-height: 40px;
 				width: auto;
 			}
 			textarea {
@@ -692,6 +711,53 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 
 					&:hover {
 						background: darken($success-color, 10%);
+					}
+				}
+			}
+			.timestamp-wrap {
+				input[name="hh"], 
+				input[name="jj"], 
+				input[name="mn"] {
+
+				}
+			}
+			.inline-edit-private,
+			.inline-edit-col-right .inline-edit-group label {
+				input {
+					display: none;
+					height: 50px;
+
+					&[type="checkbox"]:checked {
+						& + span.checkbox-box {
+							background: $success-color;
+
+							&:after {
+								opacity: 1;
+								transform: scale(1);
+							}
+						}
+					}
+				}
+				span.checkbox-box {
+					width: 26px;
+					height: 26px;
+					border-radius: 2px;
+					background: $gray-color-2;
+					display: inline-block;
+					vertical-align: middle;
+					text-align: center;
+					margin: 0 10px 0 0;
+					overflow: hidden;
+
+					&:after {
+						@include font-awesome-icon();
+						content: '\f00c';
+						color: $white-color;
+						line-height: 26px;
+						opacity: 0;
+						transform: scale(2);
+						transition: 300ms all;
+						vertical-align: top;
 					}
 				}
 			}
@@ -801,6 +867,41 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			#delete-action {
 				.submitdelete {
 					display: inline-block !important;
+					background: $warning-color;
+
+					&:hover {
+						background: darken($warning-color, 10%);
+					}
+				}
+			}
+
+			// Add comment
+			#replyrow {
+				padding: 20px;
+			}
+			#replycontainer {
+				.quicktags-toolbar {
+					.button {
+						padding: 5px 10px;
+						background: $gray-color-3;
+
+						&:hover {
+							background: darken($gray-color-3, 10%);
+						}
+					}
+				}
+			}
+			#replysubmit {
+				.button-primary {
+					@include button();
+					background: $success-color;
+
+					&:hover {
+						background: darken($success-color, 10%);
+					}
+				}
+				.button-secondary {
+					@include button();
 					background: $warning-color;
 
 					&:hover {

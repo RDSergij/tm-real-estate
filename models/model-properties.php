@@ -923,6 +923,7 @@ class Model_Properties {
 				'commentstatusdiv',
 				'slugdiv',
 				'authordiv',
+				'commentsdiv',
 				'submitdiv',
 			) ),
 			'side'     => '',
