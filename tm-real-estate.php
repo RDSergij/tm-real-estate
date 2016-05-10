@@ -1086,6 +1086,22 @@ class TM_Real_Estate {
 				),
 			)
 		)->font_awesome_icon( 'f1ad' );
+
+		add_filter( 'post_type_link', array( $this, 'property_permalink' ), 10, 2 );
+	}
+
+	/**
+	 * Change property single permalink
+	 *
+	 * @param string $url
+	 * @param object $post
+	 * @return string
+	 */
+	public function property_permalink( $url, $post ) {
+		if ( 'property' == get_post_type( $post ) ) {
+			$url = Model_Settings::get_search_single_page() . '?id=' . $post->ID;
+		}
+		return $url;
 	}
 
 	/**
