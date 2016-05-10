@@ -202,7 +202,7 @@ class Model_Agents {
 	public static function photo_assets() {
 		// Register
 		wp_register_style( 'tm_agent_photo_admin_css', TM_REAL_ESTATE_URI . 'assets/css/agent-photo.css', false, '1.0.0', 'all' );
-		wp_register_script( 'tm_agent_photo_admin_js', TM_REAL_ESTATE_URI . 'assets/js/agent-photo.js', array( 'jquery' ), '1.0.0' );
+		//wp_register_script( 'tm_agent_photo_admin_js', TM_REAL_ESTATE_URI . 'assets/js/agent-photo.js', array( 'jquery' ), '1.0.0' );
 
 		// Enqueue
 		wp_enqueue_style( 'tm_agent_photo_admin_css' );

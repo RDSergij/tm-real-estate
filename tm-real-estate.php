@@ -138,6 +138,7 @@ class TM_Real_Estate {
 		// One column for property
 		add_filter( 'screen_layout_columns', array( 'Model_Properties', 'property_single_column_layout' ) );
 		add_filter( 'get_user_option_screen_layout_property',  array( 'Model_Properties', 'property_single_column_layout_post' ) );
+		add_action( 'get_user_option_meta-box-order_property', array( 'Model_Properties', 'property_metabox_order_layout' ), 0, 1 );
 	}
 
 	/**
@@ -363,10 +364,6 @@ class TM_Real_Estate {
 						'priority'	=> 999,
 						'autoload'	=> true,
 					),
-					'cherry-api-js'	=> array(
-						'priority'	=> 999,
-						'autoload'	=> true,
-					),
 					'cherry-utility'	=> array(
 						'priority'	=> 999,
 						'autoload'	=> true,
@@ -446,11 +443,27 @@ class TM_Real_Estate {
 									'left_label' => __( 'Parking places', 'tm-real-estate' ),
 								),
 								'gallery' => array(
-									'type'			=> 'media',
-									'id'			=> 'gallery',
-									'name'			=> 'gallery',
-									'multi_upload'	=> true,
-									'left_label'	=> __( 'Gallery', 'tm-real-estate' ),
+									'type'	  => 'collection',
+									'id'      => 'gallery',
+									'name'    => 'gallery',
+									'left_label' => __( 'Gallery', 'tm-real-estate' ),
+									'controls' => array(
+										'UI_Text' => array(
+											'type'    => 'text',
+											'id'      => 'title',
+											'class'   => 'large_text',
+											'name'    => 'title',
+											'value'   => '',
+											'left_label' => __( 'Title', 'tm-real-estate' ),
+										),
+										'UI_Media' => array(
+											'id'           => 'image',
+											'name'         => 'image',
+											'value'        => '',
+											'multi_upload' => false,
+											'left_label'   => __( 'Image', 'tm-real-estate' ),
+										),
+									),
 								),
 								'agent' => array(
 									'type'        => 'select',
@@ -1036,6 +1049,14 @@ class TM_Real_Estate {
 			true
 		);
 
+		wp_enqueue_script(
+			'tm-real-state-scripts',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/properties.min.js',
+			array( 'jquery' ),
+			'1.0.0',
+			true
+		);
+
 		wp_localize_script( 'tm-real-state-settings-page', 'TMPageSettings', array(
 			'ajaxurl'				=> admin_url( 'admin-ajax.php' ),
 			'shortcodes'			=> Model_Main::get_shortcodes(),
@@ -1050,6 +1071,14 @@ class TM_Real_Estate {
 			plugins_url( 'tm-real-estate' ) . '/assets/css/page-settings.min.css',
 			array(),
 			'3.3.0',
+			'all'
+		);
+
+		wp_enqueue_style(
+			'tm-real-state-styles',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/properties.min.css',
+			array(),
+			'1.0.0',
 			'all'
 		);
 	}
