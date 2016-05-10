@@ -894,8 +894,12 @@ class Model_Properties {
 	 * @return array
 	 */
 	public static function property_single_column_layout( $columns ) {
-		$columns['property'] = 1;
-		return $columns;
+		global $typenow;
+		
+		if ( $typenow == 'property' ) {
+			$columns['property'] = 1;
+			return $columns;
+		}
 	}
 
 	/**
@@ -904,7 +908,11 @@ class Model_Properties {
 	 * @return int
 	 */
 	public static function property_single_column_layout_post() {
-		return 1;
+		global $typenow;
+		
+		if ( $typenow == 'property' ) {
+			return 1;
+		}
 	}
 
 	/**
@@ -914,23 +922,27 @@ class Model_Properties {
 	 * @return array
 	 */
 	public static function property_metabox_order_layout( $order ) {
-		return array(
-			'normal'   => join( ",", array(
-				'postexcerpt',
-				'formatdiv',
-				'trackbacksdiv',
-				'tagsdiv-post_tag',
-				'categorydiv',
-				'postimagediv',
-				'postcustom',
-				'commentstatusdiv',
-				'slugdiv',
-				'authordiv',
-				'commentsdiv',
-				'submitdiv',
-			) ),
-			'side'     => '',
-			'advanced' => '',
-		);
+		global $typenow;
+
+		if ( $typenow == 'property' ) {
+			return array(
+				'normal'   => join( ",", array(
+					'postexcerpt',
+					'formatdiv',
+					'trackbacksdiv',
+					'tagsdiv-post_tag',
+					'categorydiv',
+					'postimagediv',
+					'postcustom',
+					'commentstatusdiv',
+					'slugdiv',
+					'authordiv',
+					'commentsdiv',
+					'submitdiv',
+				) ),
+				'side'     => '',
+				'advanced' => '',
+			);
+		}
 	}
 }
