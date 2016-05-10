@@ -443,27 +443,11 @@ class TM_Real_Estate {
 									'left_label' => __( 'Parking places', 'tm-real-estate' ),
 								),
 								'gallery' => array(
-									'type'	  => 'collection',
-									'id'      => 'gallery',
-									'name'    => 'gallery',
-									'left_label' => __( 'Gallery', 'tm-real-estate' ),
-									'controls' => array(
-										'UI_Text' => array(
-											'type'    => 'text',
-											'id'      => 'title',
-											'class'   => 'large_text',
-											'name'    => 'title',
-											'value'   => '',
-											'left_label' => __( 'Title', 'tm-real-estate' ),
-										),
-										'UI_Media' => array(
-											'id'           => 'image',
-											'name'         => 'image',
-											'value'        => '',
-											'multi_upload' => false,
-											'left_label'   => __( 'Image', 'tm-real-estate' ),
-										),
-									),
+									'type'			=> 'media',
+									'id'			=> 'gallery',
+									'name'			=> 'gallery',
+									'multi_upload'	=> true,
+									'left_label'	=> __( 'Gallery', 'tm-real-estate' ),
 								),
 								'agent' => array(
 									'type'        => 'select',
@@ -1095,6 +1079,22 @@ class TM_Real_Estate {
 				),
 			)
 		)->font_awesome_icon( 'f1ad' );
+
+		add_filter( 'post_type_link', array( $this, 'property_permalink' ), 10, 2 );
+	}
+
+	/**
+	 * Change property single permalink
+	 *
+	 * @param string $url
+	 * @param object $post
+	 * @return string
+	 */
+	public function property_permalink( $url, $post ) {
+		if ( 'property' == get_post_type( $post ) ) {
+			$url = Model_Settings::get_search_single_page() . '?id=' . $post->ID;
+		}
+		return $url;
 	}
 
 	/**
