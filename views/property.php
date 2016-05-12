@@ -11,6 +11,12 @@
  */
 
 ?>
+<?php 
+	$carousel_image_size = apply_filters( 'real_estate_carousel_image_sizes', array(
+		'large_size' 		=> 'medium_large',
+		'thumbnail_size' 	=> 'thumbnail',
+	) );
+?>
 <?php if ( ! empty( $__data['property'] ) ) : ?>
 	<?php $property = $__data['property']; ?>
 	<div class="properties">
@@ -19,11 +25,11 @@
 				<h4><?php echo $property->post_title; ?></h4>
 			</header>
 			<div class="swiper-container gallery-top">
-				<?php if ( ! empty( $property->gallery[0]['medium_large'] ) ) : ?>
+				<?php if ( ! empty( $property->gallery[0][$carousel_image_size['large_size']] ) ) : ?>
 					<?php if ( 1 < count( $property->gallery ) ) : ?>
 						<div class="swiper-wrapper">
 							<?php foreach ( $property->gallery as $image ) : ?>
-								<div class="swiper-slide" style="background-image:url(<?php echo $image['medium_large'][0] ?>"></div>
+								<div class="swiper-slide" style="background-image:url(<?php echo $image[$carousel_image_size['large_size']][0] ?>"></div>
 							<?php endforeach; ?>
 						</div>
 						<!-- Add Arrows -->
@@ -31,7 +37,7 @@
 						<div class="swiper-button-prev swiper-button-white"></div>
 					<?php else : ?>
 							<div class="swiper-wrapper">
-								<div class="swiper-slide" style="background-image:url(<?php echo $property->gallery['image'][0]['medium_large'][0] ?>"></div>
+								<div class="swiper-slide" style="background-image:url(<?php echo $property->gallery['image'][0][$carousel_image_size['large_size']][0] ?>"></div>
 							</div>
 					<?php endif; ?>
 				<?php else : ?>
@@ -44,7 +50,7 @@
 				<div class="swiper-container gallery-thumbs">
 					<div class="swiper-wrapper">
 						<?php foreach ( $property->gallery as $image ) : ?>
-						<div class="swiper-slide" style="background-image:url(<?php echo $image['thumbnail'][0] ?>"></div>
+						<div class="swiper-slide" style="background-image:url(<?php echo $image[$carousel_image_size['thumbnail_size']][0] ?>"></div>
 						<?php endforeach; ?>
 					</div>
 			</div>
