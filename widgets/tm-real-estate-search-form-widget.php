@@ -16,6 +16,13 @@
 class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 
 	/**
+	 * Default settings
+	 *
+	 * @var type array
+	 */
+	private $instance_default = array();
+
+	/**
 	 * Search_Form_Widget class constructor
 	 */
 	public function __construct() {
@@ -38,6 +45,16 @@ class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 	 * @param type $args array.
 	 * @param type $instance array.
 	 */
+	public function form( $instance ) {
+		
+	}
+
+	/**
+	 * Frontend view
+	 *
+	 * @param type $args array.
+	 * @param type $instance array.
+	 */
 	public function widget( $args, $instance ) {
 		$title = '';
 		if ( array_key_exists( 'title', $instance ) ) {
@@ -47,5 +64,15 @@ class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 		echo $title;
 		echo do_shortcode( '[tm-re-search-form]' );
 		echo $args['after_widget'];
+	}
+
+	/**
+	 * Frontend view
+	 *
+	 * @param type $args array.
+	 * @param type $instance array.
+	 */
+	public function update( $new_instance, $old_instance ) {
+		
 	}
 }

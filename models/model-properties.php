@@ -324,6 +324,7 @@ class Model_Properties {
 				'show_sorting'	=> 'no',
 				'orderby'		=> 'date',
 				'order'			=> 'desc',
+				'template'		=> 'default',
 			),
 			$atts
 		);
@@ -341,8 +342,14 @@ class Model_Properties {
 			}
 		}
 
+		$template = $atts['template'];
+		
+		if ( !file_exists( TM_REAL_ESTATE_DIR . 'views/properties/' . $atts['template'] . '.php' ) ) {
+			$template = 'default';
+		}
+
 		return Cherry_Toolkit::render_view(
-			TM_REAL_ESTATE_DIR . 'views/properties.php',
+			TM_REAL_ESTATE_DIR . 'views/properties/' . $template . '.php',
 			array(
 				'properties'		=> $properties,
 				'show_sorting'		=> $show_sorting,
@@ -547,7 +554,7 @@ class Model_Properties {
 	 *
 	 * @return html code.
 	 */
-	public static function shortcode_search_form( $atts ) {
+	public static function shortcode_search_form( $atts = array() ) {
 
 		$default_value = array(
 			'keyword'			=> '',
@@ -564,6 +571,10 @@ class Model_Properties {
 			'show_sorting'		=> 'no',
 			'orderby'			=> 'date',
 		);
+
+		if ( ! is_array( $atts ) ) {
+			$atts = array();
+		}
 		$values = array_merge( $default_value, $_GET, $atts );
 
 		$action_url = Model_Settings::get_search_result_page();
