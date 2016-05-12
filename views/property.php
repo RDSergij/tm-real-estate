@@ -21,8 +21,8 @@
 	<?php $property = $__data['property']; ?>
 	<div class="properties">
 		<article class="property-item">
-			<header class="property-content">
-				<h4><?php echo $property->post_title; ?></h4>
+			<header class="property-title">
+				<h1><?php echo $property->post_title; ?></h1>
 			</header>
 			<div class="swiper-container gallery-top">
 				<?php if ( ! empty( $property->gallery[0][$carousel_image_size['large_size']] ) ) : ?>
@@ -56,24 +56,20 @@
 			</div>
 			<?php endif; ?>
 
+			<div class="property-price">
+				<h3><?php echo __( 'Price:', 'tm-real-estate' ) ?> <span class="price"><?php echo $__data['currency_symbol'] ?> <?php echo $property->price; ?></span></h3>
+			</div>
+
+			<div class="property-hr"></div>
+
 			<div class="property-content">
-				<div class="detail">
-					<?php echo wp_trim_words( $property->post_content, 55 ); ?>
+				<div class="property-detail">
+					<h3><?php echo __( 'Property Description:', 'tm-real-estate' ) ?></h3>
+					<?php echo $property->post_content; ?>
 				</div>
-			</div>
 
-			<div class="property-location">
-				<h6><?php echo __( 'Location:', 'tm-real-estate' ) ?></h6>
-				<?php if ( ! empty( $property->address ) ) : ?>
-					<div id="locations" data-address="<?php echo esc_attr( $property->address ); ?>"></div>
-				<?php endif; ?>
-			</div>
-
-			<footer>
+				<h3><?php echo __( 'Quick Summary:', 'tm-real-estate' ) ?></h3>
 				<ul class="property-meta">
-					<li class="price">
-						<?php echo $__data['currency_symbol'] ?>  <?php echo $property->price; ?>
-					</li>
 					<li class="type">
 						<?php echo esc_attr( $property->type ); ?>
 					</li>
@@ -119,11 +115,28 @@
 					<li class="tag"><?php echo $tag; ?></li>
 					<?php endforeach; ?>
 				</ul>
-			</footer>
+			</div>
 
+			<div class="property-hr"></div>
+
+			<div class="property-location">
+				<h3><?php echo __( 'Map', 'tm-real-estate' ) ?></h3>
+				<?php if ( ! empty( $property->address ) ) : ?>
+					<div id="locations" data-address="<?php echo esc_attr( $property->address ); ?>"></div>
+				<?php endif; ?>
+			</div>
+
+			<div class="property-hr"></div>
+
+			<div class="property-agent">
+				<h3><?php echo __( 'Contact Agent', 'tm-real-estate' ) ?></h3>
+
+				<?php echo $__data['contact_form'] ?>
+			</div>
 		</article>
 
-		<?php echo $__data['contact_form'] ?>
+		
+		
 	</div>
 
 <?php endif; ?>

@@ -7,7 +7,8 @@ jQuery( document ).ready( function() {
 
 	var galleryThumbs = new window.Swiper( '.properties .property-item .gallery-thumbs', {
 		spaceBetween: 10,
-		centeredSlides: true,
+		slidesPerView: 6,
+		centeredSlides: false,
 		slidesPerView: 'auto',
 		touchRatio: 0.2,
 		slideToClickedSlide: true
@@ -15,5 +16,4 @@ jQuery( document ).ready( function() {
 
 	galleryTop.params.control		= galleryThumbs;
 	galleryThumbs.params.control	= galleryTop;
-
 });
