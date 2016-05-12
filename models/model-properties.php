@@ -554,7 +554,7 @@ class Model_Properties {
 	 *
 	 * @return html code.
 	 */
-	public static function shortcode_search_form( $atts ) {
+	public static function shortcode_search_form( $atts = array() ) {
 
 		$default_value = array(
 			'keyword'			=> '',
@@ -571,6 +571,10 @@ class Model_Properties {
 			'show_sorting'		=> 'no',
 			'orderby'			=> 'date',
 		);
+
+		if ( ! is_array( $atts ) ) {
+			$atts = array();
+		}
 		$values = array_merge( $default_value, $_GET, $atts );
 
 		$action_url = Model_Settings::get_search_result_page();
