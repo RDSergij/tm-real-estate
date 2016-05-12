@@ -16,6 +16,13 @@
 class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 
 	/**
+	 * Default settings
+	 *
+	 * @var type array
+	 */
+	private $instance_default = array();
+
+	/**
 	 * Search_Form_Widget class constructor
 	 */
 	public function __construct() {
