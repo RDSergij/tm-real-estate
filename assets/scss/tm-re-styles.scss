@@ -40,12 +40,17 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 	&:hover {
 		background: darken($accent-color, 10%);
 	}
-	&:active {
+	&:active,
+	&:focus {
 		margin: 0;
 		top: 0;
+		padding: 19px 20px;
+		font-size: 12px;
+		background: $accent-color;
 		border: none;
 		box-shadow: none;
 		transform: none;
+		font-weight: 900;
 	}
 }
 @mixin form-input() {
@@ -227,6 +232,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		}
 		&:hover {
 			background: darken($success-color, 10%);
+		}
+		&:active,
+		&:focus {
+			background: $success-color;
 		}
 	}
 
