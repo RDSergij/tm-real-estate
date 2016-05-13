@@ -220,7 +220,7 @@ if ( ! class_exists( 'Cherry_Post_Formats_Api' ) ) {
 		 */
 		public function assets() {
 
-			$base_url = $this->core->settings['base_dir'] . 'modules/' . $this->module_slug;
+			$base_url = $this->core->settings['base_url'] . 'modules/' . $this->module_slug;
 
 			wp_enqueue_script(
 				'cherry-post-formats',
