@@ -13,6 +13,11 @@
 ?>
 
 <div class="tm-real-estate-search-form-widget">
+
+	<p>
+		<?php echo $__data['first_block_html'] ?>
+	</p>
+
 	<!-- Form -->
 	<div id="form">
 		<br/>

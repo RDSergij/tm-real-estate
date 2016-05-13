@@ -57,9 +57,6 @@ class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 	 * @param type $instance array.
 	 */
 	public function form( $instance ) {
-		//foreach ( $this->instance_default as $key => $value ) {
-		//	$instance[ $key ] = ! empty( $instance[ $key ] ) ? $instance[ $key ] : $value;
-		//}
 
 		$first_block_field = new UI_Select(
 			array(
@@ -118,7 +115,7 @@ class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 		$map_title_html = $map_title_field->render();
 
 		echo Cherry_Toolkit::render_view(
-			TM_REAL_ESTATE_DIR . 'views/search-map-widget-backend.php',
+			TM_REAL_ESTATE_DIR . 'views/widgets/search-form-and-map/admin.php',
 			array(
 				'first_block_html'	=> $first_block_html,
 				'form_is_html'		=> $form_is_html,
@@ -140,17 +137,52 @@ class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 		if ( array_key_exists( 'title', $instance ) ) {
 			$title = $args['before_title'] . sanitize_text_field( $instance['title'] ) . $args['after_title'];
 		}
+
 		$form = do_shortcode( '[tm-re-search-form]' );
 		$map = do_shortcode( '[tm-re-map]' );
+
+		$blocks = array();
+		if ( 'true' == Cherry_Toolkit::get_arg( $instance, 'form_is', $this->instance_default['form_is'] ) ) {
+			$blocks['form'] = Cherry_Toolkit::render_view(
+				TM_REAL_ESTATE_DIR . 'views/widgets/search-form-and-map/frontend-form.php',
+				array(
+					'form'			=> $form,
+					'form_title'	=> Cherry_Toolkit::get_arg( $instance, 'form_title', $this->instance_default['form_title'] ),
+					'before_title'	=> $args['before_title'],
+					'after_title'	=> $args['after_title'],
+				)
+			);
+		} else {
+			$blocks['form'] = '';
+		}
+
+		if ( 'true' == Cherry_Toolkit::get_arg( $instance, 'map_is', $this->instance_default['map_is'] ) ) {
+			$blocks['map'] = Cherry_Toolkit::render_view(
+				TM_REAL_ESTATE_DIR . 'views/widgets/search-form-and-map/frontend-map.php',
+				array(
+					'map'			=> $map,
+					'map_title'		=> Cherry_Toolkit::get_arg( $instance, 'map_title', $this->instance_default['map_title'] ),
+					'before_title'	=> $args['before_title'],
+					'after_title'	=> $args['after_title'],
+				)
+			);
+		} else {
+			$blocks['map'] = '';
+		}
+
+		if ( 'form' == Cherry_Toolkit::get_arg( $instance, 'first_block', $this->instance_default['first_block'] ) ) {
+			$first_block = $blocks['form'];
+			$second_block = $blocks['map'];
+		} else {
+			$first_block = $blocks['map'];
+			$second_block = $blocks['form'];
+		}
+
 		echo Cherry_Toolkit::render_view(
-			TM_REAL_ESTATE_DIR . 'views/search-map-widget-frontend.php',
+			TM_REAL_ESTATE_DIR . 'views/widgets/search-form-and-map/frontend.php',
 			array(
-				'form'			=> $form,
-				'map'			=> $map,
-				'form_title'	=> Cherry_Toolkit::get_arg( $instance, 'form_title', $this->instance_default['form_title'] ),
-				'map_title'		=> Cherry_Toolkit::get_arg( $instance, 'map_title', $this->instance_default['map_title'] ),
-				'before_title'	=> $args['before_title'],
-				'after_title'	=> $args['after_title'],
+				'first_block'			=> $first_block,
+				'second_block'			=> $second_block,
 				'before_widget'	=> $args['before_widget'],
 				'after_widget'	=> $args['after_widget'],
 			)
