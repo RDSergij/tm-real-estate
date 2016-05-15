@@ -672,6 +672,13 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 						}
 					}
 				}
+				&.clone {
+					a {
+						&:after {
+							content: '\f0c5';
+						}
+					}
+				}
 			}
 		}
 

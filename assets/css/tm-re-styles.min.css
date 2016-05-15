@@ -893,6 +893,10 @@
   content: '\f06e';
 }
 
+.post-type-property .wp-list-table .row-actions span.clone a:after {
+  content: '\f0c5';
+}
+
 .post-type-property .wp-list-table .inline-editor .colspanchange {
   display: -webkit-flex;
   display: -ms-flexbox;
