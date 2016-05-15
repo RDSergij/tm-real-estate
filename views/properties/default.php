@@ -13,7 +13,7 @@
 ?>
 <?php if ( is_array( $__data['properties'] ) && count( $__data['properties'] ) ) : ?>
 
-	<div class="properties">
+	<div class="properties properties-list_default">
 		<?php echo $__data['order_html'] ?>
 		<?php foreach ( $__data['properties'] as $property ) : ?>
 		<article class="property-item">

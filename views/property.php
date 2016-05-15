@@ -19,7 +19,7 @@
 ?>
 <?php if ( ! empty( $__data['property'] ) ) : ?>
 	<?php $property = $__data['property']; ?>
-	<div class="properties">
+	<div class="properties single-property">
 		<article class="property-item">
 			<header class="property-title">
 				<h2><?php echo $property->post_title; ?></h2>

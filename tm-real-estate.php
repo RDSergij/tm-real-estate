@@ -1053,7 +1053,7 @@ class TM_Real_Estate {
 
 		wp_enqueue_style(
 			'tm-real-state-styles',
-			plugins_url( 'tm-real-estate' ) . '/assets/css/tm-re-styles.min.css',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/tm-re-admin-styles.min.css',
 			array(),
 			'3.3.0',
 			'all'

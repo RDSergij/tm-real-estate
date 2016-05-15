@@ -738,8 +738,10 @@ class Model_Properties {
 	 */
 	public static function get_image( $post_id ) {
 		$images = self::get_all_post_images( $post_id );
-		if ( array_key_exists( 'medium', $images ) ) {
-			return $images['medium'][0];
+		$image_size = apply_filters( 'real_estate_properties_image_size', 'medium' );
+
+		if ( array_key_exists( $image_size, $images ) ) {
+			return $images[$image_size][0];
 		}
 		return TM_REAL_ESTATE_URI.'assets/images/placehold.png';
 	}
