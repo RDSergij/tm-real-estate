@@ -24,36 +24,18 @@
 			<header class="property-title">
 				<h2><?php echo $property->post_title; ?></h2>
 			</header>
-			<div class="swiper-container gallery-top">
-				<?php if ( ! empty( $property->gallery[0][$carousel_image_size['large_size']] ) ) : ?>
-					<?php if ( 1 < count( $property->gallery ) ) : ?>
-						<div class="swiper-wrapper">
+			<?php if ( ! empty( $property->gallery[0][$carousel_image_size['large_size']] ) ) : ?>
+				<div class="property-gallery">
+					<div id="lightSlider">
+						<?php if ( ! empty( $property->gallery ) && 1 < count( $property->gallery ) ) : ?>
 							<?php foreach ( $property->gallery as $image ) : ?>
-								<div class="swiper-slide" style="background-image:url(<?php echo $image[$carousel_image_size['large_size']][0] ?>"></div>
+								<li data-thumb="<?php echo $image[$carousel_image_size['thumbnail_size']][0] ?>">
+									<img src="<?php echo $image[$carousel_image_size['large_size']][0] ?>" />
+								</li>
 							<?php endforeach; ?>
-						</div>
-						<!-- Add Arrows -->
-						<div class="swiper-button-next"><i class="material-icons">keyboard_arrow_right</i></div>
-						<div class="swiper-button-prev"><i class="material-icons">keyboard_arrow_left</i></div>
-					<?php else : ?>
-							<div class="swiper-wrapper">
-								<div class="swiper-slide" style="background-image:url(<?php echo $property->gallery['image'][0][$carousel_image_size['large_size']][0] ?>"></div>
-							</div>
-					<?php endif; ?>
-				<?php else : ?>
-						<div class="swiper-wrapper">
-							<div class="swiper-slide" style="background-image:url(<?php echo wp_get_attachment_url( get_post_thumbnail_id( $property->ID ) ); ?>"></div>
-						</div>
-				<?php endif; ?>
-			</div>
-			<?php if ( ! empty( $property->gallery ) && 1 < count( $property->gallery ) ) : ?>
-				<div class="swiper-container gallery-thumbs">
-					<div class="swiper-wrapper">
-						<?php foreach ( $property->gallery as $image ) : ?>
-						<div class="swiper-slide" style="background-image:url(<?php echo $image[$carousel_image_size['thumbnail_size']][0] ?>"></div>
-						<?php endforeach; ?>
+						<?php endif; ?>
 					</div>
-			</div>
+				</div>
 			<?php endif; ?>
 
 			<div class="property-price">

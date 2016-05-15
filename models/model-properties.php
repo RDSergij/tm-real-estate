@@ -489,8 +489,8 @@ class Model_Properties {
 	public static function property_single_assets() {
 
 		wp_enqueue_script(
-			'swipe',
-			plugins_url( 'tm-real-estate' ) . '/assets/js/swiper.min.js',
+			'lightslider',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/lightslider.min.js',
 			array( 'jquery' ),
 			'1.0.0',
 			true
@@ -505,8 +505,8 @@ class Model_Properties {
 		);
 
 		wp_enqueue_style(
-			'swiper',
-			plugins_url( 'tm-real-estate' ) . '/assets/css/swiper.min.css',
+			'lightslider',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/lightslider.min.css',
 			array(),
 			'3.3.0',
 			'all'
