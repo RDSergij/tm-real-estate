@@ -38,7 +38,7 @@
 				</div>
 				<ul class="property-meta">
 					<li class="area">
-						<small><?php echo $property->area; ?> <?php echo __( $__data['area_unit'], 'tm-real-estate' ); ?></small>
+						<small><?php echo $property->area . ' ' . __( $__data['area_unit'], 'tm-real-estate' ); ?></small>
 					</li>
 					<li class="bedrooms">
 						<small><?php echo $property->bedrooms . ' ' . __( 'Bedrooms', 'tm-real-estate' ); ?></small>
