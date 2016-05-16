@@ -13,7 +13,7 @@
 ?>
 <?php if ( is_array( $__data['properties'] ) && count( $__data['properties'] ) ) : ?>
 
-	<div class="properties properties-list_default">
+	<div class="properties properties-list properties-list_default">
 		<?php echo $__data['order_html'] ?>
 		<?php foreach ( $__data['properties'] as $property ) : ?>
 		<article class="property-item">
@@ -22,39 +22,35 @@
 					<img src="<?php echo $property->image; ?>" class="attachment-property-thumb-image" alt="<?php echo esc_attr( $property->post_title ); ?>">
 				</a>
 
-				<figcaption class="for-<?php echo esc_attr( $property->status ); ?>">For <?php echo ucwords( esc_attr( $property->status ) ); ?></figcaption>
+				<figcaption class="for-<?php echo esc_attr( $property->status ); ?>"><small><?php echo ucwords( esc_attr( $property->status ) ); ?></small></figcaption>
 			</figure>
-
-			<ul class="property-meta">
-				<li class="type">
-					<?php echo esc_attr( $property->type ); ?>
-				</li>
-				<li class="bathrooms">
-					<?php echo $property->bathrooms; ?>
-				</li>
-				<li class="bedrooms">
-					<?php echo $property->bedrooms; ?>
-				</li>
-				<li class="parking_places">
-					<?php echo $property->parking_places; ?>
-				</li>
-				<li class="area">
-					<?php echo $property->area; ?> <?php echo __( $__data['area_unit'], 'tm-real-estate' ); ?>
-				</li>
-			</ul>
 
 			<div class="property-content">
 				<div class="property-title">
-					<h4><a href="<?php echo $property->url ?>"><?php echo $property->post_title; ?></a></h4>
+					<h5><a href="<?php echo $property->url ?>"><?php echo $property->post_title; ?></a></h5>
 
 					<div class="price">
-						<?php echo $__data['currency_symbol'] ?> <?php echo $property->price; ?>
+						<h5><?php echo $__data['currency_symbol'] ?> <?php echo $property->price; ?></h5>
 					</div>
 				</div>
 				<div class="detail">
-					<?php echo wp_trim_words( $property->post_content, 55 ); ?>
-					<a class="more-details" href="<?php echo $property->url ?>">More Details <i class="fa fa-caret-right"></i></a>
+					<p><?php echo wp_trim_words( $property->post_content, 15 ); ?></p>
 				</div>
+				<ul class="property-meta">
+					<li class="area">
+						<small><?php echo $property->area; ?> <?php echo __( $__data['area_unit'], 'tm-real-estate' ); ?></small>
+					</li>
+					<li class="bedrooms">
+						<small><?php echo $property->bedrooms; ?></small>
+					</li>
+					<li class="bathrooms">
+						<small><?php echo $property->bathrooms; ?></small>
+					</li>
+				</ul>
+				<div class="property-address">
+					<small><?php echo $property->address; ?></small>
+				</div>
+				<a class="btn btn-primary" href="<?php echo $property->url ?>"><?php echo __( 'READ MORE', 'tm-real-estate' ); ?></a>
 			</div>
 
 		</article>
