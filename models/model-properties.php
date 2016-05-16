@@ -55,6 +55,7 @@ class Model_Properties {
 				$property->gallery   = self::get_gallery( $property->ID );
 				$property->status    = self::get_property_status( $property->ID );
 				$property->price     = self::get_price( $property->ID );
+				$property->state     = self::get_state( $property->ID );
 				$property->type      = self::get_type( $property->ID );
 				$property->bathrooms = self::get_bathrooms( $property->ID );
 				$property->bedrooms  = self::get_bedrooms( $property->ID );
@@ -208,6 +209,15 @@ class Model_Properties {
 				unset( $atts['min_bathrooms'] );
 			}
 
+			if ( ! empty( $atts['state'] ) ) {
+				$atts['meta_query'][] = array(
+					'key'     => 'state',
+					'value'   => esc_attr( $atts['state'] ),
+					'compare' => '=',
+				);
+				unset( $atts['status'] );
+			}
+
 			if ( ! empty( $atts['status'] ) ) {
 				$atts['meta_query'][] = array(
 					'key'     => 'status',
@@ -321,6 +331,7 @@ class Model_Properties {
 	public static function shortcode_properties( $atts ) {
 		$atts = shortcode_atts(
 			array(
+				'state'			=> 'active',
 				'show_sorting'	=> 'no',
 				'orderby'		=> 'date',
 				'order'			=> 'desc',
@@ -609,6 +620,16 @@ class Model_Properties {
 	 */
 	public static function get_type( $post_id ) {
 		return (string) get_post_meta( $post_id, 'type', true );
+	}
+
+	/**
+	 * Get property state
+	 *
+	 * @param  [type] $post_id id.
+	 * @return string property state.
+	 */
+	public static function get_state( $post_id ) {
+		return (string) get_post_meta( $post_id, 'state', true );
 	}
 
 	/**
