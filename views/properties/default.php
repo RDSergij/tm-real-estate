@@ -22,7 +22,7 @@
 					<img src="<?php echo $property->image; ?>" class="attachment-property-thumb-image" alt="<?php echo esc_attr( $property->post_title ); ?>">
 				</a>
 
-				<figcaption class="for-<?php echo esc_attr( $property->status ); ?>"><small><?php echo ucwords( esc_attr( $property->status ) ); ?></small></figcaption>
+				<figcaption class="for-<?php echo esc_attr( $property->status ); ?>"><?php echo ucwords( esc_attr( $property->status ) ); ?></figcaption>
 			</figure>
 
 			<div class="property-content">
@@ -41,10 +41,10 @@
 						<small><?php echo $property->area; ?> <?php echo __( $__data['area_unit'], 'tm-real-estate' ); ?></small>
 					</li>
 					<li class="bedrooms">
-						<small><?php echo $property->bedrooms; ?></small>
+						<small><?php echo $property->bedrooms . ' ' . __( 'Bedrooms', 'tm-real-estate' ); ?></small>
 					</li>
 					<li class="bathrooms">
-						<small><?php echo $property->bathrooms; ?></small>
+						<small><?php echo $property->bathrooms . ' ' . __( 'Bathrooms', 'tm-real-estate' ); ; ?></small>
 					</li>
 				</ul>
 				<div class="property-address">
