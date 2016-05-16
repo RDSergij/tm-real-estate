@@ -95,13 +95,15 @@ class Model_Agents {
 
 		$contact_form_settings = Model_Settings::get_contact_form_settings();
 
-		wp_enqueue_script(
-			'google-captcha',
-			'https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit',
-			null,
-			'1.0.0',
-			false
-		);
+		if ( ! empty( $contact_form_settings['google-captcha-key']  ) ) {
+			wp_enqueue_script(
+				'google-captcha',
+				'https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit',
+				null,
+				'1.0.0',
+				false
+			);
+		}
 
 		wp_enqueue_script(
 			'tm-real-state-contact-form',
@@ -153,6 +155,7 @@ class Model_Agents {
 			TM_REAL_ESTATE_DIR . 'views/contact-form.php',
 			array(
 				'agent'			=> $user_data->data,
+				'finished_cnt'	=> self::get_count_state_finished( $agent_id ),
 				'property_id'	=> $property_id,
 				'agent_page'	=> $agent_page,
 				'photo_url'		=> self::get_agent_photo_url( $agent_id ),
@@ -201,12 +204,64 @@ class Model_Agents {
 	 */
 	public static function photo_assets() {
 		// Register
-		wp_register_style( 'tm_agent_photo_admin_css', TM_REAL_ESTATE_URI . 'assets/css/agent-photo.css', false, '1.0.0', 'all' );
-		//wp_register_script( 'tm_agent_photo_admin_js', TM_REAL_ESTATE_URI . 'assets/js/agent-photo.js', array( 'jquery' ), '1.0.0' );
+		//wp_register_style( 'tm_agent_photo_admin_css', TM_REAL_ESTATE_URI . 'assets/css/agent-photo.css', false, '1.0.0', 'all' );
+		wp_register_script( 'tm_agent_photo_admin_js', TM_REAL_ESTATE_URI . 'assets/js/agent-photo.js', array( 'jquery' ), '1.0.0' );
 
 		// Enqueue
-		wp_enqueue_style( 'tm_agent_photo_admin_css' );
-		//wp_enqueue_script( 'tm_agent_photo_admin_js' );
+		//wp_enqueue_style( 'tm_agent_photo_admin_css' );
+		wp_enqueue_script( 'tm_agent_photo_admin_js' );
+	}
+
+	/**
+	 * Get count of properties by state and agent
+	 * 
+	 * @param int $agent_id
+	 * @param string $state
+	 * @return int
+	 */
+	public static function get_count_state( $agent_id, $state = 'active' ) {
+		$agent_id = max( 1, $agent_id );
+		global $wpdb;
+		$result = $wpdb->get_col(
+				"SELECT count(pm_state.meta_id) as cnt "
+				. "FROM $wpdb->postmeta as pm_state "
+				. "INNER JOIN $wpdb->postmeta as pm_author ON pm_author.post_id=pm_state.post_id "
+				. "WHERE pm_author.meta_value='$agent_id' AND pm_author.meta_key='agent' AND pm_state.meta_value='$state' AND pm_state.meta_key='state' ",
+				$agent_id,
+				$state
+		);
+		// TODO SQL argument %d, %s
+		return (int) $result[0];
+	}
+
+	/**
+	 * Get count active properties by agent
+	 * 
+	 * @param int $agent_id
+	 * @return int
+	 */
+	public static function get_count_state_active( $agent_id ) {
+		return self::get_count_state( $agent_id, 'active' );
+	}
+
+	/**
+	 * Get count inactive properties by agent
+	 * 
+	 * @param int $agent_id
+	 * @return int
+	 */
+	public static function get_count_state_inactive( $agent_id ) {
+		return self::get_count_state( $agent_id, 'inactive' );
+	}
+
+	/**
+	 * Get count finished properties by agent
+	 * 
+	 * @param int $agent_id
+	 * @return int
+	 */
+	public static function get_count_state_finished( $agent_id ) {
+		return self::get_count_state( $agent_id, 'finished' );
 	}
 
 	/**
@@ -277,7 +332,6 @@ class Model_Agents {
 
 		// If the current user can edit Users, allow this.
 		update_user_meta( $user_id, 'tm-re-photo-upload-meta', sanitize_text_field( $_POST['tm_re_agent_photo_upload_meta'] ) );
-		//update_user_meta( $user_id, 'tm-re-photo-upload-edit-meta', sanitize_text_field( $_POST['tm_re_agent_photo_upload_edit_meta'] ) );
 	}
 
 	/**

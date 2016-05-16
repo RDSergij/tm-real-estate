@@ -64,7 +64,7 @@ class Shortcode_Tinymce {
 			'title'  => __( 'Property id', 'tm-real-estate' ),
 			'image'  => '',
 			'width'  => 600,
-			'height' => 310,
+			'height' => 350,
 			'body'	 => array(
 				array(
 					'type'       => 'textbox',
@@ -117,6 +117,28 @@ class Shortcode_Tinymce {
 					'name'       => 'offset',
 					'value'      => 0,
 					'label' => __( 'Offset', 'tm-real-estate' ),
+				),
+				array(
+					'type'        => 'listbox',
+					'name'        => 'show_sorting',
+					'value'       => 'no',
+					'label'       => __( 'Order', 'tm-real-estate' ),
+					'values'      => Shortcode_Tinymce::tm_prepare_options( array( 'yes' => 'yes', 'no' => 'no' ) ),
+				),
+			),
+		);
+		$view_settings[ Model_Main::SHORT_CODE_SEARCH_RESULT ] = array(
+			'title'  => __( 'Search result', 'tm-real-estate' ),
+			'image'  => '',
+			'width'  => 600,
+			'height' => 80,
+			'body'	 => array(
+				array(
+					'type'        => 'listbox',
+					'name'        => 'show_sorting',
+					'value'       => 'no',
+					'label'       => __( 'Order', 'tm-real-estate' ),
+					'values'      => Shortcode_Tinymce::tm_prepare_options( array( 'yes' => 'yes', 'no' => 'no' ) ),
 				),
 			),
 		);

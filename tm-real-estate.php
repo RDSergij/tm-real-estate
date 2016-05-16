@@ -392,6 +392,18 @@ class TM_Real_Estate {
 							'title' => __( 'Settings', 'cherry' ),
 							'page'  => array( 'property' ),
 							'fields' => array(
+								'state' => array(
+									'type'       => 'select',
+									'id'         => 'state',
+									'name'       => 'state',
+									'value'      => 'active',
+									'left_label' => __( 'State of progress', 'tm-real-estate' ),
+									'options'    => array(
+										'inactive'	=> __( 'Inactive', 'tm-real-estate' ),
+										'active'	=> __( 'Active', 'tm-real-estate' ),
+										'finished'	=> __( 'Finished', 'tm-real-estate' ),
+									),
+								),
 								'price' => array(
 									'type'       => 'text',
 									'id'         => 'price',

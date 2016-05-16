@@ -7,13 +7,12 @@
     var shortcodeView;
     tinymce.PluginManager.add('tm_shortcodes', function (editor) {
         jQuery.each(TMPageSettings.shortcodes, function (i) {
-            if (TMPageSettings.shortcodes_views[TMPageSettings.shortcodes[i]]) {
-                shortcodeView = TMPageSettings.shortcodes_views[TMPageSettings.shortcodes[i]];
-            }
             editor.addButton(TMPageSettings.shortcodes[i], {
                 text: TMPageSettings.shortcodes[i],
                 image: (typeof shortcodeView !== 'undefined') ? shortcodeView['image'] : '',
-                onclick: function (e) {
+                onclick: function ( e ) {
+					shortcodeView = TMPageSettings.shortcodes_views[TMPageSettings.shortcodes[i]];
+					console.log( shortcodeView, TMPageSettings.shortcodes[i] );
                     if (TMPageSettings.shortcodes_views[TMPageSettings.shortcodes[i]]) {
                         editor.windowManager.open({
                             id: TMPageSettings.shortcodes[i],
