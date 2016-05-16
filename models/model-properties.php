@@ -500,8 +500,8 @@ class Model_Properties {
 	public static function property_single_assets() {
 
 		wp_enqueue_script(
-			'swipe',
-			plugins_url( 'tm-real-estate' ) . '/assets/js/swiper.min.js',
+			'lightslider',
+			plugins_url( 'tm-real-estate' ) . '/assets/js/lightslider.min.js',
 			array( 'jquery' ),
 			'1.0.0',
 			true
@@ -516,8 +516,8 @@ class Model_Properties {
 		);
 
 		wp_enqueue_style(
-			'swiper',
-			plugins_url( 'tm-real-estate' ) . '/assets/css/swiper.min.css',
+			'lightslider',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/lightslider.min.css',
 			array(),
 			'3.3.0',
 			'all'
@@ -759,8 +759,10 @@ class Model_Properties {
 	 */
 	public static function get_image( $post_id ) {
 		$images = self::get_all_post_images( $post_id );
-		if ( array_key_exists( 'medium', $images ) ) {
-			return $images['medium'][0];
+		$image_size = apply_filters( 'real_estate_properties_image_size', 'medium' );
+
+		if ( array_key_exists( $image_size, $images ) ) {
+			return $images[$image_size][0];
 		}
 		return TM_REAL_ESTATE_URI.'assets/images/placehold.png';
 	}
@@ -926,8 +928,12 @@ class Model_Properties {
 	 * @return array
 	 */
 	public static function property_single_column_layout( $columns ) {
-		$columns['property'] = 1;
-		return $columns;
+		global $typenow;
+		
+		if ( $typenow == 'property' ) {
+			$columns['property'] = 1;
+			return $columns;
+		}
 	}
 
 	/**
@@ -936,7 +942,11 @@ class Model_Properties {
 	 * @return int
 	 */
 	public static function property_single_column_layout_post() {
-		return 1;
+		global $typenow;
+		
+		if ( $typenow == 'property' ) {
+			return 1;
+		}
 	}
 
 	/**
@@ -946,22 +956,27 @@ class Model_Properties {
 	 * @return array
 	 */
 	public static function property_metabox_order_layout( $order ) {
-		return array(
-			'normal'   => join( ",", array(
-				'postexcerpt',
-				'formatdiv',
-				'trackbacksdiv',
-				'tagsdiv-post_tag',
-				'categorydiv',
-				'postimagediv',
-				'postcustom',
-				'commentstatusdiv',
-				'slugdiv',
-				'authordiv',
-				'submitdiv',
-			) ),
-			'side'     => '',
-			'advanced' => '',
-		);
+		global $typenow;
+
+		if ( $typenow == 'property' ) {
+			return array(
+				'normal'   => join( ",", array(
+					'postexcerpt',
+					'formatdiv',
+					'trackbacksdiv',
+					'tagsdiv-post_tag',
+					'categorydiv',
+					'postimagediv',
+					'postcustom',
+					'commentstatusdiv',
+					'slugdiv',
+					'authordiv',
+					'commentsdiv',
+					'submitdiv',
+				) ),
+				'side'     => '',
+				'advanced' => '',
+			);
+		}
 	}
 }

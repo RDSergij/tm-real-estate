@@ -1064,20 +1064,13 @@ class TM_Real_Estate {
 		) );
 
 		wp_enqueue_style(
-			'tm-real-state-settings-page',
-			plugins_url( 'tm-real-estate' ) . '/assets/css/page-settings.min.css',
+			'tm-real-state-styles',
+			plugins_url( 'tm-real-estate' ) . '/assets/css/tm-re-admin-styles.min.css',
 			array(),
 			'3.3.0',
 			'all'
 		);
 
-		wp_enqueue_style(
-			'tm-real-state-styles',
-			plugins_url( 'tm-real-estate' ) . '/assets/css/properties.min.css',
-			array(),
-			'1.0.0',
-			'all'
-		);
 	}
 
 	/**

@@ -15,23 +15,40 @@
 		<img src="<?php echo $__data['photo_url']; ?>">
 		<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name; ?></h4>
 	</a>
+
+	<div class="property-hr"></div>
+
 	<form>
+		<h3><?php echo __( 'Ask an Agent', 'tm-real-estate' ); ?></h3>
 		<span class="message"></span>
 		<input type="hidden" name="action" value="tm_re_contact_form"/>
 		<input type="hidden" name="agent_id" value="<?php echo $__data['agent']->ID; ?>"/>
 		<input type="hidden" name="property_id" value="<?php echo $__data['property_id']; ?>"/>
-		<?php echo __( 'Name', 'tm-real-estate' ); ?>
-		<input type="text" id="name" name="name" value="" required />
 
-		<?php echo __( 'Email', 'tm-real-estate' ) ?>
-		<input type="email"id="email" name="email" value="" required />
+		<div class="tm-re-contact-form_input">
+			<h6><?php echo __( 'Your name', 'tm-real-estate' ); ?><span class="tm-re-contact-form_required">*</span></h6>
+			<input type="text" id="name" name="name" value="" placeholder="<?php echo __( 'Enter please your name', 'tm-real-estate' ); ?>" required />
+		</div>
 
-		<?php echo __( 'Phone', 'tm-real-estate' ) ?>
-		<input type="text"id="phone" name="phone" value="" />
+		<div class="tm-re-contact-form_input">
+			<h6><?php echo __( 'Your e-mail', 'tm-real-estate' ) ?><span class="tm-re-contact-form_required">*</span></h6>
+			<input type="email"id="email" name="email" value="" placeholder="<?php echo __( 'Enter please your e-mail', 'tm-real-estate' ); ?>" required />
+		</div>
 
-		<?php echo __( 'Message', 'tm-real-estate' ) ?>
-		<textarea id="message" name="message" required></textarea>
-		<div id="tm-re-contact-form-captcha" ></div>
-		<input type="submit"id="submit" value="<?php echo __( 'Send Message', 'tm-real-estate' ); ?>"/>
+		<div class="tm-re-contact-form_input">
+			<h6><?php echo __( 'Your phone', 'tm-real-estate' ) ?><span class="tm-re-contact-form_required">*</span></h6>
+			<input type="text"id="phone" name="phone" value="" placeholder="<?php echo __( 'Enter please your phone', 'tm-real-estate' ); ?>" required />
+		</div>
+
+		<div class="tm-re-contact-form_input">
+			<h6><?php echo __( 'Your message', 'tm-real-estate' ) ?><span class="tm-re-contact-form_required">*</span></h6>
+			<textarea id="message" name="message" placeholder="<?php echo __( 'What can we help you with?', 'tm-real-estate' ); ?>"  required></textarea>
+		</div>
+
+		<div class="tm-re-contact-form_input">
+			<h6></h6>
+			<div id="tm-re-contact-form-captcha" ></div>
+			<input type="submit"id="submit" class="btn-primary" value="<?php echo __( 'Send', 'tm-real-estate' ); ?>"/>
+		</div>
 	</form>
 </div>

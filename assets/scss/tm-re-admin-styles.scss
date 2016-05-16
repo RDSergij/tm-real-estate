@@ -40,12 +40,17 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 	&:hover {
 		background: darken($accent-color, 10%);
 	}
-	&:active {
+	&:active,
+	&:focus {
 		margin: 0;
 		top: 0;
+		padding: 19px 20px;
+		font-size: 12px;
+		background: $accent-color;
 		border: none;
 		box-shadow: none;
 		transform: none;
+		font-weight: 900;
 	}
 }
 @mixin form-input() {
@@ -227,6 +232,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		}
 		&:hover {
 			background: darken($success-color, 10%);
+		}
+		&:active,
+		&:focus {
+			background: $success-color;
 		}
 	}
 
@@ -663,14 +672,40 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 						}
 					}
 				}
+				&.clone {
+					a {
+						&:after {
+							content: '\f0c5';
+						}
+					}
+				}
 			}
 		}
 
 		.inline-editor {
+			.colspanchange {
+				display: flex;
+				flex-wrap: wrap;
+				width: 100%;
+
+				.inline-edit-col-left,
+				.inline-edit-col-right {
+					flex: 1 0 40%;
+				}
+				.inline-edit-col-center {
+					flex: 1 0 20%;
+				}
+				.inline-edit-save {
+					flex: 1 0 100%;
+				}
+			}
 			select,
 			textarea,
 			input[type="text"] {
 				@include form-input();
+				padding: 10px;
+				height: 40px;
+				line-height: 40px;
 				width: auto;
 			}
 			textarea {
@@ -692,6 +727,53 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 
 					&:hover {
 						background: darken($success-color, 10%);
+					}
+				}
+			}
+			.timestamp-wrap {
+				input[name="hh"], 
+				input[name="jj"], 
+				input[name="mn"] {
+
+				}
+			}
+			.inline-edit-private,
+			.inline-edit-col-right .inline-edit-group label {
+				input {
+					display: none;
+					height: 50px;
+
+					&[type="checkbox"]:checked {
+						& + span.checkbox-box {
+							background: $success-color;
+
+							&:after {
+								opacity: 1;
+								transform: scale(1);
+							}
+						}
+					}
+				}
+				span.checkbox-box {
+					width: 26px;
+					height: 26px;
+					border-radius: 2px;
+					background: $gray-color-2;
+					display: inline-block;
+					vertical-align: middle;
+					text-align: center;
+					margin: 0 10px 0 0;
+					overflow: hidden;
+
+					&:after {
+						@include font-awesome-icon();
+						content: '\f00c';
+						color: $white-color;
+						line-height: 26px;
+						opacity: 0;
+						transform: scale(2);
+						transition: 300ms all;
+						vertical-align: top;
 					}
 				}
 			}
@@ -801,6 +883,41 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			#delete-action {
 				.submitdelete {
 					display: inline-block !important;
+					background: $warning-color;
+
+					&:hover {
+						background: darken($warning-color, 10%);
+					}
+				}
+			}
+
+			// Add comment
+			#replyrow {
+				padding: 20px;
+			}
+			#replycontainer {
+				.quicktags-toolbar {
+					.button {
+						padding: 5px 10px;
+						background: $gray-color-3;
+
+						&:hover {
+							background: darken($gray-color-3, 10%);
+						}
+					}
+				}
+			}
+			#replysubmit {
+				.button-primary {
+					@include button();
+					background: $success-color;
+
+					&:hover {
+						background: darken($success-color, 10%);
+					}
+				}
+				.button-secondary {
+					@include button();
 					background: $warning-color;
 
 					&:hover {
@@ -1334,6 +1451,168 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		> form#edittag {
 			padding-top: 0;
 			padding-bottom: 0;
+		}
+	}
+}
+
+// Settings
+.property_page_cherry-property-settings {
+	a {
+		&:focus,
+		&:active {
+			border: none;
+			box-shadow: none;
+		}
+	}
+	.cherry-settings-page {
+		> h2 {
+			padding: 0 0 20px;
+			font-weight: bold;
+			font-size: 30px;
+		}
+
+		.cherry-settings-tabs {
+			.tabs-section {
+				padding: 20px 0 0;
+				border-bottom: 1px solid $border-color;
+
+				a {
+					margin: 0 0 -1px;
+					padding: 0 22px 25px 22px;
+					border: none;
+					background: none;
+					text-transform: uppercase;
+					color: $gray-color-1;
+					font-weight: bold;
+					position: relative;
+					display: inline-block;
+
+					& + a {
+						margin-left: 1px;
+					}
+					&:after {
+						content: '';
+						width: 100%;
+						height: 3px;
+						background: $accent-color;
+						position: absolute;
+						bottom: 0;
+						left: 0;
+						transition: 300ms all cubic-bezier(.54,-0.36,.46,1.31);
+						transform: scale(0, 1);
+					}
+					&.nav-tab-active,
+					&:hover {
+						color: $accent-color;
+
+						&:after {
+							transform: scale(1, 1);
+						}
+					}
+				}
+			}
+
+			> div {
+				padding: 30px 30px 38px;
+				margin: 30px 0 0;
+				border-radius: 7px;
+				border: 2px solid $border-color;
+				background: $gray-color-2;
+
+				form {
+					> h2 {
+						margin: 0;
+						padding: 14px 20px;
+						background: $white-color;
+						border-radius: 5px 5px 0 0;
+						border-bottom: 1px solid $border-color;
+						box-shadow: $box-shadow;
+					}
+					.form-table {
+						margin: 0 0 30px;
+						background: $white-color;
+						border-radius: 0 0 5px 5px;
+						padding: 0 0 30px;
+						box-shadow: $box-shadow;
+
+						th {
+							padding: 0 20px 0 30px;
+							vertical-align: middle;
+						}
+						td {
+							padding: 0 30px 0 0;
+
+							.cherry-ui-container {
+								margin: 0;
+							}
+						}
+						tbody {
+							tr {
+								th,
+								td {
+									padding-top: 10px;
+									padding-bottom: 10px;
+								}
+							}
+							tr:first-child {
+								th,
+								td {
+									padding-top: 30px;
+								}
+							}
+							tr:last-child {
+								th,
+								td {
+									padding-bottom: 30px;
+								}
+							}
+						}
+						.cherry-ui-text,
+						.cherry-ui-select {
+							border: none;
+							box-shadow: none;
+							height: 50px;
+							line-height: 50px;
+							padding: 0 20px;
+							background: $gray-color-2;
+							border-radius: 2px;
+						}
+					}
+					p.submit,
+					.block-reset {
+						margin: 0;
+						padding: 0;
+						display: inline-block;
+						vertical-align: top;
+
+						.button {
+							@include button();
+						}
+					}
+					p.submit {
+						.button {
+							background: $success-color;
+
+							&:hover {
+								background: darken($success-color, 10%);
+							}
+						}
+						& + .block-reset {
+							margin-left: 25px;
+						}
+					}
+					.block-reset {
+						.button {
+							width: auto;
+							background: $warning-color;
+
+							&:hover {
+								background: darken($warning-color, 10%);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
