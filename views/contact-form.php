@@ -16,6 +16,11 @@
 		<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name; ?></h4>
 	</a>
 
+	<div class="agent-info">
+		<p><?php echo __( 'Active', 'tm-real-estate'); ?>: <?php echo $__data['active_cnt']; ?></p>
+		<p><?php echo __( 'Finished', 'tm-real-estate'); ?>: <?php echo $__data['finished_cnt']; ?></p>
+	</div>
+
 	<div class="property-hr"></div>
 
 	<form>
