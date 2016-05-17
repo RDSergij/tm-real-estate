@@ -304,10 +304,14 @@ class Model_Properties {
 	 *
 	 * @return html code.
 	 */
-	public static function shortcode_search_result( $atts ) {
+	public static function shortcode_search_result( $atts = array() ) {
+		if ( !is_array( $atts ) ) {
+			$atts = array();
+		}
 		$atts = shortcode_atts(
 			array(
 				'show_sorting'	=> 'no',
+				'orderby'		=> 'date',
 				'order'			=> 'desc',
 			),
 			$atts
@@ -598,6 +602,7 @@ class Model_Properties {
 			'property_type'		=> '',
 			'show_sorting'		=> 'no',
 			'orderby'			=> 'date',
+			'order'				=> 'date',
 		);
 
 		if ( ! is_array( $atts ) ) {
