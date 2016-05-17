@@ -156,6 +156,7 @@ class Model_Agents {
 			array(
 				'agent'			=> $user_data->data,
 				'finished_cnt'	=> self::get_count_state_finished( $agent_id ),
+				'active_cnt'	=> self::get_count_state_active( $agent_id ),
 				'property_id'	=> $property_id,
 				'agent_page'	=> $agent_page,
 				'photo_url'		=> self::get_agent_photo_url( $agent_id ),
@@ -220,18 +221,21 @@ class Model_Agents {
 	 * @return int
 	 */
 	public static function get_count_state( $agent_id, $state = 'active' ) {
-		$agent_id = max( 1, $agent_id );
 		global $wpdb;
-		$result = $wpdb->get_col(
-				"SELECT count(pm_state.meta_id) as cnt "
-				. "FROM $wpdb->postmeta as pm_state "
-				. "INNER JOIN $wpdb->postmeta as pm_author ON pm_author.post_id=pm_state.post_id "
-				. "WHERE pm_author.meta_value='$agent_id' AND pm_author.meta_key='agent' AND pm_state.meta_value='$state' AND pm_state.meta_key='state' ",
-				$agent_id,
-				$state
+
+		$agent_id = max( 1, $agent_id );
+
+		$result = $wpdb->get_var(
+			$wpdb->prepare(
+					"SELECT IFNULL( count(pm_state.meta_id), 0 ) as cnt "
+					. "FROM $wpdb->postmeta as pm_state "
+					. "INNER JOIN $wpdb->postmeta as pm_author ON pm_author.post_id=pm_state.post_id "
+					. "WHERE pm_author.meta_value='%d' AND pm_author.meta_key='agent' AND pm_state.meta_key='state' AND pm_state.meta_value='%s' ",
+					$agent_id,
+					$state
+			)
 		);
-		// TODO SQL argument %d, %s
-		return (int) $result[0];
+		return (int) $result;
 	}
 
 	/**
