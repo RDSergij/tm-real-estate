@@ -26,10 +26,10 @@
 		<label class="label-block" id="property_description_label" for="property_description_input"><?php _e( '', 'tm-real-estate' ); ?> Description </label>
 		<textarea id="property_description_input" class="form-textarea" name="property[description]" cols="40" rows="6"></textarea>
 	</div>
-	<div>
+	<!--div>
 		<label class="label-block" id="property_thumb_label" for="property_thumb_label"><?php _e( 'Image', 'tm-real-estate' ); ?></label>
 		<input class="form-upload validate[upload]" type="file" id="property_thumb_input" name="thumb" file-accept="jpg, jpeg, png, gif" file-maxsize="1024" file-minsize="0" file-limit="0">
-	</div>
+	</div-->
 	<div>
 		<label class="label-block" id="property_status_label" ><?php _e( 'Status', 'tm-real-estate' ); ?></label>
 		<input type="radio" class="form-radio" id="property_status_input_1" checked name="property[meta][status]" value="rent">
