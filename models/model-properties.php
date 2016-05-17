@@ -134,6 +134,11 @@ class Model_Properties {
 				unset( $atts['id'] );
 			}
 
+			if ( ! empty( $atts['property_id'] ) ) {
+				$atts['include'] = explode( ',', $atts['property_id'] );
+				unset( $atts['property_id'] );
+			}
+
 			if ( ! empty( $atts['keyword'] ) ) {
 				$atts['s'] = $atts['keyword'];
 				unset( $atts['keyword'] );
@@ -331,6 +336,14 @@ class Model_Properties {
 	public static function shortcode_properties( $atts ) {
 		$atts = shortcode_atts(
 			array(
+				'property_id'	=> '',
+				'id'			=> '',
+				'agent_id'		=> '',
+				'agent'			=> '',
+				'tag'			=> '',
+				'type'			=> '',
+				'offset'		=> '0',
+				'limit'			=> '5',
 				'state'			=> 'active',
 				'show_sorting'	=> 'no',
 				'orderby'		=> 'date',
@@ -479,7 +492,11 @@ class Model_Properties {
 	 */
 	public static function add_property( $attr ) {
 		if ( current_user_can( 'administrator' ) || current_user_can( 're_agent' ) ) {
-			$property_status = 'publish';
+			if ( empty( $attr['status'] ) ) {
+				$property_status = 'publish';
+			} else {
+				$property_status =  $attr['status'];
+			}
 		} else {
 			$property_status = 'draft';
 		}

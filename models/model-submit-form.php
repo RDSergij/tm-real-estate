@@ -88,6 +88,7 @@ class Model_Submit_Form {
 
 		$property['title']       = $_POST['property']['title'];
 		$property['description'] = ! empty( $_POST['property']['description'] ) ? $_POST['property']['description'] : '';
+		$property['status']      = 'pending';
 		$property_meta           = $_POST['property']['meta'];
 
 		$post_id = Model_Properties::add_property( $property );
@@ -116,13 +117,15 @@ class Model_Submit_Form {
 			if ( is_array( $_FILES['gallery']['name'] ) ) {
 				$files = Model_Submit_Form::re_array_files( $_FILES['gallery'] );
 				foreach ( $files as $key => $file ) {
-					$property_meta['gallery']['image'][ $key ] = Model_Submit_Form::insert_attacment( $file, $post_id );
+					$gallery[] = Model_Submit_Form::insert_attacment( $file, $post_id );
 				}
 			} else {
 				$file = $_FILES['gallery'];
-				$property_meta['gallery']['image'][ $key ] = Model_Submit_Form::insert_attacment( $file, $post_id );
+				$gallery[] = Model_Submit_Form::insert_attacment( $file, $post_id );
 			}
 		}
+
+		$property_meta['gallery'] = implode( ',', $gallery );
 
 		if ( current_user_can( 'administrator' ) || current_user_can( 're_agent' ) ) {
 			$property_meta['agent'] = get_current_user_id();
