@@ -56,7 +56,6 @@ class Model_Properties {
 				$property->status    = self::get_property_status( $property->ID );
 				$property->price     = self::get_price( $property->ID );
 				$property->state     = self::get_state( $property->ID );
-				$property->type      = self::get_type( $property->ID );
 				$property->bathrooms = self::get_bathrooms( $property->ID );
 				$property->bedrooms  = self::get_bedrooms( $property->ID );
 				$property->area      = self::get_area( $property->ID );
@@ -527,6 +526,7 @@ class Model_Properties {
 			'post_type'      => 'property',
 		);
 		$property = sanitize_post( $property, 'db' );
+
 		return wp_insert_post( $property );
 	}
 

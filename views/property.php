@@ -54,9 +54,14 @@
 
 				<h3><?php echo __( 'Quick Summary:', 'tm-real-estate' ) ?></h3>
 				<ul class="property-meta">
-					<li class="type">
-						<strong><?php echo __( 'Property type:', 'tm-real-estate' ) ?></strong> <?php echo esc_attr( $property->type ); ?>
-					</li>
+					<?php if( ! empty ( $property->types ) ) { ?>
+						<li class="type">
+							<strong><?php echo __( 'Property type:', 'tm-real-estate' ) ?></strong>
+							<?php foreach ( $property->types as $type ) : ?>
+								<?php echo $type; ?>
+							<?php endforeach; ?>
+						</li>
+					<?php } ?>
 					<li class="bathrooms">
 						<strong><?php echo __( 'Bathrooms:', 'tm-real-estate' ) ?></strong> <?php echo esc_attr( $property->bathrooms ); ?>
 					</li>

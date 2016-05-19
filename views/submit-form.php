@@ -53,7 +53,7 @@
 	<div>
 		<label class="label-block" for="location"><?php _e( 'Location', 'tm-real-estate' ); ?></label>
 		<select class="form-dropdown" id="location" name="property[location]">
-			<option value="0">-</option>
+			<option disabled selected value="">  </option>
 		<?php foreach ( $__data['locations'] as $key => $value ) : ?>
 			<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
 		<?php endforeach; ?>
@@ -77,7 +77,7 @@
 		<input type="number" id="property_parking_input" name="property[meta][parking_places]" min="0" value="">
 	</div>
 	<div>
-		<label class="label-block" id="property_map_label" for="property_map_input"><?php _e( 'Adress', 'tm-real-estate' ) ?></label>
+		<label class="label-block" id="property_map_label" for="property_map_input"><?php _e( 'Address', 'tm-real-estate' ) ?></label>
 		<input type="text" id="property_map_input" name="property[meta][address]" value="">
 	</div>
 
@@ -98,7 +98,7 @@
 			<i class="glyphicon glyphicon-plus"></i>
 			<span class="btn-success" ><?php _e( 'Add files...', 'tm-real-estate' ); ?></span>
 			<!-- The file input field used as target for the file upload widget -->
-			<input id="galery" type="file" name="galery[image][]" multiple>
+			<input id="galery" type="file" name="gallery[image][]" multiple>
 		</span>
 	</div>
 	<div id="files" class="files" style="margin: 10px; text-align: center;"></div>

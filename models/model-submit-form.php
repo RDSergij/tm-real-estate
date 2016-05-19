@@ -89,12 +89,26 @@ class Model_Submit_Form {
 		$property['title']       = $_POST['property']['title'];
 		$property['description'] = ! empty( $_POST['property']['description'] ) ? $_POST['property']['description'] : '';
 		$property['status']      = 'pending';
+//		$property['tax_input']   = array(
+//			'property-type'  => array( $_POST['property']['type'] ),
+//			'property-location'       => array( $_POST['property']['location'] ),
+//		);
 		$property_meta           = $_POST['property']['meta'];
 
 		$post_id = Model_Properties::add_property( $property );
 
 		if ( ! $post_id ) {
 			wp_send_json_error( array( 'messages' => $messages ) );
+		}
+
+		if ( ! empty( $_POST['property']['location'] ) ) {
+			$term_id = sanitize_key( $_POST['property']['location'] );
+			$term = get_term( $term_id );
+			if ( $term->parent ) {
+				wp_set_post_terms( $post_id, array( $term->parent, $term_id ), 'location' );
+			} else {
+				wp_set_post_terms( $post_id, array( $term_id ), 'location' );
+			}
 		}
 
 		if ( ! empty( $_POST['property']['type'] ) ) {
@@ -139,6 +153,7 @@ class Model_Submit_Form {
 			array(
 				'messages' => $messages,
 				'send' => self::send_confirmation_email( $post_id ),
+				'_FILES' =>  $_FILES,
 			)
 		);
 
