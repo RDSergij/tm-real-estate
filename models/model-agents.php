@@ -52,7 +52,7 @@ class Model_Agents {
 			$atts = array();
 		}
 
-		if ( empty( $atts['agent_id'] ) && empty( $atts['property_id'] ) && empty( $_GET['agent_id'] ) && empty( $_GET['property_id'] ) ) {
+		if (  empty( $atts['agent'] ) &&empty( $atts['agent_id'] ) && empty( $atts['property_id'] ) && empty( $_GET['agent_id'] ) && empty( $_GET['property_id'] ) ) {
 			return;
 		}
 
@@ -66,6 +66,8 @@ class Model_Agents {
 		$agent_id = null;
 		if ( ! empty( $atts['agent_id'] ) ) {
 			$agent_id = $atts['agent_id'];
+		} elseif( ! empty( $atts['agent'] ) ) {
+			$agent_id = $atts['agent'];
 		} else {
 			$agent_id = get_post_meta( $property_id, 'agent', true );
 		}

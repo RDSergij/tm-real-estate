@@ -142,6 +142,21 @@ class Shortcode_Tinymce {
 				),
 			),
 		);
+		$view_settings[ Model_Main::SHORT_CODE_AGENT_PROPERTIES ] = array(
+			'title'  => __( 'Agent properties', 'tm-real-estate' ),
+			'image'  => '',
+			'width'  => 600,
+			'height' => 80,
+			'body'	 => array(
+				array(
+					'type'        => 'listbox',
+					'name'        => 'agent',
+					'value'       => '',
+					'label'  => __( 'Agent', 'tm-real-estate' ),
+					'values'     => Shortcode_Tinymce::tm_prepare_options( Model_Main::get_agents() ),
+				),
+			),
+		);
 		return $view_settings;
 	}
 
