@@ -57,6 +57,7 @@ class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 	 * @param type $instance array.
 	 */
 	public function form( $instance ) {
+
 		$first_block_field = new UI_Select(
 			array(
 				'id'		=> $this->get_field_id( 'first_block' ),
