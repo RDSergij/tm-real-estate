@@ -53,6 +53,7 @@
 	<div>
 		<label class="label-block" for="location"><?php _e( 'Location', 'tm-real-estate' ); ?></label>
 		<select class="form-dropdown" id="location" name="property[location]">
+			<option value="0">-</option>
 		<?php foreach ( $__data['locations'] as $key => $value ) : ?>
 			<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
 		<?php endforeach; ?>
