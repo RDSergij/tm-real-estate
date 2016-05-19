@@ -55,9 +55,8 @@
 				<h3><?php echo __( 'Quick Summary:', 'tm-real-estate' ) ?></h3>
 				<ul class="property-meta">
 					<?php if( ! empty ( $property->types ) ) { ?>
-						<li class="type">
-							<strong><?php echo __( 'Property type: ', 'tm-real-estate' ); ?></strong>
-							<?php echo implode( ', ', $property->types ); ?>
+						<li class="bathrooms">
+							<strong><?php echo __( 'Status:', 'tm-real-estate' ) ?></strong> <?php echo esc_attr( $property->status ); ?>
 						</li>
 					<?php } ?>
 					<li class="bathrooms">
