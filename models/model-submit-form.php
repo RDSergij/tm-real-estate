@@ -153,7 +153,6 @@ class Model_Submit_Form {
 			array(
 				'messages' => $messages,
 				'send' => self::send_confirmation_email( $post_id ),
-				'_FILES' =>  $_FILES,
 			)
 		);
 
@@ -171,11 +170,12 @@ class Model_Submit_Form {
 					$message = sprintf(
 						'%s %s',
 						self::get_mail_message(),
-						add_query_arg(
+						get_permalink( $post_id )
+						/*add_query_arg(
 							'publish_hidden',
 							$post_id,
 							get_bloginfo( 'url' )
-						)
+						)*/
 					);
 					return wp_mail(
 						$_POST['property']['meta']['email'],

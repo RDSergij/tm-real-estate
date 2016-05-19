@@ -56,10 +56,8 @@
 				<ul class="property-meta">
 					<?php if( ! empty ( $property->types ) ) { ?>
 						<li class="type">
-							<strong><?php echo __( 'Property type:', 'tm-real-estate' ) ?></strong>
-							<?php foreach ( $property->types as $type ) : ?>
-								<?php echo $type; ?>
-							<?php endforeach; ?>
+							<strong><?php echo __( 'Property type: ', 'tm-real-estate' ); ?></strong>
+							<?php echo implode( ', ', $property->types ); ?>
 						</li>
 					<?php } ?>
 					<li class="bathrooms">
