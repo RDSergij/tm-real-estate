@@ -24,7 +24,7 @@ class Model_Properties {
 		$args = array(
 			'posts_per_page'   => 20,
 			'offset'           => 0,
-			'tax_query' => array(),
+			'tax_query'        => array(),
 			'orderby'          => 'date',
 			'order'            => 'DESC',
 			'include'          => '',
@@ -439,13 +439,28 @@ class Model_Properties {
 
 		if ( count( $properties ) ) {
 			foreach ( $properties as &$p ) {
+				$content = Cherry_Toolkit::render_view(
+					TM_REAL_ESTATE_DIR . 'views/map-item-property.php',
+						array(
+							'id'      => $p->ID,
+							'title'   => $p->post_title,
+							'price'   => (float) self::get_price( $p->ID ),
+							'currency'=> (string) Model_Settings::get_currency_symbol(),
+							'agent'   => (string) self::get_agent_name( $p->ID ),
+							'address' => $p->address,
+						)
+				);
 				array_push(
 					$result,
 					array(
 						'id'      => $p->ID,
+						'title'   => $p->post_title,
+						'price'   => (float) self::get_price( $p->ID ) . ' ' . Model_Settings::get_currency_symbol(),
+						'agent'   => (string) self::get_agent_name( $p->ID ),
 						'address' => $p->address,
 						'lat'     => $p->lat,
 						'lng'     => $p->lng,
+						'content' => $content,
 					)
 				);
 			}
@@ -652,6 +667,18 @@ class Model_Properties {
 	 */
 	public static function get_state( $post_id ) {
 		return (string) get_post_meta( $post_id, 'state', true );
+	}
+
+	/**
+	 * Get agent display name by property id
+	 *
+	 * @param  [integer] $post_id id.
+	 * @return string property address.
+	 */
+	public static function get_agent_name( $post_id ) {
+		$agent_id = (int) get_post_meta( $post_id, 'agent', true );
+		$agent_data = get_userdata( $agent_id );
+		return (string) $agent_data->display_name;
 	}
 
 	/**

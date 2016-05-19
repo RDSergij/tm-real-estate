@@ -51,7 +51,7 @@
                     content: this.template({
                         id: this.data[i].id,
                         url: window.property_settings.base_url + this.data[i].id,
-                        content: this.data[i].address
+                        content: this.data[i].content
                     })
                 }));
                 (function (x, me) {
