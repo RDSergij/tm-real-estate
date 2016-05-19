@@ -14,17 +14,16 @@
 <form class="" action="" method="post" enctype="multipart/form-data" name="" id="property_submit_format">
 	<div>
 		<label class="label-block" id="property_title_label" for="property_title_input"><?php _e( 'Title', 'tm-real-estate' ); ?></label>
-		<input type="text" class ="form-textbox"  id="property_title_input" name="property[title]" value="">
+		<input type="text" class ="form-textbox"  id="property_title_input" name="property[title]" value="" <?php echo $__data['required_for_gests']; ?>>
 	</div>
 
 	<div>
-
 		<label class="label-block" id="property_price_label" for="property_price_input"><?php _e( 'Price', 'tm-real-estate' ); ?></label>
-		<input type="number" class="form-textbox" id="property_price_input" name="property[meta][price]" step="any" min="0" value="">
+		<input type="number" class="form-textbox" id="property_price_input" name="property[meta][price]" step="any" min="0" value="" <?php echo $__data['required_for_gests']; ?>>
 	</div>
 	<div>
 		<label class="label-block" id="property_description_label" for="property_description_input"><?php _e( '', 'tm-real-estate' ); ?> Description </label>
-		<textarea id="property_description_input" class="form-textarea" name="property[description]" cols="40" rows="6"></textarea>
+		<textarea id="property_description_input" class="form-textarea" name="property[description]" cols="40" rows="6" <?php echo $__data['required_for_gests']; ?>></textarea>
 	</div>
 	<!--div>
 		<label class="label-block" id="property_thumb_label" for="property_thumb_label"><?php _e( 'Image', 'tm-real-estate' ); ?></label>
@@ -78,7 +77,7 @@
 	</div>
 	<div>
 		<label class="label-block" id="property_map_label" for="property_map_input"><?php _e( 'Address', 'tm-real-estate' ) ?></label>
-		<input type="text" id="property_map_input" name="property[meta][address]" value="">
+		<input type="text" id="property_map_input" name="property[meta][address]" value="" <?php echo $__data['required_for_gests']; ?>>
 	</div>
 
 	<div>
@@ -89,7 +88,7 @@
 	<?php if ( ! is_user_logged_in() ) : ?>
 		<div>
 			<label class="label-block" id="property_map_label" for="property_email"><?php _e( 'Your email', 'tm-real-estate' ) ?></label>
-			<input type="email" id="property_email" name="property[meta][email]" value="">
+			<input type="email" id="property_email" name="property[meta][email]" value="" <?php echo $__data['required_for_gests']; ?>>
 		</div>
 	<?php endif; ?>
 	<div>
