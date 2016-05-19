@@ -13,7 +13,7 @@
 
 		<tr>
 			<th>
-				<label for="tm_re_agent_photo_meta"><?php _e( 'Profile Photo', 'tm-real-estate' ); ?></label></th>
+				<label for="tm_re_agent_photo_meta"><?php _e( 'Agent photo', 'tm-real-estate' ); ?></label></th>
 			<td>
 				<?php echo $__data['agent_photo_html']; ?>
 			</td>
