@@ -297,7 +297,7 @@ class Model_Agents {
 
 		$agent_photo_obj = new UI_Media(
 			array(
-				'id'					=> 'tm_re_agent_photo_upload"',
+				'id'					=> 'tm_re_agent_photo_upload',
 				'name'					=> 'tm_re_agent_photo_upload_meta',
 				'value'					=> self::get_agent_photo_id( $user->ID ),
 				'multi_upload'			=> false,
