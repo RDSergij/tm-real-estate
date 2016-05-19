@@ -19,11 +19,11 @@
 
 	<div>
 		<label class="label-block" id="property_price_label" for="property_price_input"><?php _e( 'Price', 'tm-real-estate' ); ?></label>
-		<input type="number" class="form-textbox" id="property_price_input" name="property[meta][price]" step="any" min="0" value="" <?php echo $__data['required_for_gests']; ?>>
+		<input type="number" class="form-textbox" id="property_price_input" name="property[meta][price]" step="any" min="0" value="">
 	</div>
 	<div>
 		<label class="label-block" id="property_description_label" for="property_description_input"><?php _e( '', 'tm-real-estate' ); ?> Description </label>
-		<textarea id="property_description_input" class="form-textarea" name="property[description]" cols="40" rows="6" <?php echo $__data['required_for_gests']; ?>></textarea>
+		<textarea id="property_description_input" class="form-textarea" name="property[description]" cols="40" rows="6"></textarea>
 	</div>
 	<!--div>
 		<label class="label-block" id="property_thumb_label" for="property_thumb_label"><?php _e( 'Image', 'tm-real-estate' ); ?></label>
@@ -77,7 +77,7 @@
 	</div>
 	<div>
 		<label class="label-block" id="property_map_label" for="property_map_input"><?php _e( 'Address', 'tm-real-estate' ) ?></label>
-		<input type="text" id="property_map_input" name="property[meta][address]" value="" <?php echo $__data['required_for_gests']; ?>>
+		<input type="text" id="property_map_input" name="property[meta][address]" value="">
 	</div>
 
 	<div>
