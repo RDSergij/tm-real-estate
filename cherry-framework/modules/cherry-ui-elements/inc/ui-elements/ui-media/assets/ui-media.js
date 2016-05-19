@@ -31,8 +31,8 @@
 					library : { type : settings.library_type }
 				});
 
-			button.on('click', function () {
-				cherry_uploader.on('select', function() {
+			button.on( 'click', function () {
+				cherry_uploader.off('select').on('select', function() {
 					var attachment = cherry_uploader.state().get('selection').toJSON(),
 						count = 0,
 						input_value = '',
@@ -87,7 +87,7 @@
 										'</div>'+
 									'</div>';
 
-						input_value += delimiter+return_data;
+						input_value+= delimiter + return_data;
 						count++;
 					}
 
@@ -98,7 +98,7 @@
 						removeMediaPreview( $(this) );
 						return !1;
 					});
-				}).open();
+				});
 
 				return !1;
 			});
