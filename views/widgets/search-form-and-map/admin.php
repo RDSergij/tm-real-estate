@@ -14,33 +14,31 @@
 
 <div class="tm-real-estate-search-form-widget">
 
-	<p>
+	<div>
 		<?php echo $__data['first_block_html'] ?>
-	</p>
+	</div>
 
 	<!-- Form -->
 	<div id="form">
-		<br/>
 		<div>
 				<?php echo $__data['form_is_html'] ?>
 		</div>
 
-		<p>
+		<div>
 			<?php echo $__data['form_title_html'] ?>
-		</p>
+		</div>
 	</div>
 	<!-- End form -->
 
 	<!-- Map -->
 	<div id="map">
-		<br/>
 		<div>
 			<?php echo $__data['map_is_html'] ?>
 		</div>
 
-		<p>
+		<div>
 			<?php echo $__data['map_title_html'] ?>
-		</p>
+		</div>
 	</div>
 	<!-- End map -->
 	<p>&nbsp;</p>
