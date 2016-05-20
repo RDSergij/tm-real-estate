@@ -1,9 +1,11 @@
+propertyItems = [];
 (function ($) {
-    var PropertyItems = (function () {
-        function PropertyItems() {
+    var PropertyItems = (function ( map_id ) {
+		//this.map_id = map_id; //'property_items';
+        function PropertyItems( map_id ) {
             this.lat = 48.450865;
             this.lng = 22.747808;
-            this.id = 'property_items';
+            this.id = map_id; //'property_items';
             this.google = window.google;
             this.map = null;
             this.google_map = null;
@@ -73,6 +75,8 @@
         };
         return PropertyItems;
     }());
-    var property_items = new PropertyItems();
+	$( '.tm-re-map' ).each( function( index, Element ) {
+		var _el = $( Element );
+		window.propertyItems.push( new PropertyItems( _el.attr( 'id' ) ) );
+	} );
 })(jQuery);
-//# sourceMappingURL=property_items.js.map

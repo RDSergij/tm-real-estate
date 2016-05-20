@@ -489,6 +489,7 @@ class Model_Properties {
 		return Cherry_Toolkit::render_view(
 			TM_REAL_ESTATE_DIR . 'views/map.php',
 			array(
+				'id_sufix'          => '_'.  rand( 100, 9000 ),
 				'addresses'         => self::get_addresses(),
 				'addresses_json'    => json_encode( self::get_addresses() ),
 				'property_settings' => json_encode(

@@ -6,6 +6,10 @@
   min-height: 300px;
 }
 
+.tm-re-map {
+  min-height: 300px;
+}
+
 .property-item {
   display: block;
   width: 100%;
