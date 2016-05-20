@@ -57,6 +57,7 @@ jQuery( document ).ready( function( $ ) {
 						tmrec.message( _message, status );
 						$( '#tm-re-contact-form-captcha' ).removeClass( 'captcha-warning' );
 						tmrec.resetCaptcha();
+						_form.trigger('reset');
 					},
 					error: function() {
 						tmrec.message( _message, 'failed' );
