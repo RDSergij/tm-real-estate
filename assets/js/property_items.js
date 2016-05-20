@@ -27,7 +27,7 @@
         }
         PropertyItems.prototype.initMap = function () {
             this.google_map = new this.google.maps.Map(this.map, {
-                zoom: 5,
+                zoom: 7,
                 center: new this.google.maps.LatLng(this.lat, this.lng)
             });
             if ('undefined' !== typeof (this.data)) {
