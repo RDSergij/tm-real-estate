@@ -924,7 +924,7 @@ class TM_Real_Estate {
 					'title',
 					'editor',
 					'author',
-					'thumbnail',
+					/*'thumbnail',*/
 					'excerpt',
 					'comments',
 				),
