@@ -56,6 +56,9 @@
                 }));
                 (function (x, me) {
                     me.markers[x].addListener('click', function () {
+						for( var index = 0; index < me.info_windows.length; index++ ) {
+							me.info_windows[index].close();
+						}
                         me.info_windows[x].open(me.google_map, me.markers[x]);
                     });
                 }(i, this));
