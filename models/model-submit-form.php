@@ -127,7 +127,12 @@ class Model_Submit_Form {
 			if ( is_array( $_FILES['gallery']['name'] ) ) {
 				$files = Model_Submit_Form::re_array_files( $_FILES['gallery'] );
 				foreach ( $files as $key => $file ) {
-					$gallery[] = Model_Submit_Form::insert_attacment( $file, $post_id );
+					if ( ! empty( $file ) ) {
+						$image_id = Model_Submit_Form::insert_attacment( $file, $post_id );
+						if ( ! empty( $image_id ) ) {
+							$gallery[] = $image_id;
+						}
+					}
 				}
 			} else {
 				$file = $_FILES['gallery'];
@@ -149,6 +154,7 @@ class Model_Submit_Form {
 			array(
 				'messages' => $messages,
 				'send' => self::send_confirmation_email( $post_id ),
+				'files' => print_r( $files, true ),
 			)
 		);
 

@@ -924,9 +924,9 @@ class TM_Real_Estate {
 					'title',
 					'editor',
 					'author',
-					/*'thumbnail',*/
+					'thumbnail',
 					'excerpt',
-					'comments',
+					/*'comments',*/
 				),
 			)
 		)->font_awesome_icon( 'f1ad' );
