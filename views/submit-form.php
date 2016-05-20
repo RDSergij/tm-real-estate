@@ -77,7 +77,7 @@
 	</div>
 	<div>
 		<label class="label-block" id="property_map_label" for="property_map_input"><?php _e( 'Address', 'tm-real-estate' ) ?></label>
-		<input type="text" id="property_map_input" name="property[meta][address]" value="">
+		<input type="text" id="property_map_input" name="property[meta][address]" value=""  <?php echo $__data['required_for_gests']; ?>>
 	</div>
 
 	<div>
