@@ -60,7 +60,7 @@
 		<select name="property_type" id="property_type">
 			<option value=""><?php _e( 'Any', 'tm-real-estate' ); ?></option>
 		<?php foreach ( $__data['property_types'] as $type ) : ?>
-			<option value="<?php echo $type->term_id; ?>" <?php echo ( ( $key == $__data['values']['property_type'] ) ? ' selected="selected" ': '' ) ?>>
+			<option value="<?php echo $type->term_id; ?>" <?php echo ( ( $type->term_id == $__data['values']['property_type'] ) ? ' selected="selected" ': '' ) ?>>
 				<?php echo __( $type->name, 'tm-real-estate' ); ?>
 			</option>
 		<?php endforeach; ?>
