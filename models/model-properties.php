@@ -152,6 +152,17 @@ class Model_Properties {
 				unset( $atts['property_type'] );
 			}
 
+			if ( ! empty( $atts['property_location'] ) ) {
+
+				$atts['tax_query'][] = array(
+					'taxonomy' => 'location',
+					'field'    => 'term_id',
+					'terms'    => (int) $atts['property_location'],
+				);
+				unset( $atts['property_location'] );
+
+			}
+
 			if ( ! empty( $atts['location'] ) ) {
 
 				$atts['tax_query'][] = array(
@@ -315,6 +326,7 @@ class Model_Properties {
 			),
 			$atts
 		);
+
 		$atts = array_merge( $atts, $_GET );
 
 		$form		= self::shortcode_search_form( $atts );
@@ -615,6 +627,7 @@ class Model_Properties {
 			'max_area'			=> '',
 			'property_status'	=> '',
 			'property_type'		=> '',
+			'property_location' => '',
 			'show_sorting'		=> 'no',
 			'orderby'			=> 'date',
 			'order'				=> 'date',

@@ -60,7 +60,7 @@
 		<select name="property_type" id="property_type">
 			<option value=""><?php _e( 'Any', 'tm-real-estate' ); ?></option>
 		<?php foreach ( $__data['property_types'] as $type ) : ?>
-			<option value="<?php echo $type->term_id; ?>" <?php echo ( ( $value == $__data['values']['property_type'] ) ? ' selected="selected" ': '' ) ?>>
+			<option value="<?php echo $type->term_id; ?>" <?php echo ( ( $key == $__data['values']['property_type'] ) ? ' selected="selected" ': '' ) ?>>
 				<?php echo __( $type->name, 'tm-real-estate' ); ?>
 			</option>
 		<?php endforeach; ?>
@@ -72,7 +72,9 @@
 	<select class="form-dropdown" id="location" name="property_location">
 		<option value=""><?php _e( 'Any', 'tm-real-estate' ); ?></option>
 		<?php foreach ( $__data['locations'] as $key => $value ) :?>
-			<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+			<option value="<?php echo $key; ?>" <?php echo ( ( $key == $__data['values']['property_location'] ) ? ' selected="selected" ': '' ) ?>>
+				<?php echo $value; ?>
+			</option>
 		<?php endforeach; ?>
 	</select>
 	<?php endif; ?>
