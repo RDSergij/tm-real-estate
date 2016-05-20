@@ -962,8 +962,14 @@ class Model_Properties {
 
 			if ( array_key_exists( 'body', $response ) ) {
 				$body = json_decode( $response['body'], true );
-				$lat  = $body['results'][0]['geometry']['location']['lat'];
-				$lng  = $body['results'][0]['geometry']['location']['lng'];
+
+				if ( ! empty( $body['results'][0]['geometry']['location']['lat'] ) ) {
+					$lat  = $body['results'][0]['geometry']['location']['lat'];
+				}
+
+				if ( ! empty( $body['results'][0]['geometry']['location']['lng'] ) ) {
+					$lng  = $body['results'][0]['geometry']['location']['lng'];
+				}
 			}
 
 			return array( $lat, $lng );
