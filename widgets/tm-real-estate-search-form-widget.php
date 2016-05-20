@@ -88,7 +88,6 @@ class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 					'name'			=> $this->get_field_name( 'form_title' ),
 					'value'			=> Cherry_Toolkit::get_arg( $instance, 'form_title', $this->instance_default['form_title'] ),
 					'label'			=> __( 'Form title', 'tm-real-estate' ),
-					'placeholder'	=> __( 'title', 'tm-real-estate' ),
 				)
 		);
 		$form_title_html = $form_title_field->render();
@@ -109,7 +108,6 @@ class TM_Real_Estate_Search_Form_Widget extends Cherry_Abstract_Widget {
 					'name'			=> $this->get_field_name( 'map_title' ),
 					'value'			=> Cherry_Toolkit::get_arg( $instance, 'map_title', $this->instance_default['map_title'] ),
 					'label'			=> __( 'Map title', 'tm-real-estate' ),
-					'placeholder'	=> __( 'title', 'tm-real-estate' ),
 				)
 		);
 		$map_title_html = $map_title_field->render();
