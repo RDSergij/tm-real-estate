@@ -523,13 +523,9 @@ class Model_Properties {
 	 */
 	public static function add_property( $attr ) {
 		if ( current_user_can( 'administrator' ) || current_user_can( 're_agent' ) ) {
-			if ( empty( $attr['status'] ) ) {
-				$property_status = 'publish';
-			} else {
-				$property_status =  $attr['status'];
-			}
+			$property_status = 'publish';
 		} else {
-			$property_status = 'draft';
+			$property_status = 'pending';
 		}
 		$property = array(
 			'post_title'     => $attr['title'],

@@ -88,11 +88,7 @@ class Model_Submit_Form {
 
 		$property['title']       = $_POST['property']['title'];
 		$property['description'] = ! empty( $_POST['property']['description'] ) ? $_POST['property']['description'] : '';
-		$property['status']      = 'pending';
-//		$property['tax_input']   = array(
-//			'property-type'  => array( $_POST['property']['type'] ),
-//			'property-location'       => array( $_POST['property']['location'] ),
-//		);
+
 		$property_meta           = $_POST['property']['meta'];
 
 		$post_id = Model_Properties::add_property( $property );
