@@ -592,19 +592,21 @@ class Model_Properties {
 
 			$id = $_GET['id'];
 			$properties	= (array) self::get_properties( array( 'include' => $id, 'limit' => 1 ) );
-			$property	= $properties[0];
+			if ( ! empty( $properties[0] ) ) {
+				$property	= $properties[0];
 
-			$contact_form = Model_Agents::agent_contact_form( null, $id );
+				$contact_form = Model_Agents::agent_contact_form( null, $id );
 
-			return Cherry_Toolkit::render_view(
-				TM_REAL_ESTATE_DIR . 'views/property.php',
-				array(
-					'property'			=> $property,
-					'contact_form'		=> $contact_form,
-					'area_unit'			=> Model_Settings::get_area_unit_title(),
-					'currency_symbol'	=> Model_Settings::get_currency_symbol(),
-				)
-			);
+				return Cherry_Toolkit::render_view(
+					TM_REAL_ESTATE_DIR . 'views/property.php',
+					array(
+						'property'			=> $property,
+						'contact_form'		=> $contact_form,
+						'area_unit'			=> Model_Settings::get_area_unit_title(),
+						'currency_symbol'	=> Model_Settings::get_currency_symbol(),
+					)
+				);
+			}
 		}
 	}
 
