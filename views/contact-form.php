@@ -21,6 +21,16 @@
 		<p><?php echo __( 'Finished', 'tm-real-estate'); ?>: <?php echo $__data['finished_cnt']; ?></p>
 	</div>
 
+	<?php if( count( $__data['custom_contact'] ) ) : ?>
+	<div class="agent-custom-contact">
+		<ul>
+		<?php foreach( $__data['custom_contact'] as $custom_contact ) : ?>
+			<li><?php echo $custom_contact['title']; ?>:<?php echo $custom_contact['value']; ?></li>
+		<?php endforeach; ?>
+		</ul>
+	</div>
+	<?php endif; ?>
+
 	<div class="property-hr"></div>
 
 	<form>
