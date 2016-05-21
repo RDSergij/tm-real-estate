@@ -162,6 +162,7 @@ class Model_Agents {
 				'property_id'	=> $property_id,
 				'agent_page'	=> $agent_page,
 				'photo_url'		=> self::get_agent_photo_url( $agent_id ),
+				'agent_info' 	=> get_the_author_meta( 'description' )
 			)
 		);
 	}

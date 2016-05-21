@@ -11,11 +11,13 @@
  */
 ?>
 <div class="tm-re-contact-form">
+	<h3><?php echo __( 'Contact Agent', 'tm-real-estate' ) ?></h3>
+	
 	<a href="<?php echo $__data['agent_page']; ?>">
 		<img src="<?php echo $__data['photo_url']; ?>">
-		<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name; ?></h4>
-	</a>
 
+		<h5><?php echo $__data['agent']->display_name; ?></h5>
+	</a>
 	<div class="agent-info">
 		<p><?php echo __( 'Active', 'tm-real-estate'); ?>: <?php echo $__data['active_cnt']; ?></p>
 		<p><?php echo __( 'Finished', 'tm-real-estate'); ?>: <?php echo $__data['finished_cnt']; ?></p>

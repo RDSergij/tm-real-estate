@@ -102,8 +102,6 @@
 			<div class="property-hr"></div>
 
 			<div class="property-agent">
-				<h3><?php echo __( 'Contact Agent', 'tm-real-estate' ) ?></h3>
-
 				<?php echo $__data['contact_form'] ?>
 			</div>
 		</article>

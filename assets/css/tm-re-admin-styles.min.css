@@ -79,6 +79,7 @@
 
 .post-type-property #screen-meta-links .button:active, .post-type-property #screen-meta-links .button:focus {
   background: #495159;
+  padding: 5px 5px 5px 10px;
 }
 
 .post-type-property #screen-meta-links .button:hover {

@@ -111,6 +111,7 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			&:active,
 			&:focus {
 				background: $gray-color-3;
+				padding: 5px 5px 5px 10px;
 			}
 			&:hover {
 				background: darken($gray-color-3, 10%);
