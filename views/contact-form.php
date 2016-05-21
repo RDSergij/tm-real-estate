@@ -10,21 +10,20 @@
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 ?>
-<div class="tm-re-contact-form">
-	<h3><?php echo __( 'Contact Agent', 'tm-real-estate' ) ?></h3>
-	
-	<a href="<?php echo $__data['agent_page']; ?>">
-		<img src="<?php echo $__data['photo_url']; ?>">
-
+<h3><?php echo __( 'Contact Agent', 'tm-real-estate' ) ?></h3>
+<div class="tm-re__agent-info">
+	<figure class="tm-re__agent-image"><img src="<?php echo $__data['photo_url']; ?>"></figure>
+	<div class="tm-re__agent-desc">
 		<h5><?php echo $__data['agent']->display_name; ?></h5>
-	</a>
-	<div class="agent-info">
-		<p><?php echo __( 'Active', 'tm-real-estate'); ?>: <?php echo $__data['active_cnt']; ?></p>
-		<p><?php echo __( 'Finished', 'tm-real-estate'); ?>: <?php echo $__data['finished_cnt']; ?></p>
+		<p><?php echo $__data['agent_info']; ?></p>
+		<div class="tm-re__agent-contacts">
+			SOME AGENT CONTACTS
+			<p><strong><?php echo __( 'Active', 'tm-real-estate'); ?>:</strong> <?php echo $__data['active_cnt']; ?></p>
+			<p><strong><?php echo __( 'Finished', 'tm-real-estate'); ?>:</strong> <?php echo $__data['finished_cnt']; ?></p>
+		</div>
 	</div>
-
-	<div class="property-hr"></div>
-
+</div>
+<div class="tm-re-contact-form">
 	<form>
 		<h3><?php echo __( 'Ask an Agent', 'tm-real-estate' ); ?></h3>
 		<span class="message"></span>
