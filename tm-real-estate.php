@@ -66,7 +66,7 @@ class TM_Real_Estate {
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTY, array( 'Model_Properties', 'shortcode_property_single' ) );
 
 		// Add tm-re-property item shortcode
-		add_shortcode( Model_Main::SHORT_CODE_CONTACT_FORM, array( 'Model_Properties', 'shortcode_contact_form' ) );
+		add_shortcode( Model_Main::SHORT_CODE_CONTACT_FORM, array( 'Model_Agents', 'shortcode_contact_form' ) );
 
 		// Add tm-re-properties shortcode
 		add_shortcode( Model_Main::SHORT_CODE_PROPERTIES, array( 'Model_Properties', 'shortcode_properties' ) );
@@ -313,6 +313,7 @@ class TM_Real_Estate {
 			'Model_Settings',
 			'Model_Submit_Form',
 			'Model_Shortcode_Tinymce',
+			'Model_Api',
 		);
 
 		foreach ( $models as $model ) {
@@ -973,6 +974,10 @@ class TM_Real_Estate {
 		);
 	}
 
+	public function api() {
+		return Model_Api::get_instance();
+	}
+
 	/**
 	 * Returns the instance.
 	 *
@@ -991,3 +996,5 @@ class TM_Real_Estate {
 }
 
 TM_Real_Estate::get_instance();
+
+$TM_Real_Estate_Api = TM_Real_Estate::get_instance()->api();
