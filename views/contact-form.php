@@ -52,8 +52,12 @@
 		</div>
 
 		<div class="tm-re-contact-form_input">
-			<h6></h6>
-			<div id="tm-re-contact-form-captcha" ></div>
+			<div class="empty-space"></div>
+			<div id="tm-re-contact-form-captcha"></div>
+		</div>
+
+		<div class="tm-re-contact-form_input">
+			<div class="empty-space"></div>
 			<input type="submit"id="submit" class="btn-primary" value="<?php echo __( 'Send', 'tm-real-estate' ); ?>"/>
 		</div>
 	</form>
