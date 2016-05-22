@@ -349,7 +349,7 @@ class Model_Agents {
 	 */
 	public static function get_agent_photo_url( $agent_id ) {
 		$attachment_id 	= get_the_author_meta( 'tm-re-photo-upload-meta', $agent_id );
-		$image_size 	= apply_filters( 'real_estate_agent_image_size', 'medium' );
+		$image_size 	= apply_filters( 'tm_re_agent_image_size', 'medium' );
 
 		if ( empty( $attachment_id ) ) {
 			$photo_url = TM_REAL_ESTATE_URI . 'assets/images/placehold.png';

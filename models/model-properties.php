@@ -820,7 +820,7 @@ class Model_Properties {
 	 */
 	public static function get_image( $post_id ) {
 		$images = self::get_all_post_images( $post_id );
-		$image_size = apply_filters( 'real_estate_properties_image_size', 'medium' );
+		$image_size = apply_filters( 'tm_re_properties_image_size', 'medium' );
 
 		if ( array_key_exists( $image_size, $images ) ) {
 			return $images[$image_size][0];
