@@ -110,8 +110,9 @@ class Model_Properties {
 	public static function prepare_param_properties( $atts ) {
 
 		if ( is_array( $atts ) ) {
-			if ( ! empty( $atts['orderby'] ) ) {
-				$atts['orderby'] = $atts['orderby'];
+			if ( 'price' == $atts['orderby'] ) {
+				$atts['orderby'] = 'meta_value_num';
+				$atts['meta_key'] = 'price';
 			} else {
 				$atts['orderby'] = 'date';
 			}
@@ -343,6 +344,19 @@ class Model_Properties {
 		);
 	}
 
+	private static function get_sort_pagination_parameter( $atts ) {
+		if ( ! empty( $atts['show_sorting'] ) && 'yes' == $atts['show_sorting'] ) {
+			$sort = array();
+			if ( ! empty( $atts['orderby'] ) ) {
+				$sort['orderby'] = $atts['orderby'];
+			}
+			if ( ! empty( $atts['order'] ) ) {
+				$sort['order'] = $atts['order'];
+			}
+			return $sort;
+		}
+		return false;
+	}
 	/**
 	 * Shortcode properties
 	 *
@@ -350,7 +364,6 @@ class Model_Properties {
 	 * @return html code.
 	 */
 	public static function shortcode_properties( $atts ) {
-				//var_dump($atts);
 		$atts = shortcode_atts(
 			array(
 				'property_id'	=> '',
@@ -909,8 +922,11 @@ class Model_Properties {
 	 */
 	public static function get_pagination( $atts = array(), $posts_per_page = 5 ) {
 		$big  = 99999;
+		$url = str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) );
+		$url_parts = explode( '?', $url );
+		$base = $url_parts[0];
 		$args = array(
-			'base'               => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+			'base'               => $base,
 			'format'             => '?page=%#%',
 			'total'              => self::get_total_pages( $atts, $posts_per_page ),
 			'current'            => max( 1, get_query_var( 'paged' ) ),
@@ -921,11 +937,12 @@ class Model_Properties {
 			'prev_text'          => __( '« Previous', 'tm-real-estate' ),
 			'next_text'          => __( 'Next »', 'tm-real-estate' ),
 			'type'               => 'array',
-			'add_args'           => false,
+			'add_args'           => self::get_sort_pagination_parameter( $atts ),
 			'add_fragment'       => '',
 			'before_page_number' => '',
 			'after_page_number'  => '',
 		);
+
 		return paginate_links( $args );
 	}
 
