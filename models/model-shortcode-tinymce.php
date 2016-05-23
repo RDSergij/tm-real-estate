@@ -129,7 +129,7 @@ class Shortcode_Tinymce {
 					'name'        => 'show_sorting',
 					'value'       => 'no',
 					'label'       => __( 'Show order', 'tm-real-estate' ),
-					'values'      => Shortcode_Tinymce::tm_prepare_options( array( 'yes' => 'yes', 'no' => 'no' ) ),
+					'values'      => Shortcode_Tinymce::tm_prepare_options( array( 'no' => 'no', 'yes' => 'yes' ), false ),
 				),
 			),
 		);
@@ -143,8 +143,8 @@ class Shortcode_Tinymce {
 					'type'        => 'listbox',
 					'name'        => 'show_sorting',
 					'value'       => 'no',
-					'label'       => __( 'Order', 'tm-real-estate' ),
-					'values'      => Shortcode_Tinymce::tm_prepare_options( array( 'yes' => 'yes', 'no' => 'no' ) ),
+					'label'       => __( 'Show order', 'tm-real-estate' ),
+					'values'      => Shortcode_Tinymce::tm_prepare_options( array( 'no' => 'no', 'yes' => 'yes' ), false ),
 				),
 			),
 		);
@@ -188,9 +188,12 @@ class Shortcode_Tinymce {
 	 *
 	 * @return array $js_options.
 	 */
-	public static function tm_prepare_options( $options ) {
+	public static function tm_prepare_options( $options, $show_empty = true ) {
 		$js_options = array();
-		$js_options[] = array( 'text' => '', 'value' => '' );
+		if ( ! empty( $show_empty ) ) {
+			$js_options[] = array( 'text' => '', 'value' => '' );
+		}
+
 		if ( is_array( $options ) ) {
 			foreach ( $options as $key => $value ) {
 					$js_options[] = array( 'text' => $value, 'value' => $key );
