@@ -144,7 +144,7 @@ class TM_Real_Estate {
 		add_action( 'get_user_option_meta-box-order_property', array( 'Model_Properties', 'property_metabox_order_layout' ), 0, 1 );
 
 		// Uninstall
-		register_uninstall_hook ( TM_REAL_ESTATE_MAIN_FILE, array( $this, 'uninstall' ) );
+		register_uninstall_hook ( TM_REAL_ESTATE_MAIN_FILE, 'TM_Real_Estate::uninstall' );
 	}
 
 	/**
@@ -1030,7 +1030,7 @@ class TM_Real_Estate {
 	/**
 	 * Uninstall
 	 */
-	public function uninstall() {
+	public static function uninstall() {
 		exit( 'Uninstall' );
 		Model_Settings::remove_all_settings();
 	}
