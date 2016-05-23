@@ -631,6 +631,8 @@ class Model_Properties {
 	 */
 	public static function shortcode_approved() {
 
+		$message = Model_Settings::get_fail_confirm_message();
+
 		if ( ( ! empty( $_GET['id'] ) || ! empty( $_GET['property_id'] ) ) && ! empty( $_GET['key'] ) ) {
 			$property_id = (int) ( empty( $_GET['id'] ) ? $_GET['property_id'] : $_GET['id'] );
 
@@ -647,20 +649,16 @@ class Model_Properties {
 				if ( wp_update_post( $property ) ) {
 					update_post_meta( $property_id, 'activated_key', '');
 					$message = Model_Settings::get_success_confirm_message();
-				} else {
-					$message = Model_Settings::get_fail_confirm_message();
 				}
-				
-
-				return Cherry_Toolkit::render_view(
-					TM_REAL_ESTATE_DIR . 'views/confirm-property.php',
-					array(
-						'message'	=> $message,
-						'permalink' => get_permalink( $property_id ),
-					)
-				);
 			}
 		}
+
+		return Cherry_Toolkit::render_view(
+			TM_REAL_ESTATE_DIR . 'views/confirm-property.php',
+			array(
+				'message'	=> $message,
+			)
+		);
 
 	}
 
