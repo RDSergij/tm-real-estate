@@ -1031,7 +1031,6 @@ class TM_Real_Estate {
 	 * Uninstall
 	 */
 	public static function uninstall() {
-		exit( 'Uninstall' );
 		Model_Settings::remove_all_settings();
 	}
 
