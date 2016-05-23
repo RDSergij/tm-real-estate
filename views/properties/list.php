@@ -1,6 +1,6 @@
 <?php
 /**
- * Property Default (Grid) View
+ * Property List View
  *
  * @package    TM Real Estate
  * @subpackage View
@@ -13,7 +13,7 @@
 ?>
 <?php if ( is_array( $__data['properties'] ) && count( $__data['properties'] ) ) : ?>
 
-	<div class="properties properties-list properties-list_grid">
+	<div class="properties properties-list properties-list_default">
 		<?php echo $__data['order_html'] ?>
 		<?php foreach ( $__data['properties'] as $property ) : ?>
 		<article class="property-item">
@@ -26,6 +26,16 @@
 			</figure>
 
 			<div class="property-content">
+				<div class="property-title">
+					<h5><a href="<?php echo $property->url ?>"><?php echo $property->post_title; ?></a></h5>
+
+					<div class="price">
+						<h5><?php echo $__data['currency_symbol'] ?> <?php echo $property->price; ?></h5>
+					</div>
+				</div>
+				<div class="detail">
+					<p><?php echo wp_trim_words( $property->post_content, 15 ); ?></p>
+				</div>
 				<ul class="property-meta">
 					<li class="area">
 						<small><?php echo $property->area . ' ' . __( $__data['area_unit'], 'tm-real-estate' ); ?></small>
@@ -37,16 +47,6 @@
 						<small><?php echo $property->bathrooms . ' ' . __( 'Bathrooms', 'tm-real-estate' ); ; ?></small>
 					</li>
 				</ul>
-				<div class="property-title">
-					<h5><a href="<?php echo $property->url ?>"><?php echo $property->post_title; ?></a></h5>
-
-					<div class="price">
-						<h5><?php echo $__data['currency_symbol'] ?> <?php echo $property->price; ?></h5>
-					</div>
-				</div>
-				<div class="detail">
-					<p><?php echo wp_trim_words( $property->post_content, 15 ); ?></p>
-				</div>
 				<div class="property-address">
 					<small><?php echo $property->address; ?></small>
 				</div>

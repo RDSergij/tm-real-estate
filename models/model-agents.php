@@ -165,6 +165,7 @@ class Model_Agents {
 				'property_id'	=> $property_id,
 				'agent_page'	=> $agent_page,
 				'photo_url'		=> self::get_agent_photo_url( $agent_id ),
+				'agent_info' 	=> get_the_author_meta( 'description' )
 			)
 		);
 	}
@@ -370,12 +371,13 @@ class Model_Agents {
 	 * @return string
 	 */
 	public static function get_agent_photo_url( $agent_id ) {
-		$attachment_id = get_the_author_meta( 'tm-re-photo-upload-meta', $agent_id );
+		$attachment_id 	= get_the_author_meta( 'tm-re-photo-upload-meta', $agent_id );
+		$image_size 	= apply_filters( 'tm_re_agent_image_size', 'medium' );
 
 		if ( empty( $attachment_id ) ) {
 			$photo_url = TM_REAL_ESTATE_URI . 'assets/images/placehold.png';
 		} else {
-			$image = wp_get_attachment_image_src( $attachment_id, 'medium' );
+			$image = wp_get_attachment_image_src( $attachment_id, $image_size );
 			$photo_url = $image[0];
 		}
 

@@ -108,6 +108,11 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				color: $white-color;
 				padding: 0;
 			}
+			&:active,
+			&:focus {
+				background: $gray-color-3;
+				padding: 5px 5px 5px 10px;
+			}
 			&:hover {
 				background: darken($gray-color-3, 10%);
 			}
@@ -131,6 +136,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			@include button();
 			background: $success-color;
 
+			&:active,
+			&:focus {
+				background: $success-color;
+			}
 			&:hover {
 				background: darken($success-color, 10%);
 			}
@@ -330,6 +339,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			margin: 0 0 0 10px;
 			background: $gray-color-3;
 
+			&:active,
+			&:focus {
+				background: $gray-color-3;
+			}
 			&:hover {
 				background: darken($gray-color-3, 10%);
 			}
@@ -350,6 +363,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			@include button();
 			background: $gray-color-3;
 
+			&:active,
+			&:focus {
+				background: $gray-color-3;
+			}
 			&:hover {
 				background: darken($gray-color-3, 10%);
 			}
@@ -502,6 +519,28 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 					margin-left: 10px;
 				}
 			}
+			.column-comments {
+				.comment-count-approved {
+					background: none;
+					padding: 0;
+					width: auto;
+					height: auto;
+					color: $gray-color-1;
+					font-size: 1em;
+					min-width: inherit;
+
+					&:hover {
+						color: $accent-color;
+					}
+				}
+				a {
+					margin: 0;
+
+					&:after {
+						display: none;
+					}
+				}
+			}
 		}
 
 		thead,
@@ -618,12 +657,11 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 
 		.row-actions {
 			span {
-				font-size: 0;
-				margin: 0 0 0 10px;
+				/*font-size: 0;
+				margin: 0 0 0 10px;*/
 
-				&:first-child {
-					margin: 0;
-				}
+				margin: 0 !important;
+
 				a {
 					&:after {
 						@include font-awesome-icon();
@@ -631,6 +669,7 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 						line-height: 1;
 						transition: 300ms all;
 						font-size: 15px;
+						display: none;
 					}
 					&:active,
 					&:focus {
@@ -718,6 +757,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				&.cancel {
 					background: $warning-color;
 
+					&:active,
+					&:focus {
+						background: $warning-color;
+					}
 					&:hover {
 						background: darken($warning-color, 10%);
 					}
@@ -725,6 +768,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				&.save {
 					background: $success-color;
 
+					&:active,
+					&:focus {
+						background: $success-color;
+					}
 					&:hover {
 						background: darken($success-color, 10%);
 					}
@@ -853,7 +900,7 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		.postbox-container {
 			.button,
 			.submitdelete {
-				@include button();
+				@include button();				
 
 				&:hover {
 					background: darken($accent-color, 10%);
@@ -861,6 +908,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				&.button-primary {
 					background: $success-color;
 
+					&:active,
+					&:focus {
+						background: $success-color;
+					}
 					&:hover {
 						background: darken($success-color, 10%);
 					}
@@ -872,6 +923,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				&.insert-media {
 					background: $gray-color-3;
 
+					&:active,
+					&:focus {
+						background: $gray-color-3;
+					}
 					.wp-media-buttons-icon:before {
 						color: $white-color;
 					}
@@ -894,13 +949,22 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			// Add comment
 			#replyrow {
 				padding: 20px;
+
+				td {
+					border: none;
+					box-shadow: none;
+				}
 			}
 			#replycontainer {
 				.quicktags-toolbar {
 					.button {
 						padding: 5px 10px;
 						background: $gray-color-3;
+						margin: 5px;
 
+						&:active {
+							margin: 5px;
+						}
 						&:hover {
 							background: darken($gray-color-3, 10%);
 						}
@@ -912,6 +976,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 					@include button();
 					background: $success-color;
 
+					&:active,
+					&:focus {
+						background: $success-color;
+					}
 					&:hover {
 						background: darken($success-color, 10%);
 					}
@@ -920,8 +988,43 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 					@include button();
 					background: $warning-color;
 
+					&:active,
+					&:focus {
+						background: $warning-color;
+					}
 					&:hover {
 						background: darken($warning-color, 10%);
+					}
+				}
+			}
+
+			// Comment 
+			#the-comment-list {
+				tr {
+					padding: 20px;
+
+					td {
+						display: block;
+
+						&:before,
+						&:after {
+							display: none;
+						}
+					}
+					.column-comment {
+						width: 100%;
+					}
+					.row-actions {
+						span {
+							font-size: 1em;
+							margin: 0;
+
+							a {
+								&:after {
+									display: none;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -941,6 +1044,13 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 
 		#submitdiv {
 			margin: 0;
+
+			#duplicate-action {
+				margin: 0 0 20px;
+			}
+			.spinner {
+				margin-top: 16px;
+			}
 		}
 
 		#titlediv {
@@ -1254,9 +1364,70 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 								@include button();
 								background: $gray-color-3;
 
+								&:active,
+								&:focus {
+									background: $gray-color-3;
+								}
 								&:hover {
 									background: darken($gray-color-3, 10%);
 								}
+							}
+						}
+					}
+
+					.cherry-ui-container {
+						.cherry-upload-preview {
+							.cherry-all-images-wrap {
+								.cherry-image-wrap {
+									width: 150px;
+
+									.inner {
+										border: none;
+										display: flex;
+										width: 140px;
+										overflow: hidden;
+
+										.title {
+											display: none;
+										}
+										.cherry-remove-image {
+											position: relative;
+											border: none;
+											border-radius: 0;
+											background: none;
+											top: 0;
+											left: 0;
+											margin: 0 0 0 5px;
+
+											&:after {
+												@include font-awesome-icon();
+												font-size: 20px;
+												content: '\f1f8';
+												color: $gray-color-4;
+											}
+											i {
+												display: none;
+											}
+											&:hover {
+												&:after {
+													color: $warning-color;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						.upload-button {
+							@include button();
+							background: $gray-color-3;
+
+							&:active,
+							&:focus {
+								background: $gray-color-3;
+							}
+							&:hover {
+								background: darken($gray-color-3, 10%);
 							}
 						}
 					}
@@ -1338,6 +1509,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				display: inline-block;
 				background: $success-color;
 
+				&:active,
+				&:focus {
+					background: $success-color;
+				}
 				&:hover {
 					background: darken($success-color, 10%);
 				}
@@ -1438,6 +1613,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		display: inline-block;
 		background: $success-color;
 
+		&:active,
+		&:focus {
+			background: $success-color;
+		}
 		&:hover {
 			background: darken($success-color, 10%);
 		}
@@ -1593,6 +1772,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 						.button {
 							background: $success-color;
 
+							&:active,
+							&:focus {
+								background: $success-color;
+							}
 							&:hover {
 								background: darken($success-color, 10%);
 							}
@@ -1606,6 +1789,10 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 							width: auto;
 							background: $warning-color;
 
+							&:active,
+							&:focus {
+								background: $warning-color;
+							}
 							&:hover {
 								background: darken($warning-color, 10%);
 							}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Agent properties view
+ * Single agent view
  *
  * @package    TM Real Estate
  * @subpackage View

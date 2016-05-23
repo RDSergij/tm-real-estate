@@ -10,29 +10,20 @@
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 ?>
+<h3><?php echo __( 'Contact Agent', 'tm-real-estate' ) ?></h3>
+<div class="tm-re__agent-info">
+	<figure class="tm-re__agent-image"><img src="<?php echo $__data['photo_url']; ?>"></figure>
+	<div class="tm-re__agent-desc">
+		<h5><?php echo $__data['agent']->display_name; ?></h5>
+		<p><?php echo $__data['agent_info']; ?></p>
+		<div class="tm-re__agent-contacts">
+			SOME AGENT CONTACTS
+			<p><strong><?php echo __( 'Active', 'tm-real-estate'); ?>:</strong> <?php echo $__data['active_cnt']; ?></p>
+			<p><strong><?php echo __( 'Finished', 'tm-real-estate'); ?>:</strong> <?php echo $__data['finished_cnt']; ?></p>
+		</div>
+	</div>
+</div>
 <div class="tm-re-contact-form">
-	<a href="<?php echo $__data['agent_page']; ?>">
-		<img src="<?php echo $__data['photo_url']; ?>">
-		<h4><?php echo __( 'Agent:', 'tm-real-estate' ) . ' ' . $__data['agent']->display_name; ?></h4>
-	</a>
-
-	<div class="agent-info">
-		<p><?php echo __( 'Active', 'tm-real-estate'); ?>: <?php echo $__data['active_cnt']; ?></p>
-		<p><?php echo __( 'Finished', 'tm-real-estate'); ?>: <?php echo $__data['finished_cnt']; ?></p>
-	</div>
-
-	<?php if( count( $__data['custom_contact'] ) ) : ?>
-	<div class="agent-custom-contact">
-		<ul>
-		<?php foreach( $__data['custom_contact'] as $custom_contact ) : ?>
-			<li><?php echo $custom_contact['title']; ?>:<?php echo $custom_contact['value']; ?></li>
-		<?php endforeach; ?>
-		</ul>
-	</div>
-	<?php endif; ?>
-
-	<div class="property-hr"></div>
-
 	<form>
 		<h3><?php echo __( 'Ask an Agent', 'tm-real-estate' ); ?></h3>
 		<span class="message"></span>
@@ -61,8 +52,12 @@
 		</div>
 
 		<div class="tm-re-contact-form_input">
-			<h6></h6>
-			<div id="tm-re-contact-form-captcha" ></div>
+			<div class="empty-space"></div>
+			<div id="tm-re-contact-form-captcha"></div>
+		</div>
+
+		<div class="tm-re-contact-form_input">
+			<div class="empty-space"></div>
 			<input type="submit"id="submit" class="btn-primary" value="<?php echo __( 'Send', 'tm-real-estate' ); ?>"/>
 		</div>
 	</form>

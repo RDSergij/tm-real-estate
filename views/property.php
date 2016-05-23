@@ -12,7 +12,7 @@
 
 ?>
 <?php 
-	$carousel_image_size = apply_filters( 'real_estate_carousel_image_sizes', array(
+	$carousel_image_size = apply_filters( 'tm_re_carousel_image_sizes', array(
 		'large_size' 		=> 'medium_large',
 		'thumbnail_size' 	=> 'thumbnail',
 	) );
@@ -102,8 +102,6 @@
 			<div class="property-hr"></div>
 
 			<div class="property-agent">
-				<h3><?php echo __( 'Contact Agent', 'tm-real-estate' ) ?></h3>
-
 				<?php echo $__data['contact_form'] ?>
 			</div>
 		</article>
