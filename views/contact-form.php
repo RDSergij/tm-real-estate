@@ -24,7 +24,7 @@
 	</div>
 </div>
 <div class="tm-re-contact-form">
-	<form>
+	<form data-captcha="tm-re-contact-form-captcha_<?php echo $__data['agent']->ID; ?>">
 		<h3><?php echo __( 'Ask an Agent', 'tm-real-estate' ); ?></h3>
 		<span class="message"></span>
 		<input type="hidden" name="action" value="tm_re_contact_form"/>
@@ -53,7 +53,7 @@
 
 		<div class="tm-re-contact-form_input">
 			<div class="empty-space"></div>
-			<div id="tm-re-contact-form-captcha"></div>
+			<div id="tm-re-contact-form-captcha_<?php echo $__data['agent']->ID; ?>"></div>
 		</div>
 
 		<div class="tm-re-contact-form_input">

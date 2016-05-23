@@ -3,7 +3,7 @@ jQuery( document ).ready( function( $ ) {
 	var TMREContactForm = function() {
 
 		var tmrec = this;
-		tmrec.captchaArea = null;
+		tmrec.captchaArea = [];
 
 		tmrec.init = function() {
 			tmrec.captchaInit();
@@ -12,24 +12,26 @@ jQuery( document ).ready( function( $ ) {
 
 		tmrec.captchaInit = function() {
 			window.onloadCallback = function() {
-				tmrec.captchaArea = window.grecaptcha.render( 'tm-re-contact-form-captcha', {
-					'sitekey': window.TMREContactForm.captchaKey,
-					'theme': 'light'
+				$( '.tm-re-contact-form form' ).each( function( index, element ) {
+					tmrec.captchaArea[ $( element ).attr( 'data-captcha' ) ] = window.grecaptcha.render( $( element ).attr( 'data-captcha' ), {
+						'sitekey': window.TMREContactForm.captchaKey,
+						'theme': 'light'
+					});
 				});
 			};
 		};
 
-		tmrec.checkCaptcha = function() {
-			if ( null != tmrec.captchaArea ) {
-				return window.grecaptcha.getResponse( tmrec.captchaArea );
+		tmrec.checkCaptcha = function( captha_id ) {
+			if ( null != tmrec.captchaArea[ captha_id ] ) {
+				return window.grecaptcha.getResponse( tmrec.captchaArea[ captha_id ] );
 			}
 			return true;
 		};
 
-		tmrec.resetCaptcha = function() {
-			if ( null != tmrec.captchaArea ) {
+		tmrec.resetCaptcha = function( captha_id ) {
+			if ( null != tmrec.captchaArea[ captha_id ] ) {
 				window.grecaptcha.reset(
-					tmrec.captchaArea
+					tmrec.captchaArea[ captha_id ]
 				);
 			}
 		};
@@ -38,13 +40,15 @@ jQuery( document ).ready( function( $ ) {
 			$( '.tm-re-contact-form form' ).submit( function( e ) {
 				var _form = $( this );
 				var _message = _form.children( '.message' );
+				var captha_id = _form.attr( 'data-captcha' );
 
-				e.preventDefault();e.preventDefault();
+				e.preventDefault();
 
-				if ( ! tmrec.checkCaptcha() ) {
-					$( '#tm-re-contact-form-captcha' ).addClass( 'captcha-warning' );
+				if ( ! tmrec.checkCaptcha( captha_id ) ) {
+					$( '#' + captha_id ).addClass( 'captcha-warning' );
 					return false;
 				}
+
 				$.ajax({
 					type: 'POST',
 					url: window.TMREContactForm.ajaxUrl,
@@ -55,14 +59,14 @@ jQuery( document ).ready( function( $ ) {
 							status = 'failed';
 						}
 						tmrec.message( _message, status );
-						$( '#tm-re-contact-form-captcha' ).removeClass( 'captcha-warning' );
-						tmrec.resetCaptcha();
+						$( '#' + captha_id ).removeClass( 'captcha-warning' );
+						tmrec.resetCaptcha( captha_id );
 						_form.trigger('reset');
 					},
 					error: function() {
 						tmrec.message( _message, 'failed' );
-						$( '#tm-re-contact-form-captcha' ).removeClass( 'captcha-warning' );
-						tmrec.resetCaptcha();
+						$( '#' + captha_id ).removeClass( 'captcha-warning' );
+						tmrec.resetCaptcha( captha_id );
 					}
 				});
 			});

@@ -42,7 +42,7 @@ class Model_Properties {
 		$args = array_merge( $args, $atts );
 
 		if ( $args['offset'] <= 0 ) {
-			$args['offset'] = max( 0, get_query_var( 'paged' ) - 1 );
+			$args['offset'] = max( 0, get_query_var( 'paged' ) );
 		}
 
 		$single_page = Model_Settings::get_search_single_page();
