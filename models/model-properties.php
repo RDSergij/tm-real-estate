@@ -24,6 +24,7 @@ class Model_Properties {
 		$args = array(
 			'posts_per_page'   => 20,
 			'offset'           => 0,
+			//'paged'            => 0,
 			'tax_query'        => array(),
 			'orderby'          => 'date',
 			'order'            => 'DESC',
