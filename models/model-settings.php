@@ -335,7 +335,7 @@ class Model_Settings {
 			array(
 				'ID'            => $defaults['tm-properties-main-settings']['properties-approve-page'],
 				'post_title'	=> __( 'Confirm property', 'tm-real-estate' ),
-				'post_content'	=> __( '[tm-re-approved]!', 'tm-real-estate' ),
+				'post_content'	=> __( '[tm-re-approved]', 'tm-real-estate' ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)
