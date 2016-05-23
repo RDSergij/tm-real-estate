@@ -128,7 +128,7 @@ class Shortcode_Tinymce {
 					'type'        => 'listbox',
 					'name'        => 'show_sorting',
 					'value'       => 'no',
-					'label'       => __( 'Order', 'tm-real-estate' ),
+					'label'       => __( 'Show order', 'tm-real-estate' ),
 					'values'      => Shortcode_Tinymce::tm_prepare_options( array( 'yes' => 'yes', 'no' => 'no' ) ),
 				),
 			),
