@@ -148,6 +148,7 @@ class Model_Submit_Form {
 		}
 
 		$property_meta['state'] = 'active';
+		$property_meta['activated_key'] = md5( time() . $post_id . rand( 1, 1000 ) );
 
 		foreach ( $property_meta as $key => $value ) {
 			update_post_meta( $post_id, sanitize_text_field( $key ), $value );
@@ -155,7 +156,7 @@ class Model_Submit_Form {
 		wp_send_json_success(
 			array(
 				'messages' => $messages,
-				'send' => self::send_confirmation_email( $post_id ),
+				'send' => self::send_confirmation_email( $post_id, $property_meta['activated_key'] ),
 			)
 		);
 
@@ -166,15 +167,23 @@ class Model_Submit_Form {
 	 *
 	 * @return [object] current user.
 	 */
-	public static function send_confirmation_email( $post_id ) {
+	public static function send_confirmation_email( $post_id, $key = '' ) {
 		if ( array_key_exists( 'property', $_POST ) ) {
 			if ( array_key_exists( 'meta', $_POST['property'] ) ) {
 				if ( array_key_exists( 'email', $_POST['property']['meta'] ) ) {
 					$message = sprintf(
 						'%s %s',
 						self::get_mail_message(),
-						get_permalink( $post_id )
+						Model_Settings::get_approved_page() . '?id=' . $post_id . '&key=' . $key
 						/*add_query_arg(
+							array(
+								'id' => $post_id,
+								'key' => $key
+							),
+							Model_Settings::get_approved_page()
+						)
+						get_permalink( $post_id ),
+						add_query_arg(
 							'publish_hidden',
 							$post_id,
 							get_bloginfo( 'url' )

@@ -89,6 +89,9 @@ class TM_Real_Estate {
 		// Add tm-re-properties search result shortcode
 		add_shortcode( Model_main::SHORT_CODE_MAP, array( 'Model_Properties', 'shortcode_map' ) );
 
+		// Add tm-re-approved shortcode
+		add_shortcode( Model_main::SHORT_CODE_APPROVED, array( 'Model_Properties', 'shortcode_approved' ) );
+
 		// Scripts and Styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_and_styles' ) );
 
@@ -721,6 +724,18 @@ class TM_Real_Estate {
 
 		$settings['tm-properties-main-settings'][] = array(
 			'type'			=> 'select',
+			'slug'			=> 'properties-approve-page',
+			'title'			=> __( 'Property approved', 'tm-real-estate' ),
+			'field'			=> array(
+				'id'			=> 'properties-approve-page',
+				'size'			=> 1,
+				'value'			=> '',
+				'options'		=> Model_Settings::get_page_list(),
+			),
+		);
+
+		$settings['tm-properties-main-settings'][] = array(
+			'type'			=> 'select',
 			'slug'			=> 'area-unit',
 			'title'			=> __( 'Area unit', 'tm-real-estate' ),
 			'field'			=> array(
@@ -836,6 +851,28 @@ class TM_Real_Estate {
 			'type'	=> 'text',
 			'field'	=> array(
 				'id'			=> 'confirmation-message',
+				'value'			=> '',
+				'placeholder'	=> '',
+			),
+		);
+
+		$settings['tm-properties-submission-form'][] = array(
+			'slug'	=> 'success-approved-message',
+			'title'	=> __( 'Success confirm message', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'success-approved-message',
+				'value'			=> '',
+				'placeholder'	=> '',
+			),
+		);
+
+		$settings['tm-properties-submission-form'][] = array(
+			'slug'	=> 'fail-approved-message',
+			'title'	=> __( 'Fail confirm message', 'tm-real-estate' ),
+			'type'	=> 'text',
+			'field'	=> array(
+				'id'			=> 'fail-approved-message',
 				'value'			=> '',
 				'placeholder'	=> '',
 			),

@@ -41,6 +41,9 @@ class Model_Main {
 
 	// Map with all items
 	const SHORT_CODE_MAP             = 'tm-re-map';
+	
+	// Approve property
+	const SHORT_CODE_APPROVED      = 'tm-re-approved';
 
 	/**
 	 * Get tags array

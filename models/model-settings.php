@@ -70,6 +70,10 @@ class Model_Settings {
 					'mail-subject'		=> __( 'New mail', 'tm-real-estate' ),
 					'success-message'	=> __( 'Message send', 'tm-real-estate' ),
 					'failed-message'	=> __( 'Message don`t send', 'tm-real-estate' ),
+					'confirmation-subject' => __( 'Confirm', 'tm-real-estate' ),
+					'confirmation-message' => __( 'Please, confirm property', 'tm-real-estate' ),
+					'success-approved-message' => __( 'Success confirm', 'tm-real-estate' ),
+					'fail-approved-message' => __( 'Fail confirm', 'tm-real-estate' ),
 				),
 			);
 		}
@@ -111,6 +115,35 @@ class Model_Settings {
 	 */
 	public static function get_submission_form_settings() {
 		return get_option( 'tm-properties-submission-form' );
+	}
+
+	/**
+	 * Get success confirm message
+	 *
+	 * @return array of settings.
+	 */
+	public static function get_success_confirm_message() {
+		$submit = self::get_submission_form_settings();
+		return $submit['success-approved-message'];
+	}
+
+	/**
+	 * Get fail confirm message
+	 *
+	 * @return array of settings.
+	 */
+	public static function get_fail_confirm_message() {
+		$submit = self::get_submission_form_settings();
+		return $submit['fail-approved-message'];
+	}
+
+	/**
+	 * Get settings for approved page
+	 *
+	 * @return integer id.
+	 */
+	public static function get_approved_page() {
+		return self::get_page_link( 'properties-approve-page' );
 	}
 
 	/**
@@ -292,6 +325,17 @@ class Model_Settings {
 				'ID'            => $defaults['tm-properties-main-settings']['agent-properties-page'],
 				'post_title'	=> __( 'Agent properties', 'tm-real-estate' ),
 				'post_content'	=> Model_Main::wrap_shortcode( Model_Main::SHORT_CODE_AGENT_PROPERTIES ),
+				'post_type'		=> 'page',
+				'post_status'	=> 'publish',
+			)
+		);
+
+		// Page properties approve
+		$defaults['tm-properties-main-settings']['properties-approve-page'] = Cherry_Creator::post(
+			array(
+				'ID'            => $defaults['tm-properties-main-settings']['properties-approve-page'],
+				'post_title'	=> __( 'Confirm property', 'tm-real-estate' ),
+				'post_content'	=> __( '[tm-re-approved]!', 'tm-real-estate' ),
 				'post_type'		=> 'page',
 				'post_status'	=> 'publish',
 			)
