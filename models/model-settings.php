@@ -347,4 +347,15 @@ class Model_Settings {
 
 		self::set_options( $defaults );
 	}
+
+	/**
+	 * Remove all settings
+	 */
+	public static function remove_all_settings() {
+		$defaults = self::get_default_options();
+		foreach ( $defaults as $option => $newvalue ) {
+			delete_option( $option );
+		}
+		delete_option( self::SETTINGS_KEY );
+	}
 }

@@ -142,6 +142,9 @@ class TM_Real_Estate {
 		add_filter( 'screen_layout_columns', array( 'Model_Properties', 'property_single_column_layout' ) );
 		add_filter( 'get_user_option_screen_layout_property',  array( 'Model_Properties', 'property_single_column_layout_post' ) );
 		add_action( 'get_user_option_meta-box-order_property', array( 'Model_Properties', 'property_metabox_order_layout' ), 0, 1 );
+
+		// Uninstall
+		register_uninstall_hook ( TM_REAL_ESTATE_MAIN_FILE, array( $this, 'uninstall' ) );
 	}
 
 	/**
@@ -339,6 +342,12 @@ class TM_Real_Estate {
 		 * @since 1.0.0
 		 */
 		define( 'TM_REAL_ESTATE_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
+		/*
+		 * Set constant path to the main file.
+		 *
+		 * @since 1.0.0
+		 */
+		define( 'TM_REAL_ESTATE_MAIN_FILE', __FILE__  );
 
 		/**
 		 * Set constant path to the plugin URI.
@@ -1011,8 +1020,19 @@ class TM_Real_Estate {
 		);
 	}
 
+	/**
+	 * Api
+	 */
 	public function api() {
 		return Model_Api::get_instance();
+	}
+
+	/**
+	 * Uninstall
+	 */
+	public function uninstall() {
+		exit( 'Uninstall' );
+		Model_Settings::remove_all_settings();
 	}
 
 	/**
