@@ -42,7 +42,7 @@ class Model_Properties {
 		$args = array_merge( $args, $atts );
 
 		if ( $args['offset'] <= 0 ) {
-			$args['offset'] = max( 0, get_query_var( 'paged' ) );
+			$args['offset'] = max( 0, get_query_var( 'paged' ) - 1 );
 		}
 
 		$single_page = Model_Settings::get_search_single_page();
@@ -918,8 +918,8 @@ class Model_Properties {
 			'end_size'           => 0,
 			'mid_size'           => 2,
 			'prev_next'          => true,
-			'prev_text'          => __( '« Previous' ),
-			'next_text'          => __( 'Next »' ),
+			'prev_text'          => __( '« Previous', 'tm-real-estate' ),
+			'next_text'          => __( 'Next »', 'tm-real-estate' ),
 			'type'               => 'array',
 			'add_args'           => false,
 			'add_fragment'       => '',
