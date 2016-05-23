@@ -61,7 +61,7 @@ class Shortcode_Tinymce {
 	 */
 	public static function tm_shortcode_view() {
 		$view_settings[ Model_Main::SHORT_CODE_PROPERTIES ] = array(
-			'title'  => __( 'Property id', 'tm-real-estate' ),
+			'title'  => __( 'Properties list', 'tm-real-estate' ),
 			'image'  => '',
 			'width'  => 600,
 			'height' => 380,
@@ -159,7 +159,7 @@ class Shortcode_Tinymce {
 					'name'        => 'agent',
 					'value'       => '',
 					'label'  => __( 'Agent', 'tm-real-estate' ),
-					'values'     => Shortcode_Tinymce::tm_prepare_options( Model_Main::get_agents() ),
+					'values'     => Shortcode_Tinymce::tm_prepare_options( Model_Main::get_agents(), false  ),
 				),
 			),
 		);
@@ -174,7 +174,7 @@ class Shortcode_Tinymce {
 					'name'        => 'agent',
 					'value'       => '',
 					'label'  => __( 'Agent', 'tm-real-estate' ),
-					'values'     => Shortcode_Tinymce::tm_prepare_options( Model_Main::get_agents() ),
+					'values'     => Shortcode_Tinymce::tm_prepare_options( Model_Main::get_agents(), false ),
 				),
 			),
 		);
