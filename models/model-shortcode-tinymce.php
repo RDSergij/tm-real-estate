@@ -64,13 +64,19 @@ class Shortcode_Tinymce {
 			'title'  => __( 'Property id', 'tm-real-estate' ),
 			'image'  => '',
 			'width'  => 600,
-			'height' => 350,
+			'height' => 380,
 			'body'	 => array(
 				array(
 					'type'       => 'textbox',
 					'name'       => 'property_id',
 					'value'      => 0,
 					'label'		 => __( 'Property id', 'tm-real-estate' ),
+				),
+				array(
+					'type'       => 'listbox',
+					'name'       => 'location',
+					'label'		 => __( 'Location', 'tm-real-estate' ),
+					'values'    => Shortcode_Tinymce::tm_prepare_options( Model_Main::get_locations() ),
 				),
 				array(
 					'type'       => 'listbox',

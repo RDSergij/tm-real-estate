@@ -77,6 +77,23 @@ class Model_Main {
 	}
 
 	/**
+	 * Get all locations
+	 *
+	 * @return array all locations.
+	 */
+	public static function get_locations() {
+		$locations = get_terms( 'location' );
+
+		if ( is_array( $locations ) ) {
+			foreach ( $locations as $location ) {
+				$result[ $location->term_id ] = $location->name;
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Get all agents
 	 *
 	 * @return array all agents.
