@@ -22,7 +22,7 @@ class Model_Agents {
 	 */
 	public static function shortcode_contact_form( $atts ) {
 
-		if ( empty( $atts['agent_id'] ) && empty( $atts['property_id'] ) ) {
+		if ( empty( $atts['agent'] ) && empty( $atts['agent_id'] ) && empty( $atts['property_id'] ) ) {
 			return;
 		}
 
@@ -34,6 +34,8 @@ class Model_Agents {
 		$agent_id = null;
 		if ( ! empty( $atts['agent_id'] ) ) {
 			$agent_id = $atts['agent_id'];
+		} elseif ( ! empty( $atts['agent'] ) ) {
+			$agent_id = $atts['agent'];
 		} else {
 			$agent_id = get_post_meta( $property_id, 'agent', true );
 		}
@@ -157,6 +159,7 @@ class Model_Agents {
 			TM_REAL_ESTATE_DIR . 'views/contact-form.php',
 			array(
 				'agent'			=> $user_data->data,
+				'custom_contact'=> self::get_agent_custom_contacts( $agent_id ),
 				'finished_cnt'	=> self::get_count_state_finished( $agent_id ),
 				'active_cnt'	=> self::get_count_state_active( $agent_id ),
 				'property_id'	=> $property_id,
@@ -214,6 +217,26 @@ class Model_Agents {
 		// Enqueue
 		//wp_enqueue_style( 'tm_agent_photo_admin_css' );
 		wp_enqueue_script( 'tm_agent_photo_admin_js' );
+	}
+
+	/**
+	 * Get Agent list of contacts
+	 * 
+	 * @param int $agent_id Agent Id
+	 */
+	public static function get_agent_custom_contacts( $agent_id ) {
+		global $TM_Real_Estate_Api;
+		$contacts = $TM_Real_Estate_Api->get_agents_custom_contacts();
+		if ( empty( $contacts ) || 0 == count( $contacts ) ) {
+			return array();
+		}
+		$return = array();
+		foreach( $contacts as $contact ) {
+			if ( $agent_contact = get_user_meta( $agent_id, $contact[0], true ) ) {
+				$return[ $contact[0] ] = array( 'title' => $contact[1], 'value' => $agent_contact );
+			}
+		}
+		return $return;
 	}
 
 	/**
