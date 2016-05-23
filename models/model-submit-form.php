@@ -80,9 +80,11 @@ class Model_Submit_Form {
 		$messages = Model_Settings::get_submission_form_settings();
 		$tm_json_request = array();
 		if ( empty( $_POST ) ) {
+			exit('post');
 			wp_send_json_error( array( 'messages' => $messages ) );
 		}
 		if ( empty( $_POST['property']['title'] ) ) {
+			exit('title');
 			wp_send_json_error( array( 'messages' => $messages ) );
 		}
 
@@ -117,10 +119,9 @@ class Model_Submit_Form {
 
 		if ( ! empty( $_FILES['thumb'] ) ) {
 			$attachment_id = Model_Submit_Form::insert_attacment( $_FILES['thumb'], $post_id );
-			if ( ! $attachment_id ) {
-				wp_send_json_error( array( 'messages' => $messages ) );
+			if ( $attachment_id ) {
+				set_post_thumbnail( $post_id, $attachment_id );
 			}
-			set_post_thumbnail( $post_id, $attachment_id );
 		}
 
 		if ( ! empty( $_FILES['gallery'] ) ) {
@@ -146,15 +147,15 @@ class Model_Submit_Form {
 			$property_meta['agent'] = get_current_user_id();
 		}
 
+		$property_meta['state'] = 'active';
+
 		foreach ( $property_meta as $key => $value ) {
 			update_post_meta( $post_id, sanitize_text_field( $key ), $value );
 		}
-
 		wp_send_json_success(
 			array(
 				'messages' => $messages,
 				'send' => self::send_confirmation_email( $post_id ),
-				'files' => print_r( $files, true ),
 			)
 		);
 
