@@ -231,7 +231,7 @@ class Model_Properties {
 					'value'   => esc_attr( $atts['state'] ),
 					'compare' => '=',
 				);
-				unset( $atts['status'] );
+				unset( $atts['state'] );
 			}
 
 			if ( ! empty( $atts['status'] ) ) {
@@ -350,12 +350,14 @@ class Model_Properties {
 	 * @return html code.
 	 */
 	public static function shortcode_properties( $atts ) {
+				//var_dump($atts);
 		$atts = shortcode_atts(
 			array(
 				'property_id'	=> '',
 				'id'			=> '',
 				'agent_id'		=> '',
 				'agent'			=> '',
+				'status'		=> '',
 				'tag'			=> '',
 				'type'			=> '',
 				'offset'		=> '0',
@@ -371,6 +373,7 @@ class Model_Properties {
 		$atts = array_merge( $atts, $_GET );
 
 		$atts = self::prepare_param_properties( $atts );
+
 		$properties = (array) self::get_properties( $atts );
 
 		$show_sorting = 'no';
