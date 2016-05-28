@@ -941,7 +941,11 @@
   margin: 0 !important;
 }
 
-.post-type-property .wp-list-table .row-actions span a:after {
+.post-type-property .wp-list-table .row-actions span a {
+  color: #96989a;
+}
+
+.post-type-property .wp-list-table .row-actions span a:before {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
@@ -952,7 +956,9 @@
   line-height: 1;
   transition: 300ms all;
   font-size: 15px;
-  display: none;
+  margin: 0 5px 0 0;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .post-type-property .wp-list-table .row-actions span a:active, .post-type-property .wp-list-table .row-actions span a:focus {
@@ -960,28 +966,36 @@
   box-shadow: none;
 }
 
-.post-type-property .wp-list-table .row-actions span a:hover:after {
+.post-type-property .wp-list-table .row-actions span a:hover {
   color: #298ffc;
 }
 
-.post-type-property .wp-list-table .row-actions span.edit a:after {
+.post-type-property .wp-list-table .row-actions span a:hover:before {
+  color: #298ffc;
+}
+
+.post-type-property .wp-list-table .row-actions span.edit a:before {
   content: '\f040';
 }
 
-.post-type-property .wp-list-table .row-actions span.inline a:after {
+.post-type-property .wp-list-table .row-actions span.inline a:before {
   content: '\f044';
 }
 
-.post-type-property .wp-list-table .row-actions span.trash a:after, .post-type-property .wp-list-table .row-actions span.delete a:after {
+.post-type-property .wp-list-table .row-actions span.trash a:before, .post-type-property .wp-list-table .row-actions span.delete a:before {
   content: '\f1f8';
 }
 
-.post-type-property .wp-list-table .row-actions span.view a:after {
+.post-type-property .wp-list-table .row-actions span.view a:before {
   content: '\f06e';
 }
 
-.post-type-property .wp-list-table .row-actions span.clone a:after {
+.post-type-property .wp-list-table .row-actions span.clone a:before {
   content: '\f0c5';
+}
+
+.post-type-property .wp-list-table .row-actions span.edit_as_new_draft a:before {
+  content: '\f0ea';
 }
 
 .post-type-property .wp-list-table .inline-editor .colspanchange {

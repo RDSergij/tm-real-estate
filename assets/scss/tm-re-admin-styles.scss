@@ -702,13 +702,17 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				margin: 0 !important;
 
 				a {
-					&:after {
+					color: $gray-color-1;
+
+					&:before {
 						@include font-awesome-icon();
 						color: $gray-color-1;
 						line-height: 1;
 						transition: 300ms all;
 						font-size: 15px;
-						display: none;
+						margin: 0 5px 0 0;
+						display: inline-block;
+						vertical-align: middle;
 					}
 					&:active,
 					&:focus {
@@ -716,21 +720,23 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 						box-shadow: none;
 					}
 					&:hover {
-						&:after {
+						color: $accent-color;
+
+						&:before {
 							color: $accent-color;
 						}
 					}
 				}
 				&.edit {
 					a {
-						&:after {
+						&:before {
 							content: '\f040';
 						}
 					}
 				}
 				&.inline  {
 					a {
-						&:after {
+						&:before {
 							content: '\f044';
 						}
 					}
@@ -738,22 +744,29 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 				&.trash,
 				&.delete {
 					a {
-						&:after {
+						&:before {
 							content: '\f1f8';
 						}
 					}
 				}
 				&.view {
 					a {
-						&:after {
+						&:before {
 							content: '\f06e';
 						}
 					}
 				}
 				&.clone {
 					a {
-						&:after {
+						&:before {
 							content: '\f0c5';
+						}
+					}
+				}
+				&.edit_as_new_draft {
+					a {
+						&:before {
+							content: '\f0ea';
 						}
 					}
 				}
