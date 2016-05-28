@@ -522,6 +522,56 @@
 .post-type-property .tablenav .tablenav-pages {
   margin-top: 10px;
   margin-left: 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.post-type-property .tablenav .tablenav-pages .displaying-num {
+  color: #96989a;
+  margin: 0 20px 0 0;
+}
+
+.post-type-property .tablenav .tablenav-pages .pagination-links {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.post-type-property .tablenav .tablenav-pages .pagination-links span {
+  height: auto;
+  border: none;
+  padding: 0;
+}
+
+.post-type-property .tablenav .tablenav-pages .pagination-links span.tablenav-pages-navspan {
+  font-size: 30px;
+  height: 38px;
+  background: none;
+  color: #f1f1f1;
+}
+
+.post-type-property .tablenav .tablenav-pages .pagination-links a {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #96989a;
+}
+
+.post-type-property .tablenav .tablenav-pages .pagination-links a:hover {
+  color: #298ffc;
+}
+
+.post-type-property .tablenav .tablenav-pages .pagination-links a span {
+  font-size: 30px;
+  height: 38px;
+  display: inline-block;
 }
 
 .post-type-property .wp-list-table {
