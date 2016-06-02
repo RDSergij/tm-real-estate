@@ -125,10 +125,6 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		box-shadow: $box-shadow;
 		padding: 30px;
 
-		.view-mode,
-		.columns-prefs {
-			display: none;
-		}
 		.submit {
 			margin: 20px 0 0;
 		}
@@ -1082,11 +1078,6 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 			}
 		}
 
-		.postbox, 
-		.stuffbox {
-			margin: 0 0 30px;
-		}
-
 		.postbox {
 			.handlediv {
 				width: 50px;
@@ -1095,8 +1086,6 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 		}
 
 		#submitdiv {
-			margin: 0;
-
 			#duplicate-action {
 				margin: 0 0 20px;
 			}
@@ -1468,7 +1457,7 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 										}
 									}
 								}
-							}
+							} 
 						}
 						.upload-button {
 							@include button();
@@ -1484,6 +1473,51 @@ $box-shadow: 		4px 7px 21px 0px rgba(0, 0, 0, 0.1);
 						}
 					}
 				}
+			}
+		}
+	}
+
+	// If 2nd column 
+	#post-body.columns-2 {
+		#postbox-container-1 {
+			#delete-action {
+				float: none;
+			}
+			#publishing-action {
+				display: flex;
+				float: none;
+				margin: 20px 0 0;
+				text-align: left;
+
+				.button {
+					order: 1;
+				}
+				.spinner {
+					order: 2;
+					float: none;
+				}
+			}
+
+			#tagsdiv-property-tag .button {
+				margin-left: 0;
+			}
+		}
+	}
+
+	// Margins beside blocks
+	.postbox-container {
+		.meta-box-sortables {
+			> div {
+				margin: 0;
+
+				&:not(:first-child) {
+					margin: 30px 0 0;
+				}
+			}
+		}
+		&#postbox-container-1 {
+			.meta-box-sortables {
+				margin: 0 0 30px;
 			}
 		}
 	}

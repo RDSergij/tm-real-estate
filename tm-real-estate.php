@@ -137,12 +137,7 @@ class TM_Real_Estate {
 		// Save the new user CUPP url.
 		add_action( 'personal_options_update', array( 'Model_Agents', 'save_img_meta' ) );
 		add_action( 'edit_user_profile_update', array( 'Model_Agents', 'save_img_meta' ) );
-
-		// One column for property
-		add_filter( 'screen_layout_columns', array( 'Model_Properties', 'property_single_column_layout' ) );
-		add_filter( 'get_user_option_screen_layout_property',  array( 'Model_Properties', 'property_single_column_layout_post' ) );
-		add_action( 'get_user_option_meta-box-order_property', array( 'Model_Properties', 'property_metabox_order_layout' ), 0, 1 );
-
+		
 		// Uninstall
 		register_uninstall_hook ( TM_REAL_ESTATE_MAIN_FILE, 'TM_Real_Estate::uninstall' );
 	}
